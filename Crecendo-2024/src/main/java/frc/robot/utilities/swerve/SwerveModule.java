@@ -76,13 +76,13 @@ public class SwerveModule {
 
     public double getDriveMotorVelocity(){
         // .getSensorCollection().getIntegratedSensorVelocity() this is not good as it does not match the CAN frame aparently
-        return driveMotor.getVelocity().refresh().getValueAsDouble()/ 2048d /2*Math.PI * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
+        return driveMotor.getVelocity().refresh().getValueAsDouble() / 2048 /2*Math.PI * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
         
     }
     
     public double getDriveMotorPosition(){
         // .getSensorCollection().getIntegratedSensorPosition() this is not good as it does not match the CAN frame aparently
-        return driveMotor.getPosition().refresh().getValueAsDouble() / 2048d /2*Math.PI * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
+        return driveMotor.getPosition().refresh().getValueAsDouble() / 2048 /2*Math.PI * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
     }
 
     public double getRotationMotorPosition(){
