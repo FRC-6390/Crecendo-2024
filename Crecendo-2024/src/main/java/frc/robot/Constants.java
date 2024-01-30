@@ -46,10 +46,10 @@ public interface Constants {
         // double BACK_LEFT_OFFSET = 0.030679+Math.PI;
         // double BACK_RIGHT_OFFSET = -0.042951+Math.PI;
 
-        double FRONT_LEFT_OFFSET = -2.4651;
-        double FRONT_RIGHT_OFFSET = 0.04;
-        double BACK_LEFT_OFFSET = -0.68722;
-        double BACK_RIGHT_OFFSET = 2.3;
+        double FRONT_LEFT_OFFSET = 0;
+        double FRONT_RIGHT_OFFSET = 0.0;
+        double BACK_LEFT_OFFSET = 0.0;
+        double BACK_RIGHT_OFFSET = 0.0;
 
         SwerveModuleConfig FRONT_LEFT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_LEFT_DRIVE, false, FRONT_LEFT_ROTATION, false, FRONT_LEFT_ENCODER, FRONT_LEFT_OFFSET, CANBUS);
         SwerveModuleConfig FRONT_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_RIGHT_DRIVE, false, FRONT_RIGHT_ROTATION, false, FRONT_RIGHT_ENCODER, FRONT_RIGHT_OFFSET, CANBUS);

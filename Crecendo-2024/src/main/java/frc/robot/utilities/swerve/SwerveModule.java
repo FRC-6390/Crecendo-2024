@@ -5,6 +5,7 @@ import java.util.Map;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 
@@ -33,6 +34,7 @@ public class SwerveModule {
    // private REVMaglimitSwitch limitSwitch;
     private static int instances = 0;
 
+   private StatusSignal<Double> drivePos,driveVel, encoderPos;
     public SwerveModule(SwerveModuleConfig config){
         this(config, null);
     }
@@ -56,6 +58,7 @@ public class SwerveModule {
         encoderOffset = config.encoderOffset();
         driveMotor.setInverted(config.driveMotorReversed());
         rotationMotor.setInverted(config.rotationMotorReversed());
+        encoderPos=encoder.getAbsolutePosition();
 
         CANcoderConfiguration  con = new CANcoderConfiguration();
         con.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
@@ -69,20 +72,21 @@ public class SwerveModule {
             layout.addDouble("Absolute "+instances, () -> getAbsolutePosition());
         }
         instances++;
-
+        drivePos=driveMotor.getRotorPosition();
+        driveVel=driveMotor.getRotorVelocity();
         resetEncoders();
-        lock();
+        unlock();
     }
 
     public double getDriveMotorVelocity(){
         // .getSensorCollection().getIntegratedSensorVelocity() this is not good as it does not match the CAN frame aparently
-        return driveMotor.getVelocity().refresh().getValueAsDouble() / 2048 /2*Math.PI * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
+        return driveVel.getValueAsDouble()  * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
         
     }
     
     public double getDriveMotorPosition(){
         // .getSensorCollection().getIntegratedSensorPosition() this is not good as it does not match the CAN frame aparently
-        return driveMotor.getPosition().refresh().getValueAsDouble() / 2048 /2*Math.PI * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
+        return drivePos.getValueAsDouble()* SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
     }
 
     public double getRotationMotorPosition(){
@@ -90,7 +94,7 @@ public class SwerveModule {
     }
 
     public double getAbsolutePosition(){
-        return encoder.getAbsolutePosition().refresh().getValueAsDouble() * Math.PI/180d;
+        return encoderPos.getValueAsDouble() * Math.PI/180d;
     }
 
     public double getEncoderOffset(){
@@ -104,12 +108,12 @@ public class SwerveModule {
     public double getEncoderRadians(){
         if(offsetEntry != null) encoderOffset = offsetEntry.getDouble(0.0);
 
-        return (encoder.getAbsolutePosition().refresh().getValueAsDouble() * Math.PI/180d) - encoderOffset;
+        return (encoderPos.getValueAsDouble()*360 * Math.PI/180d) - encoderOffset;
     }
 
     public void resetEncoders(){
         driveMotor.setPosition(0);
-        rotationMotor.setPosition(getEncoderRadians());
+        rotationMotor.setPosition(encoderPos.getValueAsDouble());
     }
 
     public SwerveModuleState getState(){
@@ -129,6 +133,8 @@ public class SwerveModule {
     }
 
     public void setDesiredState(SwerveModuleState state){
+        refresh();
+       
         if(Math.abs(state.speedMetersPerSecond) < 0.001){
             stop();
             return;
@@ -158,6 +164,12 @@ public class SwerveModule {
     public void unlock(){
         driveMotor.setNeutralMode(NeutralModeValue.Coast);
         rotationMotor.setNeutralMode(NeutralModeValue.Coast);
+    }
+
+    public void refresh(){
+        drivePos.refresh();
+        driveVel.refresh();
+        encoderPos.refresh();
     }
 
 }
