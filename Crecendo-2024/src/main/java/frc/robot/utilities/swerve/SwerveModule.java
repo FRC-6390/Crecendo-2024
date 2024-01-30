@@ -117,7 +117,6 @@ public class SwerveModule {
         driveMotor.setPosition(0);
         rotationMotor.setPosition(encoderPos.getValueAsDouble());
     }
-
     public SwerveModuleState getState(){
         return new SwerveModuleState(getDriveMotorVelocity(), new Rotation2d(getEncoderRadians()));
     }

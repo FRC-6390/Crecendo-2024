@@ -11,25 +11,13 @@ import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
 
 
-public class AutoAlign extends Command {
+public class TurnAlign extends Command {
   
-  //PID controller
-  public PIDController controller;
-  public PIDController yController;
+  //PID controllers
   public PIDController thetaController;
   //Declare the drivetrain object
   public Drivetrain6390 drivetrain;
   
-  // public NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
-  
-  //PID constants
-  double kP = 0.065;
-  double kI = 0.003;
-  double kD = 0;
-
-  double kP2 = 0.09;
-  double kI2 = 0.003;
-  double kD2 = 0;
 
   double kP3 = 0.09;
   double kI3 = 0.003;
@@ -40,27 +28,21 @@ public class AutoAlign extends Command {
   public LimeLight limelight;
   public double Ypos;
   public double Xpos;
-  public double rot;
   public static boolean isDone;
+  public double offset;
 
-  public AutoAlign(Drivetrain6390 drivetrain, LimeLight limelight, double Ypos, double Xpos, double rot)
+  public TurnAlign(Drivetrain6390 drivetrain, LimeLight limelight, double offset)
   {
     this.drivetrain = drivetrain;
+    this.offset = offset;
     this.limelight = limelight;
-    this.Ypos = Ypos;
-    this.Xpos = Xpos;
-    this.rot = rot;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
-    controller = new PIDController(kP, kI, kD);
-    yController = new PIDController(kP2, kI2, kD2);
     thetaController = new PIDController(kP3, kI3, kD3);
-    thetaController.enableContinuousInput(-180, 180);
-    //-Math.PI Math.PI
     isDone = false;
   }
 
@@ -70,9 +52,9 @@ public class AutoAlign extends Command {
   {
     if(limelight.hasValidTarget())
     {
-      drivetrain.drive(new ChassisSpeeds(yController.calculate(limelight.getTargetHorizontalOffset(), Ypos),controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1, thetaController.calculate(drivetrain.getHeading(), rot)));
+      drivetrain.drive(new ChassisSpeeds(0,0, thetaController.calculate(limelight.getTargetVerticalOffset(), 0) * -1));
      //yController.calculate(drivetrain.getHeading(), -180
-      if(yController.calculate(limelight.getTargetHorizontalOffset(), 0) < 0.2)
+      if(thetaController.calculate(limelight.getTargetHorizontalOffset(), 0) < 0.2)
       {
         drivetrain.drive(new ChassisSpeeds(0,0,0));
         isDone = true;
