@@ -18,8 +18,10 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.SWERVEMODULE;
 import frc.robot.utilities.controlloop.PID;
+
 
 public class SwerveModule {
     private TalonFX driveMotor;
@@ -134,11 +136,18 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState state){
         refresh();
-       
+    
+       System.out.println(getEncoderRadians());
+       System.out.println(instances);
         if(Math.abs(state.speedMetersPerSecond) < 0.001){
             stop();
+
             return;
         }
+    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
+    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
+    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
+    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
         state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND);
         // rotationMotor.set(ControlMode.PercentOutput, pid.calculate(state.angle.getRadians()));
