@@ -35,12 +35,13 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0));
+    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
   } 
 
 
   public Command getAutonomousCommand(){
-     return new AutoAlign(driveTrain, limelight, 0,0);
+     //return new AutoAlign(driveTrain, limelight, 0,0, 0);
+     return new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0,0, 0), new AutoAlign(driveTrain, limelight, 2, 0, 0));
   }
 }

@@ -52,7 +52,7 @@ public class TurnAlign extends Command {
   {
     if(limelight.hasValidTarget())
     {
-      drivetrain.drive(new ChassisSpeeds(0,0, thetaController.calculate(limelight.getTargetVerticalOffset(), 0)));
+      drivetrain.drive(new ChassisSpeeds(0,0, thetaController.calculate(limelight.getTargetVerticalOffset(), 0) * -1));
      //yController.calculate(drivetrain.getHeading(), -180
       if(thetaController.calculate(limelight.getTargetHorizontalOffset(), 0) < 0.2)
       {

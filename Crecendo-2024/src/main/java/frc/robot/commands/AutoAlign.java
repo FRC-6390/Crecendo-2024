@@ -40,14 +40,16 @@ public class AutoAlign extends Command {
   public LimeLight limelight;
   public double Ypos;
   public double Xpos;
+  public double rot;
   public static boolean isDone;
 
-  public AutoAlign(Drivetrain6390 drivetrain, LimeLight limelight, double Ypos, double Xpos)
+  public AutoAlign(Drivetrain6390 drivetrain, LimeLight limelight, double Ypos, double Xpos, double rot)
   {
     this.drivetrain = drivetrain;
     this.limelight = limelight;
     this.Ypos = Ypos;
     this.Xpos = Xpos;
+    this.rot = rot;
   }
 
   // Called when the command is initially scheduled.
@@ -66,7 +68,7 @@ public class AutoAlign extends Command {
   {
     if(limelight.hasValidTarget())
     {
-      drivetrain.drive(new ChassisSpeeds(yController.calculate(limelight.getTargetHorizontalOffset(), Ypos),controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1, thetaController.calculate(drivetrain.getHeading(), 0)));
+      drivetrain.drive(new ChassisSpeeds(yController.calculate(limelight.getTargetHorizontalOffset(), Ypos),controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1, thetaController.calculate(drivetrain.getHeading(), rot)));
      //yController.calculate(drivetrain.getHeading(), -180
       if(yController.calculate(limelight.getTargetHorizontalOffset(), 0) < 0.2)
       {
