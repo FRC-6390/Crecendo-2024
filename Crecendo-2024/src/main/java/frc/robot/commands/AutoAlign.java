@@ -59,6 +59,8 @@ public class AutoAlign extends Command {
     controller = new PIDController(kP, kI, kD);
     yController = new PIDController(kP2, kI2, kD2);
     thetaController = new PIDController(kP3, kI3, kD3);
+    thetaController.enableContinuousInput(-180, 180);
+    //-Math.PI Math.PI
     isDone = false;
   }
 
