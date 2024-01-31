@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import frc.robot.subsystems.Drivetrain6390;
+import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.vission.LimeLight;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,7 +17,7 @@ import frc.robot.commands.*;
 
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
-
+  public static frc.robot.subsystems.Test test = new Test();
   public LimeLight limelight = new LimeLight();
 
   public static DebouncedController controller = new DebouncedController(0);
@@ -32,10 +33,12 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0));
-    controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
-    controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
-    controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
+    // controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0));
+    // controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
+    // controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
+    // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
+    controller.a.onTrue(new InstantCommand(test::setHome));
+    controller.b.onTrue(new ArmTest(test, 0.5));
   } 
 
 

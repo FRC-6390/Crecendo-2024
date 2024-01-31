@@ -35,21 +35,6 @@ public interface Constants {
         int BACK_RIGHT_ROTATION = 8;
         int BACK_RIGHT_ENCODER = 12;
 
-        //original offsets
-        // double FRONT_LEFT_OFFSET = 0.013805+Math.PI;
-        // double FRONT_RIGHT_OFFSET = 0.010737+Math.PI;
-        // double BACK_LEFT_OFFSET = 0.030679+Math.PI;
-        // double BACK_RIGHT_OFFSET = -0.042951+Math.PI;
-
-        // double FRONT_LEFT_OFFSET = 5.2022430179935974; 
-        // double FRONT_RIGHT_OFFSET = 6.67766606796771; 
-        // double BACK_LEFT_OFFSET = 2.3728371336263336;
-        // double BACK_RIGHT_OFFSET =  0.8046938725852817;
-
-        // double FRONT_LEFT_OFFSET = 0; 
-        // double FRONT_RIGHT_OFFSET =  0; 
-        // double BACK_LEFT_OFFSET = 0;
-        // double BACK_RIGHT_OFFSET = 0;
 
         //Below is what Mathias and I finished with 
         double FRONT_LEFT_OFFSET = 0.39111328125; 
@@ -57,15 +42,7 @@ public interface Constants {
         double BACK_LEFT_OFFSET = 0.11181640625;
         double BACK_RIGHT_OFFSET =  0.6298828125;
 
-        // double FRONT_LEFT_OFFSET = 3.6122430179935974; 
-        // double FRONT_RIGHT_OFFSET = 5.17766606796771; 
-        // double BACK_LEFT_OFFSET = 1.9728371336263336;
-        // double BACK_RIGHT_OFFSET =  0.4946938725852817;
 
-        // double FRONT_LEFT_OFFSET = 5.10; 
-        // double FRONT_RIGHT_OFFSET = 0.4; //9.8
-        // double BACK_LEFT_OFFSET = 0.4; //9.8
-        // double BACK_RIGHT_OFFSET = 5.1;
 
         SwerveModuleConfig FRONT_LEFT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_LEFT_DRIVE, false, FRONT_LEFT_ROTATION, false, FRONT_LEFT_ENCODER, FRONT_LEFT_OFFSET, CANBUS);
         SwerveModuleConfig FRONT_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_RIGHT_DRIVE, false, FRONT_RIGHT_ROTATION, false, FRONT_RIGHT_ENCODER, FRONT_RIGHT_OFFSET, CANBUS);
@@ -92,6 +69,12 @@ public interface Constants {
 
     public interface INTAKE {
         int INTAKE_MOTOR = 23;
+    }
+
+    public interface TEST{
+        int ARM_MOTOR = 14;
+        double ARM_MAX = -7.284;
+        PIDConfig PID_config = new PIDConfig(0.05, 0, 0);
     }
     
     public interface ROBOT {
