@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DRIVETRAIN;
 import frc.robot.Constants.SWERVEMODULE;
@@ -77,13 +78,13 @@ pose.getRotation().getDegrees());
 
   public void shuffleboard(){
     tab.addDouble("Front Left Encoder", () ->
-swerveModules[0].getAbsolutePosition());
+swerveModules[0].getEncoderRadians());
     tab.addDouble("Front Right Encoder", () ->
-swerveModules[1].getAbsolutePosition());
+swerveModules[1].getEncoderRadians());
     tab.addDouble("Back Left Encoder", () ->
-swerveModules[2].getAbsolutePosition());
+swerveModules[2].getEncoderRadians());
     tab.addDouble("Back Right Encoder", () ->
-swerveModules[3].getAbsolutePosition());
+swerveModules[3].getEncoderRadians());
 
     autoTab.addDouble("Desired Heading", () ->
 pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
@@ -153,7 +154,9 @@ pose.getRotation().getDegrees();
 SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND);
     for (int i = 0; i < swerveModules.length; i++) {
       swerveModules[i].setDesiredState(states[i]);
+      SmartDashboard.putNumber("Module " + i+"",swerveModules[i].getEncoderRadians());
     }
+    
   }
 
   private SwerveModulePosition[] getModulePostions(){

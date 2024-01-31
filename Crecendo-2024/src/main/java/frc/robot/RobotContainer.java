@@ -34,6 +34,8 @@ public class RobotContainer {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
+    controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
+    controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
   } 
 
 

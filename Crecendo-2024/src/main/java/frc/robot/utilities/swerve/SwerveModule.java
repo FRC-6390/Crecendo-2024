@@ -42,8 +42,8 @@ public class SwerveModule {
     }
 
     private static PIDController rotationPidController = new PIDController(0.35, 0.1, 0);
+   
     
-
 
     public SwerveModule(SwerveModuleConfig config, ShuffleboardTab tab){
         rotationPidController.enableContinuousInput(-Math.PI, Math.PI);
@@ -64,7 +64,7 @@ public class SwerveModule {
 
         CANcoderConfiguration  con = new CANcoderConfiguration();
         con.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-
+        encoder.getConfigurator().apply(con);
         pid = new PID(SWERVEMODULE.ROTATION_PID).setMeasurement(() -> getRotationMotorPosition());
         if(tab != null){
             ShuffleboardLayout layout = tab.getLayout("Swerve Module "+instances, BuiltInLayouts.kList).withSize(2, 6);
@@ -137,17 +137,14 @@ public class SwerveModule {
         refresh();
     
        System.out.println(getEncoderRadians());
-       System.out.println(instances);
+       System.out.println(driveMotor.getDeviceID());
         if(Math.abs(state.speedMetersPerSecond) < 0.001){
             stop();
 
             return;
         }
-    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
-    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
-    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
-    SmartDashboard.putNumber(driveMotor.getDeviceID()+"", encoderOffset);
-        state = SwerveModuleState.optimize(state, getState().angle);
+    //SmartDashboard.putNumber(driveMotor.getDeviceID()+"", getEncoderRadians());
+      state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND);
         // rotationMotor.set(ControlMode.PercentOutput, pid.calculate(state.angle.getRadians()));
         rotationMotor.set(rotationPidController.calculate(-getEncoderRadians(), -state.angle.getRadians()));
