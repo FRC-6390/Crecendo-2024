@@ -22,7 +22,7 @@ public class RobotContainer {
   public static DebouncedController controller = new DebouncedController(0);
 
   public RobotContainer() {
-    driveTrain.shuffleboard();
+    //driveTrain.shuffleboard();
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());

@@ -60,19 +60,21 @@ public class SwerveModule {
         encoderOffset = config.encoderOffset();
         driveMotor.setInverted(config.driveMotorReversed());
         rotationMotor.setInverted(config.rotationMotorReversed());
-        encoderPos=encoder.getAbsolutePosition();
+        encoderPos=encoder.getPosition();
+        if(offsetEntry != null) encoderOffset = offsetEntry.getDouble(0.0);
 
         CANcoderConfiguration  con = new CANcoderConfiguration();
         con.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        con.MagnetSensor.MagnetOffset = encoderOffset;
         encoder.getConfigurator().apply(con);
         pid = new PID(SWERVEMODULE.ROTATION_PID).setMeasurement(() -> getRotationMotorPosition());
-        if(tab != null){
+        //if(tab != null){
             ShuffleboardLayout layout = tab.getLayout("Swerve Module "+instances, BuiltInLayouts.kList).withSize(2, 6);
             layout.add(pid);
             offsetEntry = layout.add("Offset "+ instances, getEncoderOffset()).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -Math.PI, "max", Math.PI)).getEntry();
             layout.addDouble("Angle "+instances, () -> getPostion().angle.getDegrees());
             layout.addDouble("Absolute "+instances, () -> getAbsolutePosition());
-        }
+       // }
         instances++;
         drivePos=driveMotor.getRotorPosition();
         driveVel=driveMotor.getRotorVelocity();
@@ -108,9 +110,7 @@ public class SwerveModule {
     }
 
     public double getEncoderRadians(){
-        if(offsetEntry != null) encoderOffset = offsetEntry.getDouble(0.0);
-
-        return (encoderPos.getValueAsDouble()*360 * Math.PI/180d) - encoderOffset;
+        return (encoderPos.getValueAsDouble()*360 * Math.PI/180d);
     }
 
     public void resetEncoders(){
@@ -135,9 +135,9 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState state){
         refresh();
+        
     
-       System.out.println(getEncoderRadians());
-       System.out.println(driveMotor.getDeviceID());
+
         if(Math.abs(state.speedMetersPerSecond) < 0.001){
             stop();
 

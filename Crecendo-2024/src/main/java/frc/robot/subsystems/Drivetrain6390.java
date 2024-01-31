@@ -104,6 +104,7 @@ pose.getY()).withWidget(BuiltInWidgets.kTextView);
     pdh.clearStickyFaults();
     zeroHeading();
     resetOdometry(pose);
+    shuffleboard();
   }
 
   public void zeroHeading(){

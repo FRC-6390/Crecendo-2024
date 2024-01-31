@@ -46,15 +46,21 @@ public interface Constants {
         // double BACK_LEFT_OFFSET = 2.3728371336263336;
         // double BACK_RIGHT_OFFSET =  0.8046938725852817;
 
+        // double FRONT_LEFT_OFFSET = 0; 
+        // double FRONT_RIGHT_OFFSET =  0; 
+        // double BACK_LEFT_OFFSET = 0;
+        // double BACK_RIGHT_OFFSET = 0;
+
+        //Below is what Mathias and I finished with 
+        double FRONT_LEFT_OFFSET = 0.39111328125; 
+        double FRONT_RIGHT_OFFSET =  -0.99755859375; 
+        double BACK_LEFT_OFFSET = 0.11181640625;
+        double BACK_RIGHT_OFFSET =  0.6298828125;
+
         // double FRONT_LEFT_OFFSET = 3.6122430179935974; 
         // double FRONT_RIGHT_OFFSET = 5.17766606796771; 
         // double BACK_LEFT_OFFSET = 1.9728371336263336;
         // double BACK_RIGHT_OFFSET =  0.4946938725852817;
-
-        double FRONT_LEFT_OFFSET = 0.808407875215733; 
-        double FRONT_RIGHT_OFFSET = 2.3960779906773713 ; 
-        double BACK_LEFT_OFFSET = 2.373068278859087;
-        double BACK_RIGHT_OFFSET =  -2.3715342980712015;
 
         // double FRONT_LEFT_OFFSET = 5.10; 
         // double FRONT_RIGHT_OFFSET = 0.4; //9.8
@@ -84,6 +90,9 @@ public interface Constants {
         PIDConfig ROTATION_PID = new PIDConfig(0.5, 0, 0).setContinuous(-Math.PI, Math.PI);
     }
 
+    public interface INTAKE {
+        int INTAKE_MOTOR = 23;
+    }
     
     public interface ROBOT {
         double TRACKWIDTH_METERS = 0.61;
@@ -153,6 +162,9 @@ public interface Constants {
         }
 
     }
+
+
+  
 
     }
 
