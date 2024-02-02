@@ -27,6 +27,7 @@ import frc.robot.utilities.swerve.SwerveModule;
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
+  private static Boolean isRed;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -138,6 +139,11 @@ pose.getRotation().getDegrees();
     else speeds.omegaRadiansPerSecond += pid.calculate(desiredHeading);
   }
 
+  public Boolean getSide()
+  {
+    return isRed; 
+  }
+
   public void drive(ChassisSpeeds speeds){
     chassisSpeeds = speeds;
   }
@@ -209,6 +215,11 @@ SwerveModulePosition[swerveModules.length];
     // }
 
     gameField.setRobotPose(pose);
+  }
+
+  public ChassisSpeeds getSpeeds()
+  {
+    return chassisSpeeds;
   }
 
   @Override

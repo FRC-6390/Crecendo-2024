@@ -70,7 +70,7 @@ public class AutoAlign extends Command {
   {
     if(limelight.hasValidTarget())
     {
-      drivetrain.drive(new ChassisSpeeds(controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1,yController.calculate(limelight.getTargetHorizontalOffset(), Ypos), thetaController.calculate(drivetrain.getHeading(), rot)));
+      drivetrain.drive(new ChassisSpeeds(yController.calculate(limelight.getTargetHorizontalOffset(), Ypos),controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1, thetaController.calculate(drivetrain.getHeading(), rot)));
      //yController.calculate(drivetrain.getHeading(), -180
       if(yController.calculate(limelight.getTargetHorizontalOffset(), 0) < 0.2)
       {
