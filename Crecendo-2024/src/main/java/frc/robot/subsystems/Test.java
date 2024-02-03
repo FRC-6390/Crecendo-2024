@@ -54,8 +54,6 @@ public class Test extends SubsystemBase {
   @Override
   public void periodic() {
     rotorPos.refresh();
-    System.out.println(rotorPos.getValue());
- 
     // This method will be called once per scheduler run
     //System.out.println(ArmMotor.getRotorPosition());
   }

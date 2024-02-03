@@ -12,9 +12,11 @@ import frc.robot.utilities.vission.LimeLight;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 // import frc.robot.commands.Auto;
+import frc.robot.commands.*;
 
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
@@ -34,7 +36,7 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178));
+    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178, 0.02));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
     controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
     // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
@@ -44,7 +46,25 @@ public class RobotContainer {
 
 
   public Command getAutonomousCommand(){
-     //return new AutoAlign(driveTrain, limelight, 0 ,0, 178);
-     return new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0,0, 178), new AutoAlign(driveTrain, limelight, 2, 0, 0));
+
+    //Mid auto skeleton
+    // return new SequentialCommandGroup
+    // (
+    //   new AutoDrive(driveTrain, limelight, 0, -0.2, 0),
+    //   new AutoAlign(driveTrain, limelight, -2.6, 0, 0, 0), new ArmTest(test, 0.5)
+    // );
+    
+    //Right Auto Skeleton
+    return new SequentialCommandGroup
+    (
+       
+    new AutoDrive(driveTrain, limelight, 0, -0.35, 0),
+    new AutoAlign(driveTrain, limelight, -4.51, 0, 0 , 0),
+    new TurnAlign(driveTrain, limelight, 0)
+    
+    );
+      
+        
+  
   }
 }

@@ -14,6 +14,7 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 public class Auto extends Command {
   private static final ReplanningConfig configR = new ReplanningConfig();
+  
   private static final HolonomicPathFollowerConfig config = new HolonomicPathFollowerConfig(SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, 0, configR);
 
   // static PIDConstants XY_PID = new PIDConstants(1, 0, 0);

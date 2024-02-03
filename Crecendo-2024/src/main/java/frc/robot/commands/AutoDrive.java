@@ -6,43 +6,51 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
 
 
-public class TurnAlign extends Command {
+public class AutoDrive extends Command {
   
-  //PID controllers
+  //PID controller
+  public PIDController controller;
+  public PIDController yController;
   public PIDController thetaController;
   //Declare the drivetrain object
   public Drivetrain6390 drivetrain;
   
-
-  double kP3 = 0.04;
-  double kI3 = 0;
-  double kD3 = 0;
+  // public NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
+  
+  //PID constants
+  // double kP = 0.02;
+  // double kI = 0.00325;
+  // double kD = 0;
+  
 
   double targetHeightMeters = 0.7112;
   public String direction;
   public LimeLight limelight;
-  public double Ypos;
-  public double Xpos;
+  public double Yspd;
+  public double Xspd;
+  public double rotspd;
   public static boolean isDone;
-  public double offset;
+  public boolean hasTarget;
 
-  public TurnAlign(Drivetrain6390 drivetrain, LimeLight limelight, double offset)
+  public AutoDrive(Drivetrain6390 drivetrain, LimeLight limelight, double Yspd, double Xspd, double rotspd)
   {
     this.drivetrain = drivetrain;
-    this.offset = offset;
     this.limelight = limelight;
+    this.Yspd = Yspd;
+    this.Xspd = Xspd;
+    this.rotspd = rotspd;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
-    thetaController = new PIDController(kP3, kI3, kD3);
     isDone = false;
   }
 
@@ -50,29 +58,22 @@ public class TurnAlign extends Command {
   @Override
   public void execute() 
   {
-    if(limelight.hasValidTarget())
-    {
-      drivetrain.drive(new ChassisSpeeds(0,0, thetaController.calculate(limelight.getTargetVerticalOffset(), 0) * -1));
-     //yController.calculate(drivetrain.getHeading(), -180
-      if(thetaController.calculate(limelight.getTargetVerticalOffset(), 0) < 0.2 && thetaController.calculate(limelight.getTargetVerticalOffset(), 0) > -0.2)
-      {
-        drivetrain.drive(new ChassisSpeeds(0,0,0));
-        isDone = true;
-      }
-    }
-    else
-    {
-      drivetrain.drive(new ChassisSpeeds(0,0,0));
-      isDone = true;
-    }
-
+  if(!limelight.hasValidTarget())
+  {
+   drivetrain.drive(new ChassisSpeeds(Xspd, Yspd, rotspd)); 
+  }
+  else
+  {
+    isDone = true;
+  }
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    drivetrain.drive(new ChassisSpeeds(0,0,0));
+    //drivetrain.drive(new ChassisSpeeds(0,0,0));
   }
 
   // Returns true when the command should end.

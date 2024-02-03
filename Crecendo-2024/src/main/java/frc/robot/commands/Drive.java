@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SWERVEMODULE;
 import frc.robot.subsystems.Drivetrain6390;
@@ -37,7 +38,7 @@ public class Drive extends Command {
 
   @Override
   public void execute() {
-  
+  if(DriverStation.isTeleop()){
     //Take the inputs from the joystick, dampen them and then put it into variables
     double xSpeed = xLimiter.calculate(xInput.getAsDouble()) * SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND;
     double ySpeed = yLimiter.calculate(yInput.getAsDouble()) * SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND;
@@ -48,7 +49,8 @@ public class Drive extends Command {
 
     //Feed that into the drive train subsystem
 
-    driveTrain.drive(chassisSpeeds);
+    driveTrain.drive(chassisSpeeds);}
+    
   }
 
   @Override

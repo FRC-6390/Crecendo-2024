@@ -146,6 +146,7 @@ pose.getRotation().getDegrees();
 
   public void drive(ChassisSpeeds speeds){
     chassisSpeeds = speeds;
+    System.out.println(speeds);
   }
 
   public Pose2d getPose(){

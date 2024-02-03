@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
@@ -23,8 +24,11 @@ public class AutoAlign extends Command {
   // public NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
   
   //PID constants
-  double kP = 0.065;
-  double kI = 0.003;
+  // double kP = 0.02;
+  // double kI = 0.00325;
+  // double kD = 0;
+  double kP;
+  double kI = 0;
   double kD = 0;
 
   double kP2 = 0.09;
@@ -42,14 +46,16 @@ public class AutoAlign extends Command {
   public double Xpos;
   public double rot;
   public static boolean isDone;
+  public boolean hasTarget;
 
-  public AutoAlign(Drivetrain6390 drivetrain, LimeLight limelight, double Ypos, double Xpos, double rot)
+  public AutoAlign(Drivetrain6390 drivetrain, LimeLight limelight, double Ypos, double Xpos, double rot, double kP)
   {
     this.drivetrain = drivetrain;
     this.limelight = limelight;
     this.Ypos = Ypos;
     this.Xpos = Xpos;
     this.rot = rot;
+    this.kP = kP;
   }
 
   // Called when the command is initially scheduled.
@@ -68,11 +74,23 @@ public class AutoAlign extends Command {
   @Override
   public void execute() 
   {
-    if(limelight.hasValidTarget())
+    //drivetrain.drive(new ChassisSpeeds(0.3,0,0));
+    hasTarget = limelight.hasValidTarget();
+    if(hasTarget)
     {
-      drivetrain.drive(new ChassisSpeeds(yController.calculate(limelight.getTargetHorizontalOffset(), Ypos),controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1, thetaController.calculate(drivetrain.getHeading(), rot)));
-     //yController.calculate(drivetrain.getHeading(), -180
-      if(yController.calculate(limelight.getTargetHorizontalOffset(), 0) < 0.2)
+      drivetrain.drive(
+        new ChassisSpeeds(
+          yController.calculate(limelight.getTargetHorizontalOffset(), Ypos),
+          controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1, 
+          thetaController.calculate(drivetrain.getHeading(), rot))
+      );
+     
+      if(
+        yController.calculate(limelight.getTargetHorizontalOffset(), Ypos) < 0.1 && 
+        yController.calculate(limelight.getTargetHorizontalOffset(), Ypos) > -0.1 && 
+        controller.calculate(limelight.getTargetVerticalOffset(), Xpos) < 0.1 && 
+        controller.calculate(limelight.getTargetVerticalOffset(), Xpos) > -0.1
+        )
       {
         drivetrain.drive(new ChassisSpeeds(0,0,0));
         isDone = true;
@@ -83,14 +101,15 @@ public class AutoAlign extends Command {
       drivetrain.drive(new ChassisSpeeds(0,0,0));
       isDone = true;
     }
-
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    drivetrain.drive(new ChassisSpeeds(0,0,0));
+    //drivetrain.drive(new ChassisSpeeds(0,0,0));
+    System.out.println("Command Ended");
+    SmartDashboard.putNumber("it over for you, time to start ropemaxxing", 69);
   }
 
   // Returns true when the command should end.
