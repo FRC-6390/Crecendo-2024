@@ -234,13 +234,16 @@ feedbackSpeeds.vyMetersPerSecond;
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
 
-   // driftCorrection(speed);
+   driftCorrection(speed);
 
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
 
     setModuleStates(states);
 
     updateOdometry();
+    SmartDashboard.putNumber("Odometry Headin", pose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry X", pose.getX());
+    SmartDashboard.putNumber("Odometry Y", pose.getY());
   }
 
   @Override

@@ -2,11 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
@@ -20,9 +19,7 @@ public class AutoAlign extends Command {
   public PIDController thetaController;
   //Declare the drivetrain object
   public Drivetrain6390 drivetrain;
-  
-  // public NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
-  
+ 
   //PID constants
   // double kP = 0.02;
   // double kI = 0.00325;
@@ -39,8 +36,6 @@ public class AutoAlign extends Command {
   double kI3 = 0.003;
   double kD3 = 0;
 
-  double targetHeightMeters = 0.7112;
-  public String direction;
   public LimeLight limelight;
   public double Ypos;
   public double Xpos;
@@ -66,7 +61,6 @@ public class AutoAlign extends Command {
     yController = new PIDController(kP2, kI2, kD2);
     thetaController = new PIDController(kP3, kI3, kD3);
     thetaController.enableContinuousInput(-180, 180);
-    //-Math.PI Math.PI
     isDone = false;
   }
 
@@ -74,7 +68,6 @@ public class AutoAlign extends Command {
   @Override
   public void execute() 
   {
-    //drivetrain.drive(new ChassisSpeeds(0.3,0,0));
     hasTarget = limelight.hasValidTarget();
     if(hasTarget)
     {
@@ -109,7 +102,6 @@ public class AutoAlign extends Command {
   {
     //drivetrain.drive(new ChassisSpeeds(0,0,0));
     System.out.println("Command Ended");
-    SmartDashboard.putNumber("it over for you, time to start ropemaxxing", 69);
   }
 
   // Returns true when the command should end.

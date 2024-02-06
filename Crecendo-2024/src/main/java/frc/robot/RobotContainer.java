@@ -12,16 +12,18 @@ import frc.robot.utilities.vission.LimeLight;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
+import frc.robot.commands.auto.AutoAlign;
+import frc.robot.commands.auto.AutoDrive;
+import frc.robot.commands.auto.JanusAuto;
+import frc.robot.commands.auto.TurnAlign;
 
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
   public static frc.robot.subsystems.Test test = new Test();
-  public LimeLight limelight = new LimeLight();
+  public static LimeLight limelight = new LimeLight();
 
   public static DebouncedController controller = new DebouncedController(0);
 
@@ -38,9 +40,10 @@ public class RobotContainer {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178, 0.02));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
-    controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
+    //controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
     // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
-    //controller.a.onTrue(new InstantCommand(test::setHome));
+    controller.a.onTrue(new InstantCommand(test::setHome));
+    controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
     //controller.b.onTrue(new ArmTest(test, 0.5));
   }
 
@@ -51,18 +54,21 @@ public class RobotContainer {
     // return new SequentialCommandGroup
     // (
     //   new AutoDrive(driveTrain, limelight, 0, -0.2, 0),
-    //   new AutoAlign(driveTrain, limelight, -2.6, 0, 0, 0), new ArmTest(test, 0.5)
+    //   new AutoAlign(driveTrain, limelight, -3.47, 0, 0, 0), new ArmTest(test, 0.5)
     // );
     
     //Right Auto Skeleton
     return new SequentialCommandGroup
     (
        
-    new AutoDrive(driveTrain, limelight, 0, -0.35, 0),
-    new AutoAlign(driveTrain, limelight, -4.51, 0, 0 , 0),
+    new AutoDrive(driveTrain, limelight, 0, -0.75, 0),
+    new AutoAlign(driveTrain, limelight, -2.65, 0, 0 , 0),
     new TurnAlign(driveTrain, limelight, 0)
     
     );
+
+    //Janus Test Auto
+    //return new JanusAuto(driveTrain, Constants.AUTO.TEST_THETA_AUTO_PATH.build());
       
         
   

@@ -1,15 +1,15 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain6390;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.auto.JanusRoute;
 
-public class JanusAuto extends CommandBase {
+public class JanusAuto extends Command {
 
-    private DriveTrain6390 driveTrain;
+    private Drivetrain6390 driveTrain;
     private JanusRoute route;
 
-    public JanusAuto(DriveTrain6390 driveTrain, JanusRoute route) {
+    public JanusAuto(Drivetrain6390 driveTrain, JanusRoute route) {
         this.driveTrain = driveTrain;
         this.route = route;
         addRequirements(driveTrain);
@@ -26,7 +26,7 @@ public class JanusAuto extends CommandBase {
         if(route.isCommand()){
             route.runCommand();
         }else{
-            System.out.println(route.calculate());
+            //System.out.println(route.calculate());
             driveTrain.drive(route.calculate());
         }
     }

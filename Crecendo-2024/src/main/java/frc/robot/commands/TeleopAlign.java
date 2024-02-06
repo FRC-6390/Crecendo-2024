@@ -19,8 +19,6 @@ public class TeleopAlign extends Command {
   //Declare the drivetrain object
   public Drivetrain6390 drivetrain;
   
-  // public NetworkTable lime = NetworkTableInstance.getDefault().getTable("limelight");
-  
   //PID constants
   double kP = 0.065;
   double kI = 0.003;
@@ -30,8 +28,6 @@ public class TeleopAlign extends Command {
   double kI2 = 0.003;
   double kD2 = 0;
 
-  double targetHeightMeters = 0.7112;
-  public String direction;
   public LimeLight limelight;
   public double Ypos;
   public double Xpos;
