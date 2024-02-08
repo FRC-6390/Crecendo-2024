@@ -38,7 +38,7 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178, 0.02));
+    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178, 0.06));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
     //controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
     // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
@@ -58,14 +58,28 @@ public class RobotContainer {
     // );
     
     //Right Auto Skeleton
+    // return new SequentialCommandGroup
+    // (
+       
+    // new AutoDrive(driveTrain, limelight, 0, -0.75, 0),
+    // new AutoAlign(driveTrain, limelight, -2.65, 0, 0 , 0),
+    // new TurnAlign(driveTrain, limelight, 0)
+    
+    // );
+
+    //Right Side 2 PIECE skeleton
     return new SequentialCommandGroup
     (
        
     new AutoDrive(driveTrain, limelight, 0, -0.75, 0),
-    new AutoAlign(driveTrain, limelight, -2.65, 0, 0 , 0),
+    new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
+    new AutoAlign(driveTrain, limelight, 6.9, 20.77, 0, 0.03),
+    new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
     new TurnAlign(driveTrain, limelight, 0)
     
     );
+
+
 
     //Janus Test Auto
     //return new JanusAuto(driveTrain, Constants.AUTO.TEST_THETA_AUTO_PATH.build());
