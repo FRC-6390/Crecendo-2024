@@ -26,11 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-<<<<<<< HEAD
-import frc.robot.commands.*;
-=======
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
->>>>>>> 4a2511ab6c1a63737417a3f62387ead6ba3f4c1f
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.AutoAlign;
@@ -56,17 +52,6 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-<<<<<<< HEAD
-    // controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0));
-    // controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
-    // controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
-    // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
-    controller.a.onTrue(new InstantCommand(test::setHome));
-    controller.b.onTrue(new ArmTest(test, 0.6));
-  
-
-   
-=======
     controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178, 0.06));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
     //controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
@@ -115,20 +100,10 @@ public class RobotContainer {
       
         
   
->>>>>>> 4a2511ab6c1a63737417a3f62387ead6ba3f4c1f
   }
 }
 
 
 
-
-     //return new AutoAlign(driveTrain, limelight, 0,0, 0);
-     //return new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0,0, 0), new AutoAlign(driveTrain, limelight, 2, 0, 0));
-    //  public Command getAutonomousCommand(){
-    //   //"Middle 1 Game Piece and Balance" //Left Side 2 Game Piece //Bar 2 Game Piece
-    //   //New Auto Options: "Left Side 2 Game Piece Far", "Right side", "Left Side Bump 1 Piece", "Right Side Bump 1 Piece"
-    //   return AutoPathPlanner.runAuto("Right side red");
-    //   //autoPathChooser.getSelected()
-    // }
   
     
