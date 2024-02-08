@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.SWERVEMODULE;
 import com.pathplanner.lib.auto.AutoBuilder;
-
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
@@ -36,7 +37,7 @@ public class Auto extends Command {
     public static Command runAuto(String autoSelector) 
     {
         return AutoBuilder.buildAuto(autoSelector);
-        //return autoBuilder.fullAuto(PathPlannerAuto.loadPathGroup(autoSelector, new PathConstraints(1.5, 0.8, 0, 0)));
+       // return AutoBuilder.fullAuto(PathPlannerAuto.getPathGroupFromAutoFile(autoSelector));
     }
 
    
