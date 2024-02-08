@@ -79,7 +79,7 @@ public class SwerveModule {
         drivePos=driveMotor.getRotorPosition();
         driveVel=driveMotor.getRotorVelocity();
         resetEncoders();
-        unlock();
+        lock();
     }
 
     public double getDriveMotorVelocity(){
