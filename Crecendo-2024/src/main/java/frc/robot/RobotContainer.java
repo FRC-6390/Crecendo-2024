@@ -17,6 +17,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -39,6 +42,7 @@ public class RobotContainer {
   public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
 
+  public PathPlannerPath path;
   public static DebouncedController controller = new DebouncedController(0);
 
   public RobotContainer() {
@@ -82,17 +86,23 @@ public class RobotContainer {
     // );
 
     //Right Side 2 PIECE skeleton
-    return new SequentialCommandGroup
-    (
+    // return new SequentialCommandGroup
+    // (
        
-    new AutoDrive(driveTrain, limelight, 0, -0.75, 0),
-    new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
-    new AutoAlign(driveTrain, limelight, 6.9, 20.77, 0, 0.03),
-    new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
-    new TurnAlign(driveTrain, limelight, 0)
+    // new AutoDrive(driveTrain, limelight, 0, -0.75, 0),
+    // new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
+    // new AutoAlign(driveTrain, limelight, 6.9, 20.77, 0, 0.03),
+    // new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
+    // new TurnAlign(driveTrain, limelight, 0)
     
-    );
+    // );
 
+    //Pathplanner test
+    // path = PathPlannerPath.fromPathFile("Test Path");
+    
+    // return AutoBuilder.followPath(path);
+    return AutoBuilder.pathfindToPose(new Pose2d(1,0, new Rotation2d(0)), 
+    new PathConstraints(4,3,4,3));
 
 
     //Janus Test Auto

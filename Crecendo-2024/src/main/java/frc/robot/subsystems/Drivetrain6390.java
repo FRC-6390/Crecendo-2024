@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,8 +22,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.DRIVETRAIN;
 import frc.robot.Constants.SWERVEMODULE;
+import frc.robot.RobotContainer;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
 import frc.robot.utilities.swerve.SwerveModule;
@@ -42,6 +48,20 @@ public class Drivetrain6390 extends SubsystemBase{
   private static PID pid;
   private static PIDController rotationPidController = new
 PIDController(0.3, 0, 0);
+
+  public Drivetrain6390()
+  {
+    AutoBuilder.configureHolonomic
+    (
+      this::getPose,
+      this::resetOdometry,
+      this::getSpeeds,
+      this::drive,
+      new HolonomicPathFollowerConfig(new PIDConstants(1), new PIDConstants(4.9), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
+      this::getSide,
+      this
+    );
+  }
 
   static {
     tab = Shuffleboard.getTab("Drive Train");
@@ -99,6 +119,8 @@ pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
 pose.getX()).withWidget(BuiltInWidgets.kTextView);
     autoTab.addDouble("Odometry Y", () ->
 pose.getY()).withWidget(BuiltInWidgets.kTextView);
+
+
   }
 
   public void init(){
