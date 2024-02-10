@@ -18,6 +18,9 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -27,11 +30,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
-import frc.robot.commands.*;
-
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.AutoAlign;
@@ -45,6 +44,7 @@ public class RobotContainer {
   public static LimeLight limelight = new LimeLight();
   public static AutoBuilder auto = new AutoBuilder();
 
+  public PathPlannerPath path;
   public static DebouncedController controller = new DebouncedController(0);
 
   public RobotContainer() {
@@ -58,7 +58,7 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    controller.y.whileTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.03));
+    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
     //controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
     // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
@@ -101,8 +101,13 @@ public class RobotContainer {
     
     // );
 
+    //Pathplanner test
+    // path = PathPlannerPath.fromPathFile("Test Path");
+    // return AutoBuilder.followPath(path);
+    return AutoBuilder.pathfindToPose(new Pose2d(1,0, new Rotation2d(0)), 
+    new PathConstraints(4,3,4,3));
 
-    return Auto.runAuto("Example Path");
+
     //Janus Test Auto
     //return new JanusAuto(driveTrain, Constants.AUTO.TEST_THETA_AUTO_PATH.build());
       
@@ -113,14 +118,5 @@ public class RobotContainer {
 
 
 
-
-     //return new AutoAlign(driveTrain, limelight, 0,0, 0);
-     //return new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0,0, 0), new AutoAlign(driveTrain, limelight, 2, 0, 0));
-    //  public Command getAutonomousCommand(){
-    //   //"Middle 1 Game Piece and Balance" //Left Side 2 Game Piece //Bar 2 Game Piece
-    //   //New Auto Options: "Left Side 2 Game Piece Far", "Right side", "Left Side Bump 1 Piece", "Right Side Bump 1 Piece"
-    //   return AutoPathPlanner.runAuto("Right side red");
-    //   //autoPathChooser.getSelected()
-    // }
   
     
