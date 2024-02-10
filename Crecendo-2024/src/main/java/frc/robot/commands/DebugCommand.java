@@ -39,14 +39,15 @@ public class DebugCommand extends Command {
   public void execute() 
   {
     Pose2d pose = limelight.getBot2DPosition();
-    SmartDashboard.putNumber("X", pose.getX());
-    SmartDashboard.putNumber("Y", pose.getY());
+    SmartDashboard.putNumber("X", drivetrain.getPose().getX());
+    SmartDashboard.putNumber("Y", drivetrain.getPose().getY());
     SmartDashboard.putNumber("Robot Rotation", drivetrain.getHeading());
     SmartDashboard.putNumber("x angle", limelight.getTargetVerticalOffset());
     SmartDashboard.putNumber("tARGET SKEW", limelight.getTargetSkew());
     SmartDashboard.putNumber("Des Rot", APRILTAGS.getByID(limelight.getAprilTagID()).getRotation());
     SmartDashboard.putNumber("Distance to target", limelight.getDistanceFromTarget(45, 0, 1.36652));
-    SmartDashboard.putBoolean("Is configured", AutoBuilder.isConfigured());
+    SmartDashboard.putBoolean("Is AutoBuilder Config?", AutoBuilder.isConfigured());
+    SmartDashboard.putBoolean("Is Pathfinder Config?", AutoBuilder.isPathfindingConfigured());
   }
 
   // Called once the command ends or is interrupted.
