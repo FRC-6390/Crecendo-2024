@@ -5,6 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.APRILTAGS;
@@ -43,6 +46,8 @@ public class DebugCommand extends Command {
     SmartDashboard.putNumber("tARGET SKEW", limelight.getTargetSkew());
     SmartDashboard.putNumber("Des Rot", APRILTAGS.getByID(limelight.getAprilTagID()).getRotation());
     SmartDashboard.putNumber("Distance to target", limelight.getDistanceFromTarget(45, 0, 1.36652));
+    SmartDashboard.putBoolean("Is AutoBuilder Config?", AutoBuilder.isConfigured());
+    SmartDashboard.putBoolean("Is Pathfinder Config?", AutoBuilder.isPathfindingConfigured());
   }
 
   // Called once the command ends or is interrupted.

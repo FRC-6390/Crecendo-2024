@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DRIVETRAIN;
 import frc.robot.Constants.SWERVEMODULE;
-import frc.robot.RobotContainer;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
 import frc.robot.utilities.swerve.SwerveModule;
@@ -33,7 +32,7 @@ import frc.robot.utilities.swerve.SwerveModule;
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed;
+  private static Boolean isRed = false;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -43,6 +42,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static ShuffleboardTab tab, autoTab;
   private static Field2d gameField;
   private static double desiredHeading;
+  public static ReplanningConfig c;
   private static PIDConfig driftCorrectionPID = new PIDConfig(0.09, 0,
 0.1).setILimit(20).setContinuous(-Math.PI, Math.PI);
   private static PID pid;
@@ -51,13 +51,14 @@ PIDController(0.3, 0, 0);
 
   public Drivetrain6390()
   {
+    
     AutoBuilder.configureHolonomic
     (
       this::getPose,
       this::resetOdometry,
       this::getSpeeds,
       this::drive,
-      new HolonomicPathFollowerConfig(new PIDConstants(1), new PIDConstants(4.9), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
+      new HolonomicPathFollowerConfig(new PIDConstants(5), new PIDConstants(10), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
       this::getSide,
       this
     );
