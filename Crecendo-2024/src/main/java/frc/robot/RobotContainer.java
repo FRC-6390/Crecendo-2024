@@ -52,6 +52,7 @@ public class RobotContainer {
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
+    
     configureBindings();
   }
 
@@ -104,15 +105,12 @@ public class RobotContainer {
     //Pathplanner test
     // path = PathPlannerPath.fromPathFile("Test Path");
     // return AutoBuilder.followPath(path);
-    return AutoBuilder.pathfindToPose(new Pose2d(1,0, new Rotation2d(0)), 
-    new PathConstraints(4,3,4,3));
-
+    return (Command) PathPlannerAuto.getPathGroupFromAutoFile("Test Auto");
 
     //Janus Test Auto
     //return new JanusAuto(driveTrain, Constants.AUTO.TEST_THETA_AUTO_PATH.build());
       
-        
-  
+    
   }
 }
 
