@@ -39,8 +39,8 @@ public class DebugCommand extends Command {
   public void execute() 
   {
     Pose2d pose = limelight.getBot2DPosition();
-    SmartDashboard.putNumber("X", pose.getX());
-    SmartDashboard.putNumber("Y", pose.getY());
+    SmartDashboard.putNumber("X", drivetrain.getPose().getX());
+    SmartDashboard.putNumber("Y", drivetrain.getPose().getY());
     SmartDashboard.putNumber("Robot Rotation", drivetrain.getHeading());
     SmartDashboard.putNumber("x angle", limelight.getTargetVerticalOffset());
     SmartDashboard.putNumber("tARGET SKEW", limelight.getTargetSkew());
