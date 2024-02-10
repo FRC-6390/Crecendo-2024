@@ -56,7 +56,7 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178, 0.06));
+    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
     //controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
     // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
@@ -99,7 +99,6 @@ public class RobotContainer {
 
     //Pathplanner test
     // path = PathPlannerPath.fromPathFile("Test Path");
-    
     // return AutoBuilder.followPath(path);
     return AutoBuilder.pathfindToPose(new Pose2d(1,0, new Rotation2d(0)), 
     new PathConstraints(4,3,4,3));
