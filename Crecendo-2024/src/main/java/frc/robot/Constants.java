@@ -96,7 +96,7 @@ public interface Constants {
     }
 
     public interface INTAKE {
-        int INTAKE_MOTOR = 23;
+        int INTAKE_MOTOR = 21;//was 23, changed for testing
     }
 
     

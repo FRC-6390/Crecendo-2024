@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import frc.robot.subsystems.Drivetrain6390;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.vission.LimeLight;
@@ -26,11 +27,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-<<<<<<< HEAD
+
 import frc.robot.commands.*;
-=======
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
->>>>>>> 4a2511ab6c1a63737417a3f62387ead6ba3f4c1f
+
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.AutoAlign;
@@ -42,6 +43,7 @@ public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
   public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
+  public static AutoBuilder auto = new AutoBuilder();
 
   public static DebouncedController controller = new DebouncedController(0);
 
@@ -56,24 +58,15 @@ public class RobotContainer {
   private void configureBindings() 
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-<<<<<<< HEAD
-    // controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0));
-    // controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
-    // controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
-    // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
-    controller.a.onTrue(new InstantCommand(test::setHome));
-    controller.b.onTrue(new ArmTest(test, 0.6));
-  
-
-   
-=======
-    controller.y.onTrue(new AutoAlign(driveTrain, limelight, 0, 0, 178, 0.06));
+    controller.y.whileTrue(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.03));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
     //controller.a.whileTrue(new TurnAlign(driveTrain, limelight, 0));
     // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
     controller.a.onTrue(new InstantCommand(test::setHome));
-    controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
+    //controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
     //controller.b.onTrue(new ArmTest(test, 0.5));
+    controller.b.whileTrue(new IntakeRollers(0.2));
+    controller.x.whileTrue(new IntakeRollers(-0.2));
   }
 
 
@@ -97,25 +90,24 @@ public class RobotContainer {
     // );
 
     //Right Side 2 PIECE skeleton
-    return new SequentialCommandGroup
-    (
+    // return new SequentialCommandGroup
+    // (
        
-    new AutoDrive(driveTrain, limelight, 0, -0.75, 0),
-    new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
-    new AutoAlign(driveTrain, limelight, 6.9, 20.77, 0, 0.03),
-    new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
-    new TurnAlign(driveTrain, limelight, 0)
+    // new AutoDrive(driveTrain, limelight, 0, -0.75, 0),
+    // new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
+    // new AutoAlign(driveTrain, limelight, 6.9, 20.77, 0, 0.03),
+    // new AutoAlign(driveTrain, limelight, -2.75, 0, 0 , 0),
+    // new TurnAlign(driveTrain, limelight, 0)
     
-    );
+    // );
 
 
-
+    return Auto.runAuto("Example Path");
     //Janus Test Auto
     //return new JanusAuto(driveTrain, Constants.AUTO.TEST_THETA_AUTO_PATH.build());
       
         
   
->>>>>>> 4a2511ab6c1a63737417a3f62387ead6ba3f4c1f
   }
 }
 
