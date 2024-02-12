@@ -36,6 +36,6 @@ public class JanusAuto extends Command {
   
     @Override
     public boolean isFinished() {
-      return false;
+      return route.isFinished();
     }
   }
