@@ -110,25 +110,39 @@ public class RobotContainer {
     
     // );
 
-<<<<<<< HEAD
-    //Pathplanner test
-    // path = PathPlannerPath.fromPathFile("Test Path");
-    // return AutoBuilder.followPath(path);
-    return (Command) PathPlannerAuto.getPathGroupFromAutoFile("Test Auto");
-
-=======
     
->>>>>>> 96145bd69e2b6d0feedbc6e1b704eec5ca199945
     //Janus Test Auto
-    driveTrain.resetHeading();
-    driveTrain.resetOdometry(new Pose2d(0,0, RobotContainer.driveTrain.getRotation2d()));
-    return new SequentialCommandGroup
-    (
-    new JanusAuto(driveTrain, Constants.AUTO.RIGHT_SIDE_SEGMENT_1.build()),
-    new TurnAlign(driveTrain, limelight, 0),
-    new AutoAim(driveTrain, limelight, test)
-    );
-      
+    // driveTrain.resetHeading();
+    // driveTrain.resetOdometry(new Pose2d(0,0, RobotContainer.driveTrain.getRotation2d()));
+    // return new SequentialCommandGroup
+    // (
+    // new JanusAuto(driveTrain, Constants.AUTO.RIGHT_SIDE_SEGMENT_1.build()),
+    // new TurnAlign(driveTrain, limelight, 0),
+    // new AutoAim(driveTrain, limelight, test)
+    // );
+//Saachi Shenanigans
+    driveTrain.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+    PathPlannerPath path = PathPlannerPath.fromPathFile(" ");
+
+// Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
+PathConstraints constraints = new PathConstraints(
+        0.1, 0.1,
+        Units.degreesToRadians(540), Units.degreesToRadians(720));
+
+// Since AutoBuilder is configured, we can use it to build pathfinding commands
+Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
+        path,
+        constraints,
+        3.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+);
+return AutoBuilder.followPath(path);
+// return new exampleAuto(s_Swerve);
+// //Saachi Shenanigans part 2
+// PathPlannerPath path = PathPlannerPath.fromPathFile("Testing");
+
+// // Create a path following command using AutoBuilder. This will also trigger event markers.
+// return AutoBuilder.followPath(path);
+    
     
   }
 

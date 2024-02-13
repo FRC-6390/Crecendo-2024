@@ -50,21 +50,21 @@ public class Drivetrain6390 extends SubsystemBase{
   private static PIDController rotationPidController = new
 PIDController(0.3, 0, 0);
 
-  // public Drivetrain6390()
-  // {
+  public Drivetrain6390()
+  {
     
-  //   AutoBuilder.configureHolonomic
-  //   (
-  //     this::getPose,
-  //     this::resetOdometry,
-  //     this::getSpeeds,
-  //     this::drive,
-  //     new HolonomicPathFollowerConfig(new PIDConstants(5), new PIDConstants(10), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
-  //     this::getSide,
-  //     this
-  //   );
-  // }
-
+    AutoBuilder.configureHolonomic
+    (
+      this::getPose,
+      this::resetOdometry,
+      this::getSpeeds,
+      this::drive,
+      new HolonomicPathFollowerConfig(new PIDConstants(2), new PIDConstants(7), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
+      this::getSide,
+      this
+    );
+  }
+//5 and 10
   static {
     tab = Shuffleboard.getTab("Drive Train");
     autoTab = Shuffleboard.getTab("Auto");
