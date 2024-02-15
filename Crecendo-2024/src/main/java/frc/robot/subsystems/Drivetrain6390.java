@@ -59,7 +59,7 @@ PIDController(0.3, 0, 0);
       this::resetOdometry,
       this::getSpeeds,
       this::drive,
-      new HolonomicPathFollowerConfig(new PIDConstants(2), new PIDConstants(7), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
+      new HolonomicPathFollowerConfig(new PIDConstants(0.7), new PIDConstants(0.02), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
       this::getSide,
       this
     );

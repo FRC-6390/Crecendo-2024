@@ -76,11 +76,19 @@ public class RobotContainer {
     controller.a.onTrue(new InstantCommand(test::setHome));
     controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
     //controller.b.onTrue(new ArmTest(test, 0.5));
+
+
   }
 
 
   public Command getAutonomousCommand(){
 
+    // Pose2d currentPose = driveTrain.getPose();
+    // Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+    // Pose2d endPos = new Pose2d((new Translation2d(1, 0)), new Rotation2d());
+    // List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+    // PathPlannerPath path = new PathPlannerPath(bezierPoints, new PathConstraints(4, 3, Units.degreesToRadians(360), Units.degreesToRadians(540)), new GoalEndState(0.0, currentPose.getRotation()));
+    // path.preventFlipping = true;
     //-----------------------Janus Autos---------------------------//
 
     //Right Side 2 piece
@@ -159,14 +167,16 @@ public class RobotContainer {
     // );
 //Saachi Shenanigans
     driveTrain.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
-    PathPlannerPath path = PathPlannerPath.fromPathFile("New New New Path");
 
-// Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
+
+    PathPlannerPath path = PathPlannerPath.fromPathFile("Saachi");
+
+//Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
 PathConstraints constraints = new PathConstraints(
-        0.1, 0.1,
+        1, 3,
         Units.degreesToRadians(540), Units.degreesToRadians(720));
 
-// Since AutoBuilder is configured, we can use it to build pathfinding commands
+//Since AutoBuilder is configured, we can use it to build pathfinding commands
 Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
         path,
         constraints,
