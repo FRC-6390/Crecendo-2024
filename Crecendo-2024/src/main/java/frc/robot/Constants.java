@@ -104,7 +104,7 @@ public interface Constants {
     public interface TEST{
         int ARM_MOTOR = 14;
         double ARM_MAX = -7.284;
-        PIDConfig PID_config = new PIDConfig(0.05, 0, 0);
+        PIDConfig PID_config = new PIDConfig(0.07, 0, 0);
     }
     
     public interface ROBOT {

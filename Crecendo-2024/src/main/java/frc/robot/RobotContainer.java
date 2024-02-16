@@ -71,11 +71,11 @@ public class RobotContainer {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
     controller.x.whileTrue(new DebugCommand(driveTrain, limelight));
-    //controller..whileTrue(new TurnAlign(driveTrain, limelight, 0));
-    // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
-    controller.a.onTrue(new InstantCommand(test::setHome));
-    controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
-    //controller.b.onTrue(new ArmTest(test, 0.5));
+    // controller.a.onTrue(new InstantCommand(test::setHome));
+    //controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
+    controller.b.onTrue(new ArmTest(test, 0.5));
+    controller.leftStick.onTrue(new ArmTest(test, 1));
+    controller.rightStick.onTrue(new ArmTest(test, 0));
 
 
   }
@@ -89,6 +89,7 @@ public class RobotContainer {
     // List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
     // PathPlannerPath path = new PathPlannerPath(bezierPoints, new PathConstraints(4, 3, Units.degreesToRadians(360), Units.degreesToRadians(540)), new GoalEndState(0.0, currentPose.getRotation()));
     // path.preventFlipping = true;
+
     //-----------------------Janus Autos---------------------------//
 
     //Right Side 2 piece
@@ -165,38 +166,39 @@ public class RobotContainer {
     // new TurnAlign(driveTrain, limelight, 0),
     // new AutoAim(driveTrain, limelight, test)
     // );
-//Saachi Shenanigans
-    driveTrain.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+
+//--------------------------Pathplanner Autos-----------------------------//
+
+    // driveTrain.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
+
+    // driveTrain.resetHeading();
+
+    // PathPlannerPath path = PathPlannerPath.fromPathFile("Saachi");
 
 
-    PathPlannerPath path = PathPlannerPath.fromPathFile("Saachi");
-
-//Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
-PathConstraints constraints = new PathConstraints(
-        1, 3,
-        Units.degreesToRadians(540), Units.degreesToRadians(720));
-
-//Since AutoBuilder is configured, we can use it to build pathfinding commands
-Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
-        path,
-        constraints,
-        3.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-);
-return AutoBuilder.followPath(path);
-// return new exampleAuto(s_Swerve);
-// //Saachi Shenanigans part 2
-// PathPlannerPath path = PathPlannerPath.fromPathFile("Testing");
-
-// // Create a path following command using AutoBuilder. This will also trigger event markers.
-// return AutoBuilder.followPath(path);
-    
-    //---------------------------------Path planner Autos----------------------------------//
-
-    //Pathplanner test
-    // path = PathPlannerPath.fromPathFile("Test Path");
     // return AutoBuilder.followPath(path);
-    // return (Command) PathPlannerAuto.getPathGroupFromAutoFile("Test Auto"); 
-    
+
+    Pose2d currentPose = driveTrain.getPose();
+      
+      // The rotation component in these poses represents the direction of travel
+      Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+      Pose2d wayPoint1 = new Pose2d(currentPose.getTranslation().plus(new Translation2d(0.48, 1.61)), new Rotation2d());
+      Pose2d endPos = new Pose2d(currentPose.getTranslation().plus(new Translation2d(0.52, -1.61)), new Rotation2d());
+
+      List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, wayPoint1 , endPos);
+      PathPlannerPath path = new PathPlannerPath(
+        bezierPoints, 
+        new PathConstraints(
+          4.0, 4.0, 
+          Units.degreesToRadians(360), Units.degreesToRadians(540)
+        ),  
+        new GoalEndState(0.0, currentPose.getRotation())
+      );
+
+      // Prevent this path from being flipped on the red alliance, since the given positions are already correct
+      path.preventFlipping = true;
+
+      return AutoBuilder.followPath(path);
   }
 
 }
