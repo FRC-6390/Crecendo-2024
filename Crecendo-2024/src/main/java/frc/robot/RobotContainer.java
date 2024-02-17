@@ -74,8 +74,9 @@ public class RobotContainer {
     //controller..whileTrue(new TurnAlign(driveTrain, limelight, 0));
     // controller.b.onTrue(new Test(driveTrain, limelight, 0,0,0));
     controller.a.onTrue(new InstantCommand(test::setHome));
-    controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
-    //controller.b.onTrue(new ArmTest(test, 0.5));
+    //controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
+    controller.b.whileTrue(new IntakeRollers(0.5));
+
 
 
   }
@@ -167,22 +168,26 @@ public class RobotContainer {
     // );
 //Saachi Shenanigans
     driveTrain.resetOdometry(new Pose2d(0, 0, new Rotation2d()));
-
-
+    driveTrain.resetHeading();
+    Pose2d startPos = new Pose2d(0, 0, new Rotation2d());
+    Pose2d endPos = new Pose2d(1, 0, new Rotation2d());
+    List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+    PathPlannerPath path2 = new PathPlannerPath(bezierPoints, new PathConstraints(4, 3, Units.degreesToRotations(360), Units.degreesToRotations(540)), new GoalEndState(0, new Rotation2d()));
     PathPlannerPath path = PathPlannerPath.fromPathFile("Saachi");
 
 //Create the constraints to use while pathfinding. The constraints defined in the path will only be used for the path.
-PathConstraints constraints = new PathConstraints(
-        1, 3,
-        Units.degreesToRadians(540), Units.degreesToRadians(720));
+// PathConstraints constraints = new PathConstraints(
+//         1, 1,
+//         Units.degreesToRadians(540), Units.degreesToRadians(720));
 
-//Since AutoBuilder is configured, we can use it to build pathfinding commands
-Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
-        path,
-        constraints,
-        3.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
-);
-return AutoBuilder.followPath(path);
+// //Since AutoBuilder is configured, we can use it to build pathfinding commands
+// Command pathfindingCommand = AutoBuilder.pathfindThenFollowPath(
+//         path,
+//         constraints,
+//         3.0 // Rotation delay distance in meters. This is how far the robot should travel before attempting to rotate.
+// );
+
+return AutoBuilder.followPath(path2);
 // return new exampleAuto(s_Swerve);
 // //Saachi Shenanigans part 2
 // PathPlannerPath path = PathPlannerPath.fromPathFile("Testing");

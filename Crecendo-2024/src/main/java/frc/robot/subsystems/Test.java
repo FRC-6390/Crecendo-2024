@@ -42,7 +42,7 @@ public class Test extends SubsystemBase {
    return true;
   }
   public void setPosition(double pos){
-  double convertedValue = pos*Constants.TEST.ARM_MAX;
+  double convertedValue = pos*Constants.TEST.ARM_MAX; 
   double speed = PID.calculate(convertedValue);
   ArmMotor.set(speed);
   }

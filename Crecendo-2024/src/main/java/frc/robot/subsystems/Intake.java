@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -11,7 +12,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
 
   public static TalonFX intakeRoller;
-
+  public static DigitalInput intakeLimitSwitch;
 
 
   public Intake() {
@@ -21,8 +22,14 @@ public class Intake extends SubsystemBase {
   static{
 
   intakeRoller = new TalonFX(Constants.INTAKE.INTAKE_MOTOR, "can");
-  }
+  intakeLimitSwitch = new DigitalInput(Constants.INTAKE.LIMIT_SWITCH); 
+}
 
+  //Get value of the intake lift limit switch
+public static boolean getLimitSwitch(){
+    //false for triggered, otherwise true
+  return intakeLimitSwitch.get();
+}
   @Override
   public void periodic() {
     
