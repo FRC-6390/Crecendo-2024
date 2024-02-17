@@ -21,6 +21,7 @@ public class Test extends SubsystemBase {
   private TalonFX ArmMotor;
   private PID PID;
   public double setpoint = 1;
+  public double convertedValue = 0;
   public DigitalInput limitSwitch = new DigitalInput(0);
   
 
@@ -43,6 +44,11 @@ public class Test extends SubsystemBase {
 
   public void setHome(){
     ArmMotor.setPosition(0);
+  }
+
+  public boolean atPosition()
+  {
+    return PID.calculate(convertedValue) <= 0.2 && PID.calculate(convertedValue) >= -0.2;
   }
 
   public void stopAll(){
@@ -68,7 +74,7 @@ public class Test extends SubsystemBase {
     // This method will be called once per scheduler run
 
     System.out.println(maxPos);
-    double convertedValue = (maxPos)*setpoint;
+    convertedValue = (maxPos)*setpoint;
     double speed = PID.calculate(convertedValue);
     if(!homePosSet){
       ArmMotor.set(0.1);
