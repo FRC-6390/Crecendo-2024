@@ -137,7 +137,7 @@ pose.getY()).withWidget(BuiltInWidgets.kTextView);
     resetOdometry(pose);
   }
 
-  public void resetHeading(){
+  public  void resetHeading(){
     gyro.setYaw(0);
   }
 
@@ -258,7 +258,7 @@ feedbackSpeeds.vyMetersPerSecond;
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
 
-   //driftCorrection(speed);
+   driftCorrection(speed);
 
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
 

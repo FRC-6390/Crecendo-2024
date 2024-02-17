@@ -8,7 +8,9 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,20 +20,35 @@ public class Test extends SubsystemBase {
   /** Creates a new Test. */
   private TalonFX ArmMotor;
   private PID PID;
+  public double setpoint = 1;
+  public double convertedValue = 0;
+  public DigitalInput limitSwitch = new DigitalInput(0);
+  
 
   private StatusSignal<Double> rotorPos;
+  public double maxPos = 0;
+  public StatusSignal<Double> amperage;
 
+  private boolean homePosSet;
  
 
   public Test() {    
     ArmMotor = new TalonFX(Constants.TEST.ARM_MOTOR, "can");
     PID = new PID(Constants.TEST.PID_config);
     rotorPos = ArmMotor.getRotorPosition();
+    amperage = ArmMotor.getTorqueCurrent();
+    ArmMotor.getPosition();
     PID.setMeasurement(()->rotorPos.getValueAsDouble());
+    ArmMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
   public void setHome(){
     ArmMotor.setPosition(0);
+  }
+
+  public boolean atPosition()
+  {
+    return PID.calculate(convertedValue) <= 0.2 && PID.calculate(convertedValue) >= -0.2;
   }
 
   public void stopAll(){
@@ -41,10 +58,9 @@ public class Test extends SubsystemBase {
   public boolean checkThreshold(){
    return true;
   }
-  public void setPosition(double pos){
-  double convertedValue = pos*Constants.TEST.ARM_MAX; 
-  double speed = PID.calculate(convertedValue);
-  ArmMotor.set(speed);
+  public void setPosition(double pos)
+  {
+  setpoint = pos;
   }
 
  public void setHalf(){
@@ -54,7 +70,26 @@ public class Test extends SubsystemBase {
   @Override
   public void periodic() {
     rotorPos.refresh();
+    amperage.refresh();
     // This method will be called once per scheduler run
-    //System.out.println(ArmMotor.getRotorPosition());
+
+    System.out.println(maxPos);
+    convertedValue = (maxPos)*setpoint;
+    double speed = PID.calculate(convertedValue);
+    if(!homePosSet){
+      ArmMotor.set(0.1);
+      if(!limitSwitch.get()){
+        setHome();
+        maxPos = -7;
+        homePosSet = true;
+      }
+    }else{
+      ArmMotor.set(speed);
+
+    }
+
+
+    
+    
   }
 }

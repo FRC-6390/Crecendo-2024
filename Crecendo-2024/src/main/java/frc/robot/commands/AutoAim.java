@@ -16,6 +16,7 @@ public class AutoAim extends Command {
   public Drivetrain6390 drivetrain;
   public LimeLight limelight;
   public Test test;
+  public boolean isDone;
 
   
   /** Creates a new AutoAim. */
@@ -28,7 +29,10 @@ public class AutoAim extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize()
+  {
+    isDone = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -38,6 +42,10 @@ public class AutoAim extends Command {
     {
       SmartDashboard.putNumber("Test set", distanceToAngle(limelight.getDistanceFromTarget(45, Units.inchesToMeters(9), 1.36652), 1.36652));
       test.setPosition(distanceToAngle(limelight.getDistanceFromTarget(45, Units.inchesToMeters(9), 1.36652), 1.36652));
+      if(test.atPosition())
+      {
+        isDone = true;
+      }
     }
   }
 
@@ -51,7 +59,7 @@ public class AutoAim extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isDone;
   }
 
   private double distanceToAngle(double distance, double height)
