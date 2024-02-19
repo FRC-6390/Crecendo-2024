@@ -178,18 +178,29 @@ public class RobotContainer {
 
 //--------------------------Pathplanner Autos-----------------------------//
 
-
-
 driveTrain.resetHeading();
+
+// return new SequentialCommandGroup
+// (
+// new PathPlannerAuto("Auto2Piece1"), 
+// //new TurnAlign(driveTrain, limelight, 0),
+// //new AutoAim(driveTrain, limelight, test),
+// new TurnCommand(driveTrain, 0),
+// new PathPlannerAuto("Auto2Piece2")
+// //new TurnAlign(driveTrain, limelight, 0),
+// //new AutoAim(driveTrain, limelight, test)
+// );
 
 return new SequentialCommandGroup
 (
 new PathPlannerAuto("Auto2Piece1"), 
-new TurnAlign(driveTrain, limelight, 0),
-new AutoAim(driveTrain, limelight, test),
+//new TurnAlign(driveTrain, limelight, 0),
+//new AutoAim(driveTrain, limelight, test),
+new TurnCommand(driveTrain, 0),
 new PathPlannerAuto("Auto2Piece2"),
-new TurnAlign(driveTrain, limelight, 0),
-new AutoAim(driveTrain, limelight, test)
+//new TurnAlign(driveTrain, limelight, 0),
+//new AutoAim(driveTrain, limelight, test)
+new PathPlannerAuto("Auto3Load1")
 );
 
 

@@ -2,19 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.8909454969907094,
-      "y": 4.1046482092964185
+      "x": 2.8752978027901492,
+      "y": 5.55076982040085
     },
-    "rotation": -143.44752724790845
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": null
+            "pathName": "Auto3Load1"
           }
         }
       ]
