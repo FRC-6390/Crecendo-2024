@@ -58,32 +58,17 @@ public class Robot extends TimedRobot {
    *
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
-   */
-<<<<<<< Updated upstream
-  @Config.ToggleButton
-  void enableCoast()
-  {
-
-  }
-  
-=======
+*/
 
 
 
->>>>>>> Stashed changes
   @Override
   public void robotPeriodic() {
   
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
-    // block in order for anything in the Command-based framework to work.
-<<<<<<< Updated upstream
-   
-=======
-    IRBBSensor button = new IRBBSensor(2);
-    System.out.println(button.isBroken());
->>>>>>> Stashed changes
+    
     CommandScheduler.getInstance().run();
   }
 

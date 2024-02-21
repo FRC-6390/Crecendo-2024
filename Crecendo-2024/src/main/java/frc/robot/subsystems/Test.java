@@ -15,8 +15,6 @@
 // import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import frc.robot.Constants;
 // import frc.robot.utilities.controlloop.PID;
-// // import io.github.oblarg.oblog.Logger;
-// // import io.github.oblarg.oblog.annotations.Config;
 
 // public class Test extends SubsystemBase {
 //   /** Creates a new Test. */
@@ -69,10 +67,6 @@
 //   setPosition(0.5);
 //  }
 
-//     // @Config.ToggleButton
-//     // void enableCoast(boolean shouldCoast){
-//     //   this.shouldCoast = shouldCoast;
-      
 //     // }
 //   @Override
 //   public void periodic() {
