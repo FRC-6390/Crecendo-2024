@@ -10,11 +10,18 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.hal.simulation.RoboRioDataJNI;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.utilities.controlloop.PID;
+import frc.robot.utilities.sensors.Button;
+import frc.robot.utilities.sensors.IRBBSensor;
 
 public class Test extends SubsystemBase {
   /** Creates a new Test. */
@@ -24,7 +31,12 @@ public class Test extends SubsystemBase {
   public double convertedValue = 0;
   public DigitalInput limitSwitch = new DigitalInput(0);
   
+  public static SendableChooser<Boolean> chooser = new SendableChooser<Boolean>();
+  
+  public Button button = new Button(2);
 
+
+    
   private StatusSignal<Double> rotorPos;
   public double maxPos = 0;
   public StatusSignal<Double> amperage;
@@ -32,7 +44,10 @@ public class Test extends SubsystemBase {
   private boolean homePosSet;
  
 
-  public Test() {    
+  public Test() {  
+    chooser.addOption("True", true);
+    chooser.addOption("False", false); 
+    chooser.setDefaultOption("False", false);
     ArmMotor = new TalonFX(Constants.TEST.ARM_MOTOR, "can");
     PID = new PID(Constants.TEST.PID_config);
     rotorPos = ArmMotor.getRotorPosition();
@@ -69,11 +84,20 @@ public class Test extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putData("Is button pressed?", chooser); 
     rotorPos.refresh();
     amperage.refresh();
     // This method will be called once per scheduler run
-
-    System.out.println(maxPos);
+    if(chooser.getSelected())
+    {
+      ArmMotor.setNeutralMode(NeutralModeValue.Coast);
+    }
+    else
+    {
+      ArmMotor.setNeutralMode(NeutralModeValue.Brake);
+    }
+    
+    //System.out.println(chooser.getSelected());
     convertedValue = (maxPos)*setpoint;
     double speed = PID.calculate(convertedValue);
     if(!homePosSet){
