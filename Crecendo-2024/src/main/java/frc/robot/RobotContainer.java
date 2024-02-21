@@ -6,7 +6,7 @@ package frc.robot;
 
 
 import frc.robot.subsystems.Drivetrain6390;
-import frc.robot.subsystems.Test;
+//import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.vission.LimeLight;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
-  public static frc.robot.subsystems.Test test = new Test();
+ // public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   
     
@@ -64,12 +64,12 @@ public class RobotContainer {
    //driveTrain.shuffleboard();
     driveTrain.init();
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
-    NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, limelight, test));
+   // NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, limelight, test));
     
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
-    
+
     configureBindings();
 
   }
@@ -80,7 +80,7 @@ public class RobotContainer {
      
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
-    controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
+   // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
     //controller.b.onTrue(new ArmTest(test, 0.5));
     //controller.leftStick.onTrue(new ArmTest(test, 1));
     //controller.rightStick.onTrue(new ArmTest(test, 0));
