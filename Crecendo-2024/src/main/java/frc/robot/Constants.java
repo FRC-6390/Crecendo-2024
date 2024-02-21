@@ -50,32 +50,32 @@ public interface Constants {
 
         Translation2d[] SWERVE_MODULE_LOCATIONS = {ROBOT.FRONT_LEFT, ROBOT.FRONT_RIGHT, ROBOT.BACK_LEFT, ROBOT.BACK_RIGHT};
 
-        int FRONT_LEFT_DRIVE = 1;
-        int FRONT_LEFT_ROTATION = 5;
-        int FRONT_LEFT_ENCODER = 9;
-        int FRONT_RIGHT_DRIVE = 2;
-        int FRONT_RIGHT_ROTATION = 6;
-        int FRONT_RIGHT_ENCODER = 10;
-        int BACK_LEFT_DRIVE = 3;
-        int BACK_LEFT_ROTATION = 7;
-        int BACK_LEFT_ENCODER = 11;
-        int BACK_RIGHT_DRIVE = 4;
-        int BACK_RIGHT_ROTATION = 8;
-        int BACK_RIGHT_ENCODER = 12;
+        int FRONT_LEFT_DRIVE = 5;
+        int FRONT_LEFT_STEER = 15;
+        int FRONT_LEFT_ENCODER = 1;
+        int FRONT_RIGHT_DRIVE = 14;
+        int FRONT_RIGHT_STEER = 12;
+        int FRONT_RIGHT_ENCODER = 2;
+        int REAR_LEFT_DRIVE = 6;
+        int REAR_LEFT_STEER = 8;
+        int REAR_LEFT_ENCODER = 3;
+        int REAR_RIGHT_DRIVE = 17;
+        int REAR_RIGHT_STEER = 9;
+        int REAR_RIGHT_ENCODER = 4;
 
 
         //Below is what Mathias and I finished with 
-        double FRONT_LEFT_OFFSET = 0.39111328125; 
-        double FRONT_RIGHT_OFFSET =  -0.99755859375; 
-        double BACK_LEFT_OFFSET = 0.11181640625;
-        double BACK_RIGHT_OFFSET =  0.6298828125;
+        double FRONT_LEFT_OFFSET = -0.367431640625; 
+        double FRONT_RIGHT_OFFSET =  -0.1943359375; 
+        double BACK_LEFT_OFFSET = -0.16552734375;
+        double BACK_RIGHT_OFFSET =  0.10791015625;
 
 
 
-        SwerveModuleConfig FRONT_LEFT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_LEFT_DRIVE, false, FRONT_LEFT_ROTATION, false, FRONT_LEFT_ENCODER, FRONT_LEFT_OFFSET, CANBUS);
-        SwerveModuleConfig FRONT_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_RIGHT_DRIVE, false, FRONT_RIGHT_ROTATION, false, FRONT_RIGHT_ENCODER, FRONT_RIGHT_OFFSET, CANBUS);
-        SwerveModuleConfig BACK_LEFT_MODULE_CONFIG = new SwerveModuleConfig(BACK_LEFT_DRIVE, false, BACK_LEFT_ROTATION, false, BACK_LEFT_ENCODER, BACK_LEFT_OFFSET, CANBUS);
-        SwerveModuleConfig BACK_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(BACK_RIGHT_DRIVE, false, BACK_RIGHT_ROTATION, false, BACK_RIGHT_ENCODER, BACK_RIGHT_OFFSET, CANBUS);
+        SwerveModuleConfig FRONT_LEFT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_LEFT_DRIVE, false, FRONT_LEFT_STEER, false, FRONT_LEFT_ENCODER, FRONT_LEFT_OFFSET, CANBUS);
+        SwerveModuleConfig FRONT_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(FRONT_RIGHT_DRIVE, false, FRONT_RIGHT_STEER, false, FRONT_RIGHT_ENCODER, FRONT_RIGHT_OFFSET, CANBUS);
+        SwerveModuleConfig BACK_LEFT_MODULE_CONFIG = new SwerveModuleConfig(REAR_LEFT_DRIVE, false, REAR_LEFT_STEER, false, REAR_LEFT_ENCODER, BACK_LEFT_OFFSET, CANBUS);
+        SwerveModuleConfig BACK_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(REAR_RIGHT_DRIVE, false, REAR_RIGHT_STEER, false, REAR_RIGHT_ENCODER, BACK_RIGHT_OFFSET, CANBUS);
 
     }
 
