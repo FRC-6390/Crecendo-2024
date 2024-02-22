@@ -70,6 +70,9 @@ public class Arm extends SubsystemBase {
   public void setPosition(double pos)
   {
   setpoint = pos;
+  convertedValue = (maxPos)*setpoint;
+  double speed = PID.calculate(convertedValue);
+  setSpeed(speed * -1);
   }
 
  public void setHalf(){
@@ -91,9 +94,7 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));
     SmartDashboard.putString("Calculated Speed", Double.toString(PID.calculate(maxPos * setpoint)));
     
-    convertedValue = (maxPos)*setpoint;
-  double speed = PID.calculate(convertedValue);
-  setSpeed(speed * -1);
+    
 
     // if (shouldCoast == true){
     //   ArmMotor.setNeutralMode(NeutralModeValue.Coast);

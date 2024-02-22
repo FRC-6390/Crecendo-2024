@@ -5,20 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 
-public class ArmTest extends Command {
-  double pos;
+public class SetArm extends Command {
+  public double pos;
 
-  public Arm test = new Arm();
 
   /** Creates a new ArmTest. */
-  public ArmTest(Arm test, double pos) {
+  public SetArm(double pos) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.pos = pos;
-    this.test = test;
-
-    addRequirements(test);
   }
 
   // Called when the command is initially scheduled.
@@ -29,13 +26,12 @@ public class ArmTest extends Command {
   @Override
   public void execute() {
     //test.setPosition(pos);
-    test.setPosition(pos);
+    RobotContainer.pos = pos;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    test.stopAll();
   }
 
   // Returns true when the command should end.
