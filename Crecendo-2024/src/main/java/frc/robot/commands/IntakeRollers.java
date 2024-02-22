@@ -31,18 +31,18 @@ public class IntakeRollers extends Command {
   @Override
   public void execute() {
   
-    if(Intake.getLimitSwitch() == true){
+    if(Intake.getBeamBreak() == true){
       Intake.setRollers(speed);
     }
 
     else{
-      System.out.println(Intake.intakeRoller.getPosition().refresh().getValueAsDouble());
+      System.out.println(Intake.centerIntakeRoller.getPosition().refresh().getValueAsDouble());
       if (isHomeSet == false){
-        Intake.intakeRoller.setPosition(0);
+        Intake.centerIntakeRoller.setPosition(0);
         isHomeSet = true;
       }
       
-          if (Intake.intakeRoller.getPosition().refresh().getValueAsDouble() < 50.0){
+          if (Intake.centerIntakeRoller.getPosition().refresh().getValueAsDouble() < 50.0){
             Intake.setRollers(speed);
           }
           else{
@@ -57,7 +57,7 @@ public class IntakeRollers extends Command {
 
   @Override
   public void end(boolean interrupted) {
-  if(Intake.getLimitSwitch()==true){
+  if(Intake.getBeamBreak()==true){
     Intake.setRollers(0); 
   }
   }

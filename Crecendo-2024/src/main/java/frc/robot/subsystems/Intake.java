@@ -8,11 +8,13 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utilities.sensors.IRBBSensor;
 
 public class Intake extends SubsystemBase {
 
-  public static TalonFX intakeRoller;
-  public static DigitalInput intakeLimitSwitch;
+  public static TalonFX centerIntakeRoller;
+  public static TalonFX fullWidthIntakeRoller;
+  public static IRBBSensor intakeBeamBreak;
 
 
   public Intake() {
@@ -21,14 +23,15 @@ public class Intake extends SubsystemBase {
 
   static{
 
-  intakeRoller = new TalonFX(Constants.INTAKE.INTAKE_MOTOR, "can");
-  intakeLimitSwitch = new DigitalInput(Constants.INTAKE.LIMIT_SWITCH); 
+  centerIntakeRoller = new TalonFX(Constants.INTAKE.CENTER_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
+  fullWidthIntakeRoller = new TalonFX(Constants.INTAKE.FULL_WIDTH_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
+  intakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK); 
 }
 
   //Get value of the intake lift limit switch
-public static boolean getLimitSwitch(){
+public static boolean getBeamBreak(){
     //false for triggered, otherwise true
-  return intakeLimitSwitch.get();
+  return intakeBeamBreak.isBroken();
 }
   @Override
   public void periodic() {
@@ -37,7 +40,9 @@ public static boolean getLimitSwitch(){
 
   //Sets the intake rollers
   public static void setRollers(double speed){
-    intakeRoller.set(speed);
+    centerIntakeRoller.set(speed);
+    fullWidthIntakeRoller.set(speed);
+
   }
 
   //Sets the lift to a certain speed
@@ -50,7 +55,7 @@ public static boolean getLimitSwitch(){
 
 
   public static StatusSignal<Double> getRollerCurrent(){
-    return intakeRoller.getSupplyCurrent();
+    return centerIntakeRoller.getSupplyCurrent();
   }
 
   //Resets lift encoder

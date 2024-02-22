@@ -33,7 +33,7 @@
  
 
 //   public Test() {    
-//     ArmMotor = new TalonFX(Constants.TEST.ARM_MOTOR, "can");
+//     ArmMotor = new TalonFX(Constants.TEST.ARM_MOTOR, Constants.DRIVETRAIN.CANBUS);
 //     PID = new PID(Constants.TEST.PID_config);
 //     rotorPos = ArmMotor.getRotorPosition();
 //     amperage = ArmMotor.getTorqueCurrent();

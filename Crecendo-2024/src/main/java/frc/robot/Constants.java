@@ -42,9 +42,9 @@ public interface Constants {
 
     public interface DRIVETRAIN{
 
-        String CANBUS = "Swerve CANivore";
+        String CANBUS = "can";
 
-        int PIGEON = 0;
+        int PIGEON = 20;
 
         int REV_PDH = 1;
 
@@ -66,9 +66,9 @@ public interface Constants {
 
         //Below is what Mathias and I finished with 
         double FRONT_LEFT_OFFSET = -0.367431640625; 
-        double FRONT_RIGHT_OFFSET =  -0.1943359375; 
+        double FRONT_RIGHT_OFFSET =  0.3046875; 
         double BACK_LEFT_OFFSET = -0.16552734375;
-        double BACK_RIGHT_OFFSET =  0.10791015625;
+        double BACK_RIGHT_OFFSET =  -0.379150390625;
 
 
 
@@ -81,13 +81,13 @@ public interface Constants {
 
     public interface SWERVEMODULE {
         double WHEEL_DIAMETER_METERS = Units.inchesToMeters(4);
-        double MAX_SPEED_METERS_PER_SECOND = Units.feetToMeters(13.5);
-        double MAX_SPEED_METERS_PER_SECOND_SQUARED = Units.feetToMeters(13.5) * Units.feetToMeters(13.5);
-        double MAX_ANGULAR_SPEED_METERS_PER_SECOND = Units.feetToMeters(13.5);
-        double MAX_ACCELERATION_METERS_PER_SECOND = 2.75;
+        double MAX_SPEED_METERS_PER_SECOND = Units.feetToMeters(17.1);
+        double MAX_SPEED_METERS_PER_SECOND_SQUARED = Units.feetToMeters(17.1) * Units.feetToMeters(17.1);
+        double MAX_ANGULAR_SPEED_METERS_PER_SECOND = Units.feetToMeters(17.1);
+        double MAX_ACCELERATION_METERS_PER_SECOND = 2.75; //15
         double MAX_ANGULAR_ACCELERATION_METERS_PER_SECOND = 3.85;
         double ROTATION_GEAR_RATIO = 1d/(150d/7d);
-        double DRIVE_GEAR_RATIO = 1d/(8.14);
+        double DRIVE_GEAR_RATIO = 1d/(6.12);
         double ROTATION_ENCODER_CONVERSION_RADIANS = ROTATION_GEAR_RATIO * 2 * Math.PI;
         double ROTATION_ENCODER_CONVERSION_RADIANS_PER_SECOND = ROTATION_ENCODER_CONVERSION_RADIANS / 60;
         double DRIVE_ENCODER_CONVERSION_METERS = (DRIVE_GEAR_RATIO * Math.PI * WHEEL_DIAMETER_METERS); //the 0.625 is a quick fix to correct the odometry
@@ -96,15 +96,18 @@ public interface Constants {
     }
 
     public interface INTAKE {
-        int INTAKE_MOTOR = 21;//was 23, changed for testing
-        int LIMIT_SWITCH = 0;
+        int CENTER_INTAKE_MOTOR = 11;//was 23, changed for testing
+        int BEAM_BREAK = 0;
+        int FULL_WIDTH_INTAKE_MOTOR = 19;
+
     }
 
     
 
-    public interface TEST{
-        int ARM_MOTOR = 14;
-        double ARM_MAX = -7.284;
+    public interface ARM{
+        int ARM_MOTOR_LEFT = 7;
+        int ARM_MOTOR_RIGHT = 13;
+        double ARM_MAX = -18.44;
         PIDConfig PID_config = new PIDConfig(0.07, 0, 0);
     }
     

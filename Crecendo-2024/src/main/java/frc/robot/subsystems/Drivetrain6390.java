@@ -248,6 +248,8 @@ SwerveModulePosition[swerveModules.length];
     return chassisSpeeds;
   }
 
+  public double maxAccel = 0;
+  
   @Override
   public void periodic() {
 
@@ -269,7 +271,17 @@ feedbackSpeeds.omegaRadiansPerSecond;
     SmartDashboard.putNumber("Odometry Headin", pose.getRotation().getDegrees());
     SmartDashboard.putNumber("Odometry X", pose.getX());
     SmartDashboard.putNumber("Odometry Y", pose.getY());
+
+    
+    if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
+    {
+      maxAccel = gyro.getAccelerationX().getValueAsDouble();
+    }
+    System.out.println("Current Accel" + Double.toString(gyro.getAccelerationX().getValueAsDouble()));  
+    System.out.println("Max Accel" + Double.toString(maxAccel));  
     //System.out.println(getPose());
+    SmartDashboard.putNumber("CurrentAccel", gyro.getAccelerationX().getValueAsDouble());
+    SmartDashboard.putNumber("MaxAccel", maxAccel);
   }
 
   @Override

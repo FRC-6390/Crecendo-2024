@@ -5,15 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
-
-
-/*THIS IS THE DEFAULT COMMAND. IN ROBOTCONTAINER, THIS COMMAND IS SET AS A DEFUALT COMMAND AND WILL ALWAYS RUN. SO, INSTEAD OF CALLING 
- * THE PID LOOP IN PERIODIC HERE, WE CREATE A VARIABLE IN ROBOTCONTAINER CALLED POS AND CONSTANTLY FEED THAT INTO THE DEFAULT COMMAND.
- * THEN WE UPDATE THE POS VARIABLE IN ROBOT CONTAINER BY CALLING THE SETARM COMMAND. THIS SHOULD WORK I THINK.
- */
-
 
 public class ArmTest extends Command {
   double pos;
@@ -38,7 +30,6 @@ public class ArmTest extends Command {
   public void execute() {
     //test.setPosition(pos);
     test.setPosition(pos);
-    System.out.println(RobotContainer.pos);
   }
 
   // Called once the command ends or is interrupted.
