@@ -108,7 +108,7 @@ public interface Constants {
         int ARM_MOTOR_LEFT = 7;
         int ARM_MOTOR_RIGHT = 13;
         double ARM_MAX = -18.44;
-        PIDConfig PID_config = new PIDConfig(0.07, 0, 0);
+        PIDConfig PID_config = new PIDConfig(0.025, 0.002, 0);
     }
     
     public interface ROBOT {

@@ -208,6 +208,7 @@ SwerveModulePosition[swerveModules.length];
   public void stopWheels(){
     for(int i = 0; i < swerveModules.length; i++){
       swerveModules[i].stop();
+      System.out.println("/////////////////////////////////////|||||||||||||||||||||||||");
     }
   }
 

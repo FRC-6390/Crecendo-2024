@@ -13,7 +13,7 @@ public class IRBBSensor {
 
     public boolean isBroken()
     {
-        return input.get();
+        return !input.get();
     }
     
 }
