@@ -31,11 +31,12 @@ public class Intake extends SubsystemBase {
   //Get value of the intake lift limit switch
 public static boolean getBeamBreak(){
     //false for triggered, otherwise true
+
   return intakeBeamBreak.isBroken();
 }
   @Override
   public void periodic() {
-    
+    System.out.println("beam is "+getBeamBreak());
   }
 
   //Sets the intake rollers

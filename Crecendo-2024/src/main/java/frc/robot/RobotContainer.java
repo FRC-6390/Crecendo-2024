@@ -89,7 +89,7 @@ public class RobotContainer {
     //controller.b.onTrue(new ArmTest(test, 0.5));
     //controller.leftStick.onTrue(new ArmTest(test, 1));
     //controller.rightStick.onTrue(new ArmTest(test, 0));
-    //controller.b.whileTrue(new IntakeRollers(-1));
+    controller.b.whileTrue(new IntakeRollers(-0.05));
     controller.a.whileTrue(new SetArm(0.5));
     controller.x.whileTrue(new SetArm(0));
     controller.y.onTrue(new InstantCommand(arm::setHome));
