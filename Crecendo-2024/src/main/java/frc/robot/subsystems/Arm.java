@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utilities.controlloop.PID;
+import frc.robot.utilities.sensors.Button;
 
 public class Arm extends SubsystemBase {
   /** Creates a new Test. */
@@ -24,6 +25,7 @@ public class Arm extends SubsystemBase {
   private PID PID;
   public double setpoint = 0;
   public double convertedValue = 0;
+  public Button coastButton;
  // public DigitalInput limitSwitch = new DigitalInput(2);
   
 
@@ -37,6 +39,7 @@ public class Arm extends SubsystemBase {
   public Arm() {    
     ArmMotorLeft = new TalonFX(Constants.ARM.ARM_MOTOR_LEFT, Constants.DRIVETRAIN.CANBUS);
     ArmMotorRight = new TalonFX(Constants.ARM.ARM_MOTOR_RIGHT, Constants.DRIVETRAIN.CANBUS);
+    coastButton = new Button(1);
     PID = new PID(Constants.ARM.PID_config);
     rotorPos = ArmMotorLeft.getRotorPosition();
     amperage = ArmMotorLeft.getTorqueCurrent();
@@ -57,11 +60,12 @@ public class Arm extends SubsystemBase {
 
   public boolean atPosition()
   {
-    return PID.calculate(convertedValue) <= 0.2 && PID.calculate(convertedValue) >= -0.2;
+    return Math.abs(setpoint - rotorPos.getValueAsDouble()) < 0.2; 
   }
 
   public void stopAll(){
     ArmMotorLeft.set(0);
+    ArmMotorRight.set(0);
   }
 
   public boolean checkThreshold(){
@@ -72,7 +76,7 @@ public class Arm extends SubsystemBase {
   setpoint = pos;
   convertedValue = (maxPos)*setpoint;
   double speed = PID.calculate(convertedValue);
-  setSpeed(speed * -1);
+  setSpeed(-speed);
   }
 
  public void setHalf(){
@@ -84,16 +88,32 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     rotorPos.refresh();
     amperage.refresh();
-    System.out.println("Rotor Pos" + Double.toString(rotorPos.getValueAsDouble()));
-    System.out.println("Max Pos" + Double.toString(maxPos));
-    System.out.println("Converted Value" + Double.toString(maxPos * setpoint));
-    System.out.println("Calculated Speed" + Double.toString(PID.calculate(maxPos * setpoint)));
+    //System.out.println(coastButton.isPressed());
+    // System.out.println("Rotor Pos" + Double.toString(rotorPos.getValueAsDouble()));
+    // System.out.println("Max Pos" + Double.toString(maxPos));
+    // System.out.println("Converted Value" + Double.toString(maxPos * setpoint));
+    // System.out.println("Calculated Speed" + Double.toString(PID.calculate(maxPos * setpoint)));
     
     SmartDashboard.putString("Rotor Pos", Double.toString(rotorPos.getValueAsDouble()));
     SmartDashboard.putString("Max Pos", Double.toString(maxPos));
     SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));
     SmartDashboard.putString("Calculated Speed", Double.toString(PID.calculate(maxPos * setpoint)));
+
     
+    // convertedValue = (maxPos)*setpoint;
+    // double speed = PID.calculate(convertedValue);
+    // setSpeed(speed * -1);
+
+    if(coastButton.isPressed())
+    {
+      ArmMotorLeft.setNeutralMode(NeutralModeValue.Coast); 
+      ArmMotorRight.setNeutralMode(NeutralModeValue.Coast);
+    }
+    else if(!coastButton.isPressed())
+    {
+      ArmMotorLeft.setNeutralMode(NeutralModeValue.Brake); 
+      ArmMotorRight.setNeutralMode(NeutralModeValue.Brake);
+    }
     
 
     // if (shouldCoast == true){

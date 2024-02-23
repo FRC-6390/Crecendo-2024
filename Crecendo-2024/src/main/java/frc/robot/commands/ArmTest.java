@@ -18,7 +18,8 @@ import frc.robot.subsystems.Arm;
 public class ArmTest extends Command {
   double pos;
 
-  public Arm test = new Arm();
+  public Arm test;
+  public boolean isDone;
 
   /** Creates a new ArmTest. */
   public ArmTest(Arm test, double pos) {
@@ -31,25 +32,32 @@ public class ArmTest extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() 
+  {
+    isDone = false;
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //test.setPosition(pos);
     test.setPosition(pos);
-    System.out.println(RobotContainer.pos);
+    if(test.atPosition())
+    {
+      isDone = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     test.stopAll();
+    System.out.println("/////////////////////////////////////////////////");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isDone;
   }
 }
