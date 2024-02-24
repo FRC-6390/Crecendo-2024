@@ -48,6 +48,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static PID pid;
   private static PIDController rotationPidController = new
 PIDController(0.3, 0, 0);
+  //private double angle = 0;
 
   public Drivetrain6390()
   {
@@ -246,11 +247,19 @@ SwerveModulePosition[swerveModules.length];
   {
     return chassisSpeeds;
   }
+  // public void setAng(double angle)
+  // {
+  //   this.angle = angle;
+  // }
 
   public double maxAccel = 0;
   
   @Override
   public void periodic() {
+  
+    //PID TUNING TESTING
+    //swerveModules[0].setToAngle(angle);
+
 
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
