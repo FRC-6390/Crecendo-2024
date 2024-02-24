@@ -3,28 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
-
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
-import frc.robot.utilities.sensors.IRBBSensor;
-
-// import io.github.oblarg.oblog.Logger;
-// import io.github.oblarg.oblog.annotations.Config;
-import frc.robot.utilities.sensors.IRBBSensor;
 
 
 /**

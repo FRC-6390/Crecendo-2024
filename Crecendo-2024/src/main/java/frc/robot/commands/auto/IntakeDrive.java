@@ -4,12 +4,10 @@
 
 package frc.robot.commands.auto;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.subsystems.Intake;
-import frc.robot.utilities.vission.LimeLight;
 
 
 public class IntakeDrive extends Command {
@@ -43,7 +41,7 @@ public class IntakeDrive extends Command {
   if(!Intake.getLowerBeamBreak())
   {
     drivetrain.drive(new ChassisSpeeds(Xspd, Yspd, rotspd));
-    Intake.setRollers(-0.2, 2);
+    Intake.setRollers(-0.6, 2);
   }
   else
   {
@@ -59,6 +57,7 @@ public class IntakeDrive extends Command {
   public void end(boolean interrupted) 
   {
     drivetrain.drive(new ChassisSpeeds(0,0,0));
+    Intake.setRollers(0, 2);
   }
 
   // Returns true when the command should end.

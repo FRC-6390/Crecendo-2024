@@ -7,7 +7,6 @@ package frc.robot;
 
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain6390;
-import frc.robot.subsystems.Intake;
 //import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.vission.LimeLight;
@@ -20,12 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
-import frc.robot.commands.auto.AutoAlign;
-import frc.robot.commands.auto.AutoDrive;
 import frc.robot.commands.auto.IntakeDrive;
-import frc.robot.commands.auto.JanusAuto;
-import frc.robot.commands.auto.PathFollow;
-import frc.robot.commands.auto.TurnAlign;
 import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
@@ -39,16 +33,15 @@ public class RobotContainer {
   public static DebouncedController controller = new DebouncedController(0);
 
   public RobotContainer() {
-   //driveTrain.shuffleboard();
-  driveTrain.init();
+    //driveTrain.shuffleboard();
+    driveTrain.init();
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
-   // NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, limelight, test));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
-    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.2));
-    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, 0, 0));
-    NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, 0.5));
-    NamedCommands.registerCommand("PivotMoveMax", new ArmTest(arm, 1));
-    NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
+    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6));
+    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0));
+    NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
+    NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
+    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
    
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
@@ -68,27 +61,28 @@ public class RobotContainer {
     //controller.b.onTrue(new ArmTest(test, 0.5));
     //controller.leftStick.onTrue(new ArmTest(test, 1));
     //controller.rightStick.onTrue(new ArmTest(test, 0));
-    controller.b.whileTrue(new IntakeRollers(0.6));
-    controller.a.whileTrue(new IntakeRollers(-0.6));
-    // controller.a.onTrue(new ArmTest(arm,0));
-    // controller.x.onTrue(new ArmTest(arm, -1));
-    // controller.b.onTrue(new ArmTest(arm, -0.5));
-    // controller.y.onTrue(new InstantCommand(arm::setHome));
+    // controller.b.whileTrue(new IntakeRollers(0.6));
+    // controller.a.whileTrue(new IntakeRollers(-0.6));
+    //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
+    controller.a.onTrue(new ArmTest(arm,0));
+    controller.x.onTrue(new ArmTest(arm, -1));
+    controller.b.onTrue(new ArmTest(arm, -0.5));
+    controller.y.onTrue(new InstantCommand(arm::setHome));
     //controller.a.whileTrue(new IntakeRollers(-0.2));
 
   }
 
 
-  public Command getAutonomousCommand(){
+  public Command getAutonomousCommand()
+  {
 
-    // Pose2d currentPose = driveTrain.getPose();
-    // Pose2d startPos = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-    // Pose2d endPos = new Pose2d((new Translation2d(1, 0)), new Rotation2d());
-    // List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-    // PathPlannerPath path = new PathPlannerPath(bezierPoints, new PathConstraints(4, 3, Units.degreesToRadians(360), Units.degreesToRadians(540)), new GoalEndState(0.0, currentPose.getRotation()));
-    // path.preventFlipping = true;
+  //--------------------------Pathplanner Autos-----------------------------//
 
-    //-----------------------Janus Autos---------------------------//
+  driveTrain.resetHeading();
+  arm.setHome();
+  return new PathPlannerAuto("AutoNonStageBonus");
+
+  //-----------------------Janus Autos---------------------------//
 
     //Right Side 2 piece
     // driveTrain.resetHeading();
@@ -165,36 +159,8 @@ public class RobotContainer {
     // new AutoAim(driveTrain, limelight, test)
     // );
 
-//--------------------------Pathplanner Autos-----------------------------//
-
-driveTrain.resetHeading();
-
-// return new SequentialCommandGroup
-// (
-// new PathPlannerAuto("Auto2Piece1"), 
-// //new TurnAlign(driveTrain, limelight, 0),
-// //new AutoAim(driveTrain, limelight, test),
-// new TurnCommand(driveTrain, 0),
-// new PathPlannerAuto("Auto2Piece2")
-// //new TurnAlign(driveTrain, limelight, 0),
-// //new AutoAim(driveTrain, limelight, test)
-// );
-
-// return new SequentialCommandGroup
-// (
-//new PathPlannerAuto("Auto2Piece1"), 
-//new TurnAlign(driveTrain, limelight, 0),
-//new AutoAim(driveTrain, limelight, test),
-//new TurnCommand(driveTrain, 0),
-//new PathPlannerAuto("Auto2Piece2"),
-//new TurnAlign(driveTrain, limelight, 0),
-//new AutoAim(driveTrain, limelight, test)
-
-return new PathPlannerAuto("TestAuto");
-//);
 
 
-    
   }
 
 }

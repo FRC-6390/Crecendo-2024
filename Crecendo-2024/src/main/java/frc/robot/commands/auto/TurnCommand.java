@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
-import frc.robot.utilities.vission.LimeLight;
 
 
 public class TurnCommand extends Command {
@@ -55,7 +54,7 @@ public class TurnCommand extends Command {
   public void execute() 
   {
       drivetrain.drive(
-        new ChassisSpeeds(0,0,
+        new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond,drivetrain.getSpeeds().vyMetersPerSecond,
           thetaController.calculate(drivetrain.getHeading(), rot))
       );
      

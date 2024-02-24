@@ -7,8 +7,6 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import frc.robot.commands.auto.AutoAlign;
-import frc.robot.commands.auto.TurnAlign;
 import frc.robot.utilities.auto.JanusConfig;
 import frc.robot.utilities.auto.JanusRouteFactory;
 import frc.robot.utilities.controlloop.PIDConfig;
@@ -108,7 +106,7 @@ public interface Constants {
         int ARM_MOTOR_LEFT = 7;
         int ARM_MOTOR_RIGHT = 13;
         double ARM_MAX = -18.44;
-        PIDConfig PID_config = new PIDConfig(0.025, 0.002, 0);
+        PIDConfig PID_config = new PIDConfig(0.03, 0.002, 0);
     }
     
     public interface ROBOT {

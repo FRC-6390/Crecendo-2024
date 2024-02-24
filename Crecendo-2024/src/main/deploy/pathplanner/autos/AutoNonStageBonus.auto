@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AutoNonStage1"
+            "pathName": "Segment1Bonus"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
           }
         },
         {
@@ -24,9 +30,27 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "TurnCommand"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "AutoNonStage2"
+            "pathName": "Segment2Bonus"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHalf"
           }
         },
         {

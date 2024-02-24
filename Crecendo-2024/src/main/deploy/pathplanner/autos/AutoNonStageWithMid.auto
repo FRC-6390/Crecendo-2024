@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.384284651596358,
+      "y": 6.991369417831561
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Segment1Mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHalf"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Segment2Mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHalf"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

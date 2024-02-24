@@ -5,13 +5,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusSignal;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -33,7 +28,6 @@ public class Arm extends SubsystemBase {
   public double maxPos = Constants.ARM.ARM_MAX;
   public StatusSignal<Double> amperage;
   public boolean shouldCoast;
-  private boolean homePosSet;
  
 
   public Arm() {    
@@ -58,11 +52,6 @@ public class Arm extends SubsystemBase {
     ArmMotorLeft.setPosition(0);
   }
 
-  public boolean atPosition()
-  {
-    return Math.abs(setpoint - rotorPos.getValueAsDouble()) < 0.2; 
-  }
-
   public void stopAll(){
     ArmMotorLeft.set(0);
     ArmMotorRight.set(0);
@@ -77,6 +66,12 @@ public class Arm extends SubsystemBase {
   convertedValue = (maxPos)*setpoint;
   double speed = PID.calculate(convertedValue);
   setSpeed(-speed);
+  }
+
+  public boolean atPosition()
+  {
+    return Math.abs((maxPos * setpoint) - rotorPos.getValueAsDouble()) < 0.6; 
+    //return  rotorPos.getValueAsDouble() >= ((maxPos * setpoint)- 0.2) && rotorPos.getValueAsDouble() <= ((maxPos * setpoint) - 0.2); 
   }
 
  public void setHalf(){
@@ -98,6 +93,8 @@ public class Arm extends SubsystemBase {
     SmartDashboard.putString("Max Pos", Double.toString(maxPos));
     SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));
     SmartDashboard.putString("Calculated Speed", Double.toString(PID.calculate(maxPos * setpoint)));
+
+    SmartDashboard.putBoolean("Difference", atPosition());
 
     
     // convertedValue = (maxPos)*setpoint;
