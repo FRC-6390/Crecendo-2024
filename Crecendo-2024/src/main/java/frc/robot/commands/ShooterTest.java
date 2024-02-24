@@ -16,7 +16,7 @@
 
 //   public Shooter(double speed, String gamePiece, double rotations) {
 //     this.speed = speed;
-//     this.gamePiece = gamePiece;
+//    this.gamePiece = gamePiece;
 //     this.rotations = rotations;
 //   }
 

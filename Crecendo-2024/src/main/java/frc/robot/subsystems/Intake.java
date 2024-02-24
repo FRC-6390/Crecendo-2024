@@ -1,64 +1,48 @@
-
 package frc.robot.subsystems;
-
+ 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utilities.sensors.IRBBSensor;
-
+ 
 public class Intake extends SubsystemBase {
-
+ 
   public static TalonFX centerIntakeRoller;
   public static TalonFX fullWidthIntakeRoller;
+  public static TalonFX feedingRollers;
   public static IRBBSensor lowerIntakeBeamBreak;
   public static IRBBSensor upperIntakeBeamBreak;
-
-
-  public Intake() 
+ 
+ 
+  public Intake()
   {
-  }
 
+  }
+ 
   static
   {
-
+ 
   centerIntakeRoller = new TalonFX(Constants.INTAKE.CENTER_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
   fullWidthIntakeRoller = new TalonFX(Constants.INTAKE.FULL_WIDTH_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
-<<<<<<< HEAD
-  intakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK); 
-}
-
-  //Get value of the intake lift limit switch
-public static boolean getBeamBreak(){
-    //false for triggered, otherwise true
-
-  return intakeBeamBreak.isBroken();
-}
-  @Override
-  public void periodic() {
-    System.out.println("beam is "+getBeamBreak());
-=======
-  lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK); 
- //upperIntakeBeamBreak = new IRBBSensor(4);
+  lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK);
+  upperIntakeBeamBreak = new IRBBSensor(4);
+  feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
   //intakeBeamBreak = new DigitalInput(0);
->>>>>>> 54260296323153c109f7d62771de47e2e1b0fa84
   }
-
+ 
   //Get value of the intake lift limit switch
-  public static boolean getLowerBeamBreak() 
+  public static boolean getLowerBeamBreak()
   {
     //false for triggered, otherwise true
   return lowerIntakeBeamBreak.isBroken();
   }
-
-  // public static boolean getUpperBeamBreak(){
-
-  //   return upperIntakeBeamBreak.isBroken();
-  // }
-
+ 
+   public static boolean getUpperBeamBreak(){
+ 
+    return upperIntakeBeamBreak.isBroken();
+   }
+ 
   //Sets the intake rollers
   public static void setRollers(double speed, int num)
   {
@@ -66,45 +50,51 @@ public static boolean getBeamBreak(){
     {
     //centerIntakeRoller.set(0);
     fullWidthIntakeRoller.set(0);
+    feedingRollers.set(0);
     }
     else if(num == 2)
     {
     centerIntakeRoller.set(speed);
     fullWidthIntakeRoller.set(speed);
+    feedingRollers.set(0);
     }
-    // else if(num ==3){
-    // centerIntakeRoller.set(speed);
-    // }
-    // else if(num ==4)
-    // {
-    //   centerIntakeRoller.set(0);
-    // }
-
+    else if(num ==3){
+    centerIntakeRoller.set(speed);
+    feedingRollers.set(speed);
+    fullWidthIntakeRoller.set(0);
+    }
+    else if(num ==4)
+    {
+    centerIntakeRoller.set(0);
+    feedingRollers.set(0);
+    fullWidthIntakeRoller.set(0);
+    }
+ 
   }
-
+ 
   //Sets the lift to a certain speed
-  
-
+ 
+ 
   //Gets lift position
-
-
+ 
+ 
   //Gets roller position
-
-
+ 
+ 
   public static StatusSignal<Double> getRollerCurrent()
   {
     return centerIntakeRoller.getSupplyCurrent();
   }
-
+ 
   //Resets lift encoder
-
-
+ 
+ 
   //Resets roller encoder
-
-
+ 
+ 
   //Get value of the intake lift limit switch
-
-
+ 
+ 
   @Override
   public void periodic()
   {
