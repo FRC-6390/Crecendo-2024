@@ -46,7 +46,7 @@ public class Intake extends SubsystemBase {
  
  
   //Sets the intake rollers
-  public static void setRollers(double speed, int num)
+  public void setRollers(double speed, int num)
   {
     if(num == 1)
     {
@@ -59,7 +59,7 @@ public class Intake extends SubsystemBase {
     {
     centerIntakeRoller.set(speed);
     fullWidthIntakeRoller.set(speed);
-    feedingRollers.set(speed);
+    feedingRollers.set(speed+0.2);
    // System.out.println("_____________________________-Beam is INTACT -___________________________________");
     }
  

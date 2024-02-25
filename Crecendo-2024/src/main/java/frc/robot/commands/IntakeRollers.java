@@ -10,21 +10,23 @@ public class IntakeRollers extends Command {
  
   public boolean lowerStopped = false;
   public boolean upperStopped = false;
+  public Intake intake = new Intake();
  
  
 
  
  
-  public IntakeRollers(double speed) {
+  public IntakeRollers(double speed, Intake intake) {
     this.speed = speed;
- 
+    this.intake = intake;
+    addRequirements(intake);
   }
  
   @Override
   public void initialize() {
 
     lowerStopped = false;
-   // upperStopped = false;
+   upperStopped = false;
  
   }
  
@@ -32,18 +34,19 @@ public class IntakeRollers extends Command {
   public void execute()
   {
    //System.out.print("_____________________"+Intake.getUpperBeamBreak()+"---------------------------------");
-    if(Intake.getUpperBeamBreak())
+   upperStopped = false;
+   if(Intake.getUpperBeamBreak())
     {
       upperStopped = true;
     }
     if(!upperStopped)
     {
-      Intake.setRollers(speed, 2);
+      intake.setRollers(speed, 2);
      // Intake.setRollers(speed, 4);
     }
     else
     {
-      Intake.setRollers(speed, 1);
+      intake.setRollers(speed, 1);
      // Intake.setRollers(speed, 3);
     }
  
@@ -73,7 +76,7 @@ public class IntakeRollers extends Command {
   // if(Intake.getLowerBeamBreak()==false){
   //   Intake.setRollers(0,2);
   // }
-  Intake.setRollers(0, 2);
+  intake.setRollers(0, 2);
   }
  
   @Override
