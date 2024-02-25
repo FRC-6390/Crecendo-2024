@@ -6,7 +6,9 @@ package frc.robot;
 
 
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain6390;
+import frc.robot.subsystems.Intake;
 //import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.vission.LimeLight;
@@ -28,7 +30,8 @@ public class RobotContainer {
   //public static Intake in = new Intake();
  // public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
-  
+  public static Climber climber = new Climber();
+  public static Intake intake = new Intake();
     
   public static DebouncedController controller = new DebouncedController(0);
 
@@ -37,12 +40,13 @@ public class RobotContainer {
     driveTrain.init();
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
-    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6));
-    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0));
+    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
+    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
+    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
    
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
@@ -57,14 +61,17 @@ public class RobotContainer {
     //  controller.y.onTrue(new PIDTuneTest(driveTrain, 0));
     //  controller.a.onTrue(new PIDTuneTest(driveTrain, 90));
     //  controller.b.onTrue(new PIDTuneTest(driveTrain, 180));
-    // controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
+    controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
     //controller.b.onTrue(new ArmTest(test, 0.5));
     //controller.leftStick.onTrue(new ArmTest(test, 1));
     //controller.rightStick.onTrue(new ArmTest(test, 0));
-    controller.b.whileTrue(new IntakeRollers(0.6));
-    controller.a.whileTrue(new IntakeRollers(-0.6));
+    controller.b.whileTrue(new IntakeRollers(0.6, intake));
+    controller.a.whileTrue(new IntakeRollers(-0.6, intake));
+    controller.y.whileTrue(new ClimberHook(0.5, climber));
+    controller.x.whileTrue(new ClimberHook(-0.5, climber));
+    controller.rightBumper.whileTrue(new ShooterRollers(-1));
     // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
     // controller.a.onTrue(new ArmTest(arm,0));
     // controller.x.onTrue(new ArmTest(arm, -1));

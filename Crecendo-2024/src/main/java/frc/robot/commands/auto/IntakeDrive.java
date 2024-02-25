@@ -18,13 +18,15 @@ public class IntakeDrive extends Command {
   public double Xspd;
   public double rotspd;
   public static boolean isDone;
+  public Intake intake = new Intake();
 
-  public IntakeDrive(Drivetrain6390 drivetrain, double Yspd, double Xspd, double rotspd)
+  public IntakeDrive(Drivetrain6390 drivetrain, double Yspd, double Xspd, double rotspd, Intake intake)
   {
     this.drivetrain = drivetrain;
     this.Yspd = Yspd;
     this.Xspd = Xspd;
     this.rotspd = rotspd;
+    this.intake = intake;
   }
 
   // Called when the command is initially scheduled.
@@ -38,10 +40,10 @@ public class IntakeDrive extends Command {
   @Override
   public void execute() 
   {
-  if(!Intake.getLowerBeamBreak())
+  if(!Intake.getUpperBeamBreak())
   {
     drivetrain.drive(new ChassisSpeeds(Xspd, Yspd, rotspd));
-    Intake.setRollers(-0.2, 2);
+    intake.setRollers(-0.6, 2);
   }
   else
   {
@@ -57,7 +59,7 @@ public class IntakeDrive extends Command {
   public void end(boolean interrupted) 
   {
     drivetrain.drive(new ChassisSpeeds(0,0,0));
-    Intake.setRollers(0, 2);
+    intake.setRollers(0, 2);
   }
 
   // Returns true when the command should end.
