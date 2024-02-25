@@ -46,9 +46,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static PIDConfig driftCorrectionPID = new PIDConfig(0.09, 0,
 0.1).setILimit(20).setContinuous(-Math.PI, Math.PI);
   private static PID pid;
-  private static PIDController rotationPidController = new
-PIDController(0.3, 0, 0);
-  //private double angle = 0;
+  
 
   public Drivetrain6390()
   {
@@ -95,8 +93,7 @@ Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), SwervePositions);
 
     pid = new PID(driftCorrectionPID).setMeasurement(() ->
 pose.getRotation().getDegrees());
-    rotationPidController.enableContinuousInput(-Math.PI, Math.PI);
-  }
+}
 
 
   public void shuffleboard(){
@@ -247,19 +244,10 @@ SwerveModulePosition[swerveModules.length];
   {
     return chassisSpeeds;
   }
-  // public void setAng(double angle)
-  // {
-  //   this.angle = angle;
-  // }
-
   public double maxAccel = 0;
   
   @Override
   public void periodic() {
-  
-    //PID TUNING TESTING
-    //swerveModules[0].setToAngle(angle);
-
 
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
@@ -285,7 +273,7 @@ feedbackSpeeds.omegaRadiansPerSecond;
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
-    //System.out.println(getPose());
+    System.out.println(getPose());
   }
 
   @Override
