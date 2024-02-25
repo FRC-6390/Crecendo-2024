@@ -42,7 +42,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
-    //driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
+    driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
    
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
@@ -54,17 +54,17 @@ public class RobotContainer {
   private void configureBindings() 
   {
 
-     controller.y.onTrue(new PIDTuneTest(driveTrain, 0));
-     controller.a.onTrue(new PIDTuneTest(driveTrain, 90));
-     controller.b.onTrue(new PIDTuneTest(driveTrain, 180));
+    //  controller.y.onTrue(new PIDTuneTest(driveTrain, 0));
+    //  controller.a.onTrue(new PIDTuneTest(driveTrain, 90));
+    //  controller.b.onTrue(new PIDTuneTest(driveTrain, 180));
     // controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
     //controller.b.onTrue(new ArmTest(test, 0.5));
     //controller.leftStick.onTrue(new ArmTest(test, 1));
     //controller.rightStick.onTrue(new ArmTest(test, 0));
-    // controller.b.whileTrue(new IntakeRollers(0.6));
-    // controller.a.whileTrue(new IntakeRollers(-0.6));
+    controller.b.whileTrue(new IntakeRollers(0.6));
+    controller.a.whileTrue(new IntakeRollers(-0.6));
     // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
     // controller.a.onTrue(new ArmTest(arm,0));
     // controller.x.onTrue(new ArmTest(arm, -1));

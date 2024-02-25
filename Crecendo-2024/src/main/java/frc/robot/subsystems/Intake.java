@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
   centerIntakeRoller = new TalonFX(Constants.INTAKE.CENTER_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
   fullWidthIntakeRoller = new TalonFX(Constants.INTAKE.FULL_WIDTH_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
   lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK);
-  upperIntakeBeamBreak = new IRBBSensor(4);
+  upperIntakeBeamBreak = new IRBBSensor(6);
   feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
   //intakeBeamBreak = new DigitalInput(0);
   }
@@ -42,33 +42,25 @@ public class Intake extends SubsystemBase {
  
     return upperIntakeBeamBreak.isBroken();
    }
+
+ 
  
   //Sets the intake rollers
-  public static void setRollers(double speed, int num, int place)
+  public static void setRollers(double speed, int num)
   {
     if(num == 1)
     {
     centerIntakeRoller.set(0);
     fullWidthIntakeRoller.set(0);
     feedingRollers.set(0);
+   // System.out.println("-------------------------------------------Beam is BROKEN---------------------------------------------------------------------");
     }
     else if(num == 2)
     {
     centerIntakeRoller.set(speed);
     fullWidthIntakeRoller.set(speed);
-    feedingRollers.set(0);
-    }
-
-    if(place ==3){
-    centerIntakeRoller.set(speed);
     feedingRollers.set(speed);
-    fullWidthIntakeRoller.set(0);
-    }
-    else if(place ==4)
-    {
-    centerIntakeRoller.set(0);
-    feedingRollers.set(0);
-    fullWidthIntakeRoller.set(0);
+   // System.out.println("_____________________________-Beam is INTACT -___________________________________");
     }
  
   }

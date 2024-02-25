@@ -31,31 +31,23 @@ public class IntakeRollers extends Command {
   @Override
   public void execute()
   {
-   
-    if(Intake.getLowerBeamBreak())
-    {
-      lowerStopped = true;
-    }
-    if(!lowerStopped)
-    {
-      Intake.setRollers(speed, 2, 4);
-    }
-    else
-    {
-      Intake.setRollers(speed, 1, 3);
-    }
- 
+   //System.out.print("_____________________"+Intake.getUpperBeamBreak()+"---------------------------------");
     if(Intake.getUpperBeamBreak())
     {
       upperStopped = true;
     }
     if(!upperStopped)
     {
-      Intake.setRollers(speed, 1, 3);
+      Intake.setRollers(speed, 2);
+     // Intake.setRollers(speed, 4);
     }
-    else{
-      Intake.setRollers(speed, 2, 4);
+    else
+    {
+      Intake.setRollers(speed, 1);
+     // Intake.setRollers(speed, 3);
     }
+ 
+   
   }
     // else{
     //   System.out.println(Intake.centerIntakeRoller.getPosition().refresh().getValueAsDouble());
@@ -72,7 +64,6 @@ public class IntakeRollers extends Command {
     //         Intake.setRollers(0);
     //       }
     //       }
-    //     }
  
  
  
@@ -82,7 +73,7 @@ public class IntakeRollers extends Command {
   // if(Intake.getLowerBeamBreak()==false){
   //   Intake.setRollers(0,2);
   // }
-  Intake.setRollers(0, 2, 4);
+  Intake.setRollers(0, 2);
   }
  
   @Override

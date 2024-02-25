@@ -41,7 +41,7 @@ public class IntakeDrive extends Command {
   if(!Intake.getLowerBeamBreak())
   {
     drivetrain.drive(new ChassisSpeeds(Xspd, Yspd, rotspd));
-    Intake.setRollers(-0.2, 2, 4);
+    Intake.setRollers(-0.2, 2);
   }
   else
   {
@@ -53,7 +53,7 @@ public class IntakeDrive extends Command {
   
 
   // Called once the command ends or is interrupted.
-  @Override
+ @Override
   public void end(boolean interrupted) 
   {
     drivetrain.drive(new ChassisSpeeds(0,0,0));

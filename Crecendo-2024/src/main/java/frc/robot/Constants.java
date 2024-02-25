@@ -97,7 +97,7 @@ public interface Constants {
         int CENTER_INTAKE_MOTOR = 11;//was 23, changed for testing
         int BEAM_BREAK = 0;
         int FULL_WIDTH_INTAKE_MOTOR = 19;
-        int FEEDNG_ROLLER_MOTOR = 29;
+        int FEEDNG_ROLLER_MOTOR = 18;
 
     }
 
