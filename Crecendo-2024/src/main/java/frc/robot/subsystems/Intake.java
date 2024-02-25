@@ -44,11 +44,11 @@ public class Intake extends SubsystemBase {
    }
  
   //Sets the intake rollers
-  public static void setRollers(double speed, int num)
+  public static void setRollers(double speed, int num, int place)
   {
     if(num == 1)
     {
-    //centerIntakeRoller.set(0);
+    centerIntakeRoller.set(0);
     fullWidthIntakeRoller.set(0);
     feedingRollers.set(0);
     }
@@ -58,12 +58,13 @@ public class Intake extends SubsystemBase {
     fullWidthIntakeRoller.set(speed);
     feedingRollers.set(0);
     }
-    else if(num ==3){
+
+    if(place ==3){
     centerIntakeRoller.set(speed);
     feedingRollers.set(speed);
     fullWidthIntakeRoller.set(0);
     }
-    else if(num ==4)
+    else if(place ==4)
     {
     centerIntakeRoller.set(0);
     feedingRollers.set(0);

@@ -43,7 +43,7 @@ public class IntakeDrive extends Command {
   if(!Intake.getLowerBeamBreak())
   {
     drivetrain.drive(new ChassisSpeeds(Xspd, Yspd, rotspd));
-    Intake.setRollers(-0.2, 2);
+    Intake.setRollers(-0.2, 2, 4);
   }
   else
   {

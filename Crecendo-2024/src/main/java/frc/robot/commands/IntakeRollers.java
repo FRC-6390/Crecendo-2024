@@ -38,11 +38,11 @@ public class IntakeRollers extends Command {
     }
     if(!lowerStopped)
     {
-      Intake.setRollers(speed, 2);
+      Intake.setRollers(speed, 2, 4);
     }
     else
     {
-      Intake.setRollers(speed, 1);
+      Intake.setRollers(speed, 1, 3);
     }
  
     if(Intake.getUpperBeamBreak())
@@ -51,10 +51,10 @@ public class IntakeRollers extends Command {
     }
     if(!upperStopped)
     {
-      Intake.setRollers(speed, 3);
+      Intake.setRollers(speed, 1, 3);
     }
     else{
-      Intake.setRollers(speed, 4);
+      Intake.setRollers(speed, 2, 4);
     }
   }
     // else{
@@ -82,7 +82,7 @@ public class IntakeRollers extends Command {
   // if(Intake.getLowerBeamBreak()==false){
   //   Intake.setRollers(0,2);
   // }
-  Intake.setRollers(0, 4);
+  Intake.setRollers(0, 2, 4);
   }
  
   @Override

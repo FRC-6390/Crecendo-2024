@@ -45,11 +45,9 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Field2d gameField;
   private static double desiredHeading;
   public static ReplanningConfig c;
-  private static PIDConfig driftCorrectionPID = new PIDConfig(0.09, 0,
-0.1).setILimit(20).setContinuous(-Math.PI, Math.PI);
+  private static PIDConfig driftCorrectionPID = new PIDConfig(0.09, 0,0.1).setILimit(20).setContinuous(-Math.PI, Math.PI);
   private static PID pid;
-  private static PIDController rotationPidController = new
-PIDController(0.3, 0, 0);
+  private static PIDController rotationPidController = new PIDController(0.3, 0, 0);
 
   public Drivetrain6390()
   {
