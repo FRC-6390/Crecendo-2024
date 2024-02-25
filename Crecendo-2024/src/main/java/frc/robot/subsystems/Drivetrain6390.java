@@ -9,13 +9,11 @@ import com.pathplanner.lib.util.ReplanningConfig;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -94,8 +92,7 @@ Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), SwervePositions);
 
     pid = new PID(driftCorrectionPID).setMeasurement(() ->
 pose.getRotation().getDegrees());
-    rotationPidController.enableContinuousInput(-Math.PI, Math.PI);
-  }
+}
 
 
   public void shuffleboard(){
@@ -246,7 +243,6 @@ SwerveModulePosition[swerveModules.length];
   {
     return chassisSpeeds;
   }
-
   public double maxAccel = 0;
   
   @Override
@@ -276,7 +272,7 @@ feedbackSpeeds.omegaRadiansPerSecond;
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
-    //System.out.println(getPose());
+    System.out.println(getPose());
   }
 
   @Override

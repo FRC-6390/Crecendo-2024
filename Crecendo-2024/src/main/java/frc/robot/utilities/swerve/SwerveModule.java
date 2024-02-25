@@ -5,8 +5,11 @@ import java.util.Map;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -62,7 +65,7 @@ public class SwerveModule {
         rotationMotor.setInverted(config.rotationMotorReversed());
         encoderPos=encoder.getPosition();
         if(offsetEntry != null) encoderOffset = offsetEntry.getDouble(0.0);
-
+        
         CANcoderConfiguration  con = new CANcoderConfiguration();
         con.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         con.MagnetSensor.MagnetOffset = encoderOffset;

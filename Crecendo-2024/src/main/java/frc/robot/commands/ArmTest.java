@@ -4,8 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Arm;
 
 
@@ -51,7 +51,8 @@ public class ArmTest extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    test.stopAll();
+    if(DriverStation.isTeleop()){
+    test.stopAll();}
     System.out.println("/////////////////////////////////////////////////");
   }
 
