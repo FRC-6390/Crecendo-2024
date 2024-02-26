@@ -243,11 +243,12 @@ SwerveModulePosition[swerveModules.length];
   {
     return chassisSpeeds;
   }
+
   public double maxAccel = 0;
   
   @Override
   public void periodic() {
-
+    
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
     double ySpeed = chassisSpeeds.vyMetersPerSecond +

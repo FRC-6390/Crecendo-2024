@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,6 +23,7 @@ public class Arm extends SubsystemBase {
   public double setpoint = 0;
   public double convertedValue = 0;
   public Button coastButton;
+  public DigitalInput limitSwitch;
  // public DigitalInput limitSwitch = new DigitalInput(2);
   
 
@@ -34,12 +37,14 @@ public class Arm extends SubsystemBase {
     ArmMotorLeft = new TalonFX(Constants.ARM.ARM_MOTOR_LEFT, Constants.DRIVETRAIN.CANBUS);
     ArmMotorRight = new TalonFX(Constants.ARM.ARM_MOTOR_RIGHT, Constants.DRIVETRAIN.CANBUS);
     coastButton = new Button(1);
+    limitSwitch = new DigitalInput(2);
     PID = new PID(Constants.ARM.PID_config);
     rotorPos = ArmMotorLeft.getRotorPosition();
     amperage = ArmMotorLeft.getTorqueCurrent();
     PID.setMeasurement(()->rotorPos.getValueAsDouble());
     ArmMotorLeft.setNeutralMode(NeutralModeValue.Brake);
     ArmMotorRight.setNeutralMode(NeutralModeValue.Brake);
+
   }
 
   public void setSpeed(double speed)
@@ -77,18 +82,21 @@ public class Arm extends SubsystemBase {
  public void setHalf(){
   setPosition(0.5);
  }
-
+ public boolean isUp(){
+  return !limitSwitch.get();
+ }
     // }
   @Override
   public void periodic() {
     rotorPos.refresh();
     amperage.refresh();
-    //System.out.println(coastButton.isPressed());
-    // System.out.println("Rotor Pos" + Double.toString(rotorPos.getValueAsDouble()));
-    // System.out.println("Max Pos" + Double.toString(maxPos));
-    // System.out.println("Converted Value" + Double.toString(maxPos * setpoint));
-    // System.out.println("Calculated Speed" + Double.toString(PID.calculate(maxPos * setpoint)));
-    
+
+    if(limitSwitch.get()){
+      setHome();
+    }
+    else{
+      setSpeed(0.2);
+    }
     SmartDashboard.putString("Rotor Pos", Double.toString(rotorPos.getValueAsDouble()));
     SmartDashboard.putString("Max Pos", Double.toString(maxPos));
     SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));
