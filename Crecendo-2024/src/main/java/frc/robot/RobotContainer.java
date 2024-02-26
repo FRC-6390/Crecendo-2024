@@ -9,6 +9,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 //import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.vission.LimeLight;
@@ -16,6 +17,9 @@ import frc.robot.utilities.vission.LimeLight;
 import frc.robot.commands.auto.TurnAlign;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -32,11 +36,12 @@ public class RobotContainer {
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
+  public static Shooter shooter = new Shooter();
     
   public static DebouncedController controller = new DebouncedController(0);
 
   public RobotContainer() {
-    //driveTrain.shuffleboard();
+    driveTrain.shuffleboard();
     driveTrain.init();
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
@@ -50,6 +55,9 @@ public class RobotContainer {
    
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
+    //ShuffleboardTab Tab = Shuffleboard.getTab("COMP");
+    SmartDashboard.putBoolean("Game Piece", Intake.getUpperBeamBreak());
+    
 
     configureBindings();
 
@@ -71,7 +79,7 @@ public class RobotContainer {
     controller.a.whileTrue(new IntakeRollers(-0.6, intake));
     controller.y.whileTrue(new ClimberHook(0.5, climber));
     controller.x.whileTrue(new ClimberHook(-0.5, climber));
-    controller.rightBumper.whileTrue(new ShooterRollers(-1));
+    controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
     // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
     // controller.a.onTrue(new ArmTest(arm,0));
     // controller.x.onTrue(new ArmTest(arm, -1));

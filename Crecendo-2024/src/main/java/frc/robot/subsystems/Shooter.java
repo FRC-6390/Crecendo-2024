@@ -10,6 +10,8 @@ public class Shooter extends SubsystemBase {
  
 
   public static TalonFX feedingRollers;
+  public static TalonFX leftShooterMotor;
+  public static TalonFX rightShooterMotor;
 
  
  
@@ -22,6 +24,8 @@ public class Shooter extends SubsystemBase {
   {
  
   feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
+  leftShooterMotor = new TalonFX(Constants.SHOOTER.LEFT_SHOOTER_MOTOR, Constants.DRIVETRAIN.CANBUS);
+  rightShooterMotor = new TalonFX(Constants.SHOOTER.RIGHT_SHOOTER_MOTOR, Constants.DRIVETRAIN.CANBUS);
   //intakeBeamBreak = new DigitalInput(0);
   }
  
@@ -30,9 +34,13 @@ public class Shooter extends SubsystemBase {
  
  
   //Sets the intake rollers
-  public static void setRollers(double speed)
-  {
-    feedingRollers.set(speed);
+  public static void setRollers(double speed){
+
+    leftShooterMotor.set(speed);
+    rightShooterMotor.set(speed);
+    feedingRollers.set(speed+0.2);
+   // System.out.println("_____________________________-Beam is INTACT -___________________________________");
+  
    // System.out.println("_____________________________-Beam is INTACT -___________________________________");
     }
  
