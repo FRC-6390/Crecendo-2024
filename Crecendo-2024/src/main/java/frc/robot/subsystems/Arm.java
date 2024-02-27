@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -44,7 +47,13 @@ public class Arm extends SubsystemBase {
     PID.setMeasurement(()->rotorPos.getValueAsDouble());
     ArmMotorLeft.setNeutralMode(NeutralModeValue.Brake);
     ArmMotorRight.setNeutralMode(NeutralModeValue.Brake);
-
+    TalonFXConfiguration con = new TalonFXConfiguration();
+    CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
+    curr.SupplyCurrentLimitEnable = true;
+    curr.SupplyCurrentLimit = 80;
+    con.withCurrentLimits(curr);
+    //ArmMotorLeft.getConfigurator().apply(con);
+    //ArmMotorRight.getConfigurator().apply(con);
   }
 
   public void setSpeed(double speed)
@@ -91,12 +100,12 @@ public class Arm extends SubsystemBase {
     rotorPos.refresh();
     amperage.refresh();
 
-    if(limitSwitch.get()){
-      setHome();
-    }
-    else{
-      setSpeed(0.2);
-    }
+    // if(limitSwitch.get()){
+    //   setHome();
+    // }
+    // else{
+    //   setSpeed(0.2);
+    // }
     SmartDashboard.putString("Rotor Pos", Double.toString(rotorPos.getValueAsDouble()));
     SmartDashboard.putString("Max Pos", Double.toString(maxPos));
     SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));

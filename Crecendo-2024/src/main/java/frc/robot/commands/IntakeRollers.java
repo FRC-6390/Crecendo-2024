@@ -2,6 +2,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
  
 public class IntakeRollers extends Command {
  
@@ -33,6 +34,7 @@ public class IntakeRollers extends Command {
   @Override
   public void execute()
   {
+  if(DriverStation.isTeleop()){
    //System.out.print("_____________________"+Intake.getUpperBeamBreak()+"---------------------------------");
    upperStopped = false;
    if(Intake.getUpperBeamBreak())
@@ -49,7 +51,7 @@ public class IntakeRollers extends Command {
       intake.setRollers(speed, 1);
      // Intake.setRollers(speed, 3);
     }
- 
+    }
    
   }
     // else{
@@ -76,7 +78,7 @@ public class IntakeRollers extends Command {
   // if(Intake.getLowerBeamBreak()==false){
   //   Intake.setRollers(0,2);
   // }
-  intake.setRollers(0, 2);
+  intake.setRollers(0, 1);
   }
  
   @Override
