@@ -6,6 +6,9 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utilities.sensors.Button;
@@ -21,7 +24,10 @@ public class Climber extends SubsystemBase {
  
   public Climber()
   {
+    button = new Button(new DigitalInput(9));
 
+    // button.onTrue(new InstantCommand(this::motorCoast));
+    motorBrake();
   }
  
   static
@@ -29,7 +35,6 @@ public class Climber extends SubsystemBase {
     
   climbMotorLeft = new TalonFX(10, Constants.DRIVETRAIN.CANBUS);
   climbMotorRight = new TalonFX(16, Constants.DRIVETRAIN.CANBUS);
-  button = new Button(9);
   //intakeBeamBreak = new DigitalInput(0);
   TalonFXConfiguration config = new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
@@ -44,6 +49,7 @@ public class Climber extends SubsystemBase {
 
   climbMotorLeft.setNeutralMode(NeutralModeValue.Brake);
   climbMotorRight.setNeutralMode(NeutralModeValue.Brake);
+
   
   }
  
@@ -82,21 +88,19 @@ public class Climber extends SubsystemBase {
  
  
   //Get value of the intake lift limit switch
+  public void motorBrake(){
+    climbMotorLeft.setNeutralMode(NeutralModeValue.Brake);
+    climbMotorRight.setNeutralMode(NeutralModeValue.Brake);
+  }
  
- 
+  public void motorCoast(){
+    climbMotorLeft.setNeutralMode(NeutralModeValue.Coast);
+    climbMotorRight.setNeutralMode(NeutralModeValue.Coast);
+  }
+
   @Override
   public void periodic()
   {
-    if(button.isPressed())
-    {
-      climbMotorLeft.setNeutralMode(NeutralModeValue.Coast);
-      climbMotorRight.setNeutralMode(NeutralModeValue.Coast);
-    }
-    else
-    {
-      climbMotorLeft.setNeutralMode(NeutralModeValue.Brake);
-      climbMotorRight.setNeutralMode(NeutralModeValue.Brake);
-    }
     //System.out.println(getLowerBeamBreak());
   }
 }

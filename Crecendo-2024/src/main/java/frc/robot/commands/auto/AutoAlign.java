@@ -101,7 +101,7 @@ public class AutoAlign extends Command {
   public void end(boolean interrupted) 
   {
     //drivetrain.drive(new ChassisSpeeds(0,0,0));
-    System.out.println("Command Ended");
+    //System.out.println("Command Ended");
   }
 
   // Returns true when the command should end.

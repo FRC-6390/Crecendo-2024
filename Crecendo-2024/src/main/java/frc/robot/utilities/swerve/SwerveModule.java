@@ -51,7 +51,7 @@ public class SwerveModule {
     public SwerveModule(SwerveModuleConfig config, ShuffleboardTab tab){
         rotationPidController.enableContinuousInput(-Math.PI, Math.PI);
         if(config.canbus() != null){
-            System.out.println(config.canbus());
+           // System.out.println(config.canbus());
             driveMotor = new TalonFX(config.driveMotor(), config.canbus());
             rotationMotor = new TalonFX(config.rotationMotor(), config.canbus());
             encoder = new CANcoder(config.encoder(), config.canbus());
@@ -72,11 +72,11 @@ public class SwerveModule {
         encoder.getConfigurator().apply(con);
         pid = new PID(SWERVEMODULE.ROTATION_PID).setMeasurement(() -> getRotationMotorPosition());
         //if(tab != null){
-            ShuffleboardLayout layout = tab.getLayout("Swerve Module "+instances, BuiltInLayouts.kList).withSize(2, 6);
-            layout.add(pid);
-            offsetEntry = layout.add("Offset "+ instances, getEncoderOffset()).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -Math.PI, "max", Math.PI)).getEntry();
-            layout.addDouble("Angle "+instances, () -> getPostion().angle.getDegrees());
-            layout.addDouble("Absolute "+instances, () -> getAbsolutePosition());
+            // ShuffleboardLayout layout = tab.getLayout("Swerve Module "+instances, BuiltInLayouts.kList).withSize(2, 6);
+            // layout.add(pid);
+            // offsetEntry = layout.add("Offset "+ instances, getEncoderOffset()).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -Math.PI, "max", Math.PI)).getEntry();
+            // layout.addDouble("Angle "+instances, () -> getPostion().angle.getDegrees());
+            // layout.addDouble("Absolute "+instances, () -> getAbsolutePosition());
        // }
         instances++;
         drivePos=driveMotor.getRotorPosition();

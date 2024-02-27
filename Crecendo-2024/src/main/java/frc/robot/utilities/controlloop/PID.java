@@ -88,13 +88,13 @@ public class PID implements Sendable {
     @Override
     public void initSendable(SendableBuilder builder) {
         //builder.setSmartDashboardType("PID");
-        builder.addBooleanProperty("Enabled", this::getEnable, this::setEnable);
-        builder.addDoubleProperty("P", config::getP, config::setP);
-        builder.addDoubleProperty("I", config::getI, config::setI);
-        builder.addDoubleProperty("D", config::getD, config::setD);
-        builder.addDoubleProperty("I Limit", config::getILimit, config::setILimit);
-        builder.addDoubleProperty("Setpoint", this::getSetpoint, this::setSetpoint);
-        builder.addDoubleProperty("Measurement", measurement::getAsDouble,  null);
-        builder.addDoubleProperty("Calculated", () -> getSupplier().getAsDouble(), null);
+        // builder.addBooleanProperty("Enabled", this::getEnable, this::setEnable);
+        // builder.addDoubleProperty("P", config::getP, config::setP);
+        // builder.addDoubleProperty("I", config::getI, config::setI);
+        // builder.addDoubleProperty("D", config::getD, config::setD);
+        // builder.addDoubleProperty("I Limit", config::getILimit, config::setILimit);
+        // builder.addDoubleProperty("Setpoint", this::getSetpoint, this::setSetpoint);
+        // builder.addDoubleProperty("Measurement", measurement::getAsDouble,  null);
+        // builder.addDoubleProperty("Calculated", () -> getSupplier().getAsDouble(), null);
     }
 }

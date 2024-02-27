@@ -53,7 +53,7 @@ public class ArmTest extends Command {
   public void end(boolean interrupted) {
     if(DriverStation.isTeleop()){
     test.stopAll();}
-    System.out.println("/////////////////////////////////////////////////");
+   // System.out.println("/////////////////////////////////////////////////");
   }
 
   // Returns true when the command should end.

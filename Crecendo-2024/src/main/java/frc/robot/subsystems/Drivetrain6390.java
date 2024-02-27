@@ -44,7 +44,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Field2d gameField;
   private static double desiredHeading;
   public static ReplanningConfig c;
-  private static PIDConfig driftCorrectionPID = new PIDConfig(0.09, 0,0.1).setILimit(20).setContinuous(-Math.PI, Math.PI);
+  private static PIDConfig driftCorrectionPID = new PIDConfig(0.1, 0,0).setContinuous(-Math.PI, Math.PI);
   //old value for p was 0.09, 0.05 is not good
   private static PID pid;
   private static PIDController rotationPidController = new PIDController(0.3, 0, 0);
@@ -65,8 +65,8 @@ public class Drivetrain6390 extends SubsystemBase{
   }
 //5 and 10
   static {
-    tab = Shuffleboard.getTab("Drive Train");
-    autoTab = Shuffleboard.getTab("Auto");
+    // tab = Shuffleboard.getTab("Drive Train");
+    // autoTab = Shuffleboard.getTab("Auto");
     gameField = new Field2d();
     swerveModules = new SwerveModule[4];
     swerveModules[0] = new
@@ -98,27 +98,27 @@ pose.getRotation().getDegrees());
 
 
   public void shuffleboard(){
-    tab.addDouble("Front Left Encoder", () ->
-swerveModules[0].getEncoderRadians());
-    tab.addDouble("Front Right Encoder", () ->
-swerveModules[1].getEncoderRadians());
-    tab.addDouble("Back Left Encoder", () ->
-swerveModules[2].getEncoderRadians());
-    tab.addDouble("Back Right Encoder", () ->
-swerveModules[3].getEncoderRadians());
+//     tab.addDouble("Front Left Encoder", () ->
+// swerveModules[0].getEncoderRadians());
+//     tab.addDouble("Front Right Encoder", () ->
+// swerveModules[1].getEncoderRadians());
+//     tab.addDouble("Back Left Encoder", () ->
+// swerveModules[2].getEncoderRadians());
+//     tab.addDouble("Back Right Encoder", () ->
+// swerveModules[3].getEncoderRadians());
 
-    autoTab.addDouble("Desired Heading", () ->
-pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
-    autoTab.addDouble("PID Desired Heading", () ->
-pid.calculate(pose.getRotation().getDegrees())).withWidget(BuiltInWidgets.kTextView);
+//     autoTab.addDouble("Desired Heading", () ->
+// pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
+//     autoTab.addDouble("PID Desired Heading", () ->
+// pid.calculate(pose.getRotation().getDegrees())).withWidget(BuiltInWidgets.kTextView);
 
-    autoTab.add(gameField);
-    autoTab.addDouble("Odometry Heading", () ->
-pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
-    autoTab.addDouble("Odometry X", () ->
-pose.getX()).withWidget(BuiltInWidgets.kTextView);
-    autoTab.addDouble("Odometry Y", () ->
-pose.getY()).withWidget(BuiltInWidgets.kTextView);
+//     autoTab.add(gameField);
+//     autoTab.addDouble("Odometry Heading", () ->
+// pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
+//     autoTab.addDouble("Odometry X", () ->
+// pose.getX()).withWidget(BuiltInWidgets.kTextView);
+//     autoTab.addDouble("Odometry Y", () ->
+// pose.getY()).withWidget(BuiltInWidgets.kTextView);
 
 
   }
@@ -184,7 +184,7 @@ pose.getRotation().getDegrees();
 SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND);
     for (int i = 0; i < swerveModules.length; i++) {
       swerveModules[i].setDesiredState(states[i]);
-      SmartDashboard.putNumber("Module " + i+"",swerveModules[i].getEncoderRadians());
+      //SmartDashboard.putNumber("Module " + i+"",swerveModules[i].getEncoderRadians());
     }
     
   }
@@ -205,7 +205,7 @@ SwerveModulePosition[swerveModules.length];
   public void stopWheels(){
     for(int i = 0; i < swerveModules.length; i++){
       swerveModules[i].stop();
-      System.out.println("/////////////////////////////////////|||||||||||||||||||||||||");
+     // System.out.println("/////////////////////////////////////|||||||||||||||||||||||||");
     }
   }
 
@@ -250,8 +250,8 @@ SwerveModulePosition[swerveModules.length];
   
   @Override
   public void periodic() {
-  SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
-  SmartDashboard.putNumber("Desired Heading", desiredHeading);
+  // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
+  // SmartDashboard.putNumber("Desired Heading", desiredHeading);
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
     double ySpeed = chassisSpeeds.vyMetersPerSecond +
@@ -260,7 +260,7 @@ feedbackSpeeds.vyMetersPerSecond;
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
     if(DriverStation.isTeleop()){
-   driftCorrection(speed);
+   //driftCorrection(speed);
     }
 
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
@@ -268,16 +268,16 @@ feedbackSpeeds.omegaRadiansPerSecond;
     setModuleStates(states);
 
     updateOdometry();
-    SmartDashboard.putNumber("Odometry Headin", pose.getRotation().getDegrees());
-    SmartDashboard.putNumber("Odometry X", pose.getX());
-    SmartDashboard.putNumber("Odometry Y", pose.getY());
+    // SmartDashboard.putNumber("Odometry Headin", pose.getRotation().getDegrees());
+    // SmartDashboard.putNumber("Odometry X", pose.getX());
+    // SmartDashboard.putNumber("Odometry Y", pose.getY());
 
     
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
-    System.out.println(getPose());
+   // System.out.println(getPose());
   }
 
   @Override

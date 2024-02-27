@@ -77,8 +77,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() 
   {
-    SmartDashboard.putNumber("PosX", RobotContainer.driveTrain.getPose().getX());
-    SmartDashboard.putNumber("PosY", RobotContainer.driveTrain.getPose().getY());
+    // SmartDashboard.putNumber("PosX", RobotContainer.driveTrain.getPose().getX());
+    // SmartDashboard.putNumber("PosY", RobotContainer.driveTrain.getPose().getY());
       
   }
 

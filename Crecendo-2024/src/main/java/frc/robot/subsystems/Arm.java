@@ -12,9 +12,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.Drive;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.sensors.Button;
 
@@ -26,7 +29,6 @@ public class Arm extends SubsystemBase {
   public double setpoint = 0;
   public double convertedValue = 0;
   public Button coastButton;
-  public DigitalInput limitSwitch;
  // public DigitalInput limitSwitch = new DigitalInput(2);
   
 
@@ -39,8 +41,11 @@ public class Arm extends SubsystemBase {
   public Arm() {    
     ArmMotorLeft = new TalonFX(Constants.ARM.ARM_MOTOR_LEFT, Constants.DRIVETRAIN.CANBUS);
     ArmMotorRight = new TalonFX(Constants.ARM.ARM_MOTOR_RIGHT, Constants.DRIVETRAIN.CANBUS);
-    coastButton = new Button(1);
-    limitSwitch = new DigitalInput(2);
+    coastButton = new Button(new DigitalInput(1));
+
+    // coastButton.whileFalse(new InstantCommand(this::motorCoast));    
+    // coastButton.whileTrue(new InstantCommand(this::motorBrake));    
+
     PID = new PID(Constants.ARM.PID_config);
     rotorPos = ArmMotorLeft.getRotorPosition();
     amperage = ArmMotorLeft.getTorqueCurrent();
@@ -52,6 +57,7 @@ public class Arm extends SubsystemBase {
     curr.SupplyCurrentLimitEnable = true;
     curr.SupplyCurrentLimit = 80;
     con.withCurrentLimits(curr);
+    motorBrake();
     //ArmMotorLeft.getConfigurator().apply(con);
     //ArmMotorRight.getConfigurator().apply(con);
   }
@@ -91,13 +97,23 @@ public class Arm extends SubsystemBase {
  public void setHalf(){
   setPosition(0.5);
  }
- public boolean isUp(){
-  return !limitSwitch.get();
- }
+
+ public void motorBrake(){
+  ArmMotorLeft.setNeutralMode(NeutralModeValue.Brake);
+  ArmMotorRight.setNeutralMode(NeutralModeValue.Brake);
+}
+
+public void motorCoast(){
+  ArmMotorLeft.setNeutralMode(NeutralModeValue.Coast);
+  ArmMotorRight.setNeutralMode(NeutralModeValue.Coast);
+  System.out.println("///////////////////////////////Couast////////////////////////////");
+}
     // }
   @Override
   public void periodic() {
+ 
     rotorPos.refresh();
+
     amperage.refresh();
 
     // if(limitSwitch.get()){
@@ -106,29 +122,25 @@ public class Arm extends SubsystemBase {
     // else{
     //   setSpeed(0.2);
     // }
-    SmartDashboard.putString("Rotor Pos", Double.toString(rotorPos.getValueAsDouble()));
-    SmartDashboard.putString("Max Pos", Double.toString(maxPos));
-    SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));
-    SmartDashboard.putString("Calculated Speed", Double.toString(PID.calculate(maxPos * setpoint)));
+    // SmartDashboard.putString("Rotor Pos", Double.toString(rotorPos.getValueAsDouble()));
+    // SmartDashboard.putString("Max Pos", Double.toString(maxPos));
+    // SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));
+    // SmartDashboard.putString("Calculated Speed", Double.toString(PID.calculate(maxPos * setpoint)));
 
-    SmartDashboard.putBoolean("Difference", atPosition());
+    // SmartDashboard.putBoolean("Difference", atPosition());
 
     
     // convertedValue = (maxPos)*setpoint;
     // double speed = PID.calculate(convertedValue);
     // setSpeed(speed * -1);
-
-    if(coastButton.isPressed())
-    {
-      ArmMotorLeft.setNeutralMode(NeutralModeValue.Coast); 
-      ArmMotorRight.setNeutralMode(NeutralModeValue.Coast);
-    }
-    else if(!coastButton.isPressed())
-    {
-      ArmMotorLeft.setNeutralMode(NeutralModeValue.Brake); 
-      ArmMotorRight.setNeutralMode(NeutralModeValue.Brake);
-    }
-    
+if (DriverStation.isDisabled()){
+  if (coastButton.isPressed()){
+    motorCoast();
+  }
+else{
+motorBrake();
+}
+}
 
     // if (shouldCoast == true){
     //   ArmMotor.setNeutralMode(NeutralModeValue.Coast);

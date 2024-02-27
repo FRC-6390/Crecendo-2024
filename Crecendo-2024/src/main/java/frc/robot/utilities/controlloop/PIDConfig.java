@@ -99,12 +99,12 @@ public class PIDConfig implements Sendable{
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        builder.setSmartDashboardType("PIDConfig");
-        builder.addDoubleProperty("p", this::getP, this::setP);
-        builder.addDoubleProperty("i", this::getI, this::setI);
-        builder.addDoubleProperty("d", this::getD, this::setD);
-        builder.addDoubleProperty("iLimit", this::getILimit, this::setILimit);
-        builder.addBooleanProperty("continuous", this::getContinuous, this::setContinuous);
+        // builder.setSmartDashboardType("PIDConfig");
+        // builder.addDoubleProperty("p", this::getP, this::setP);
+        // builder.addDoubleProperty("i", this::getI, this::setI);
+        // builder.addDoubleProperty("d", this::getD, this::setD);
+        // builder.addDoubleProperty("iLimit", this::getILimit, this::setILimit);
+        // builder.addBooleanProperty("continuous", this::getContinuous, this::setContinuous);
     }
 
 
