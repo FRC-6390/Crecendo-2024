@@ -18,10 +18,13 @@ import frc.robot.commands.auto.TurnAlign;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
@@ -37,9 +40,12 @@ public class RobotContainer {
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
  public static Intake intake = new Intake();
-  public static Shooter shooter = new Shooter();
+ // public static Shooter shooter = new Shooter();
+  public static Joystick joystick = new Joystick(1);
+  public static EventLoop eventLoop = new EventLoop();
     
   public static DebouncedController controller = new DebouncedController(0);
+ 
   //public SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   public RobotContainer() {
@@ -60,12 +66,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
-   
+    intake.setDefaultCommand(new IntakeRollers(-0.4, intake));
+
     // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     // SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
     // //ShuffleboardTab Tab = Shuffleboard.getTab("COMP");
     // SmartDashboard.putBoolean("Game Piece", Intake.getUpperBeamBreak());
+    SmartDashboard.putBoolean("Game Piece", Intake.getUpperBeamBreak());
     
 
     configureBindings();
@@ -94,7 +101,7 @@ public class RobotContainer {
     // controller.a.whileTrue(new IntakeRollers(-0.6, intake));
     // controller.y.whileTrue(new ClimberHook(0.5, climber));
     // controller.x.whileTrue(new ClimberHook(-0.5, climber));
-    //controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
+   // controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
     // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
     // controller.a.onTrue(new ArmTest(arm,0));
     // controller.x.onTrue(new ArmTest(arm, -1));
@@ -102,8 +109,16 @@ public class RobotContainer {
     // controller.y.onTrue(new InstantCommand(arm::setHome));
     //controller.a.whileTrue(new IntakeRollers(-0.2));
 
-  }
+    //controller.rightTrigger.whileTrue(new ShooterRollers(-1, shooter));
 
+    controller.a.onTrue(new ArmTest(arm, 0));
+    controller.b.onTrue(new ArmTest(arm, -0.5));
+    controller.y.onTrue(new ArmTest(arm, -1));
+    controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
+
+    eventLoop.bind(()->CommandScheduler.getInstance().schedule(new IntakeRollers(0.6, intake)));
+    joystick.button(7, eventLoop);
+  }
 
   public Command getAutonomousCommand()
   {

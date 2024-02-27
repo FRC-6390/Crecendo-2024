@@ -4,7 +4,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.utilities.sensors.IRBBSensor;
+
  
 public class Shooter extends SubsystemBase {
  

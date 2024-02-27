@@ -7,6 +7,7 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -101,6 +102,14 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic()
   {
+    if(DriverStation.isDisabled()){
+      if (button.isPressed()){
+        motorCoast();
+      }
+    else {
+      motorBrake();
+    }
+    }
     //System.out.println(getLowerBeamBreak());
   }
 }

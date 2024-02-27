@@ -3,6 +3,7 @@ package frc.robot.utilities.controller;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import frc.robot.commands.ShooterRollers;
 
 public class ModifiedAxis implements DoubleSupplier {
     private static final double DEFUALT_DEADBAND = 0.1d;
@@ -45,6 +46,11 @@ public class ModifiedAxis implements DoubleSupplier {
     public double getAsDouble() {
         double value = applyDeadband(input.getAsDouble());
         return doSquaring ? sqaureAxis(value) : value;
+    }
+
+    public void whileTrue(ShooterRollers shooterRollers) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'whileTrue'");
     }
 
     
