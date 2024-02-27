@@ -44,6 +44,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static double desiredHeading;
   public static ReplanningConfig c;
   private static PIDConfig driftCorrectionPID = new PIDConfig(0.09, 0,0.1).setILimit(20).setContinuous(-Math.PI, Math.PI);
+  //old value for p was 0.09, 0.05 is not good
   private static PID pid;
   private static PIDController rotationPidController = new PIDController(0.3, 0, 0);
 
@@ -248,7 +249,8 @@ SwerveModulePosition[swerveModules.length];
   
   @Override
   public void periodic() {
-    
+  SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
+  SmartDashboard.putNumber("Desired Heading", desiredHeading);
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
     double ySpeed = chassisSpeeds.vyMetersPerSecond +
@@ -278,6 +280,7 @@ feedbackSpeeds.omegaRadiansPerSecond;
 
   @Override
   public void simulationPeriodic() {
+
   }
   
 }

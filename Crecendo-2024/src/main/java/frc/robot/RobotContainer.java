@@ -35,8 +35,8 @@ public class RobotContainer {
  // public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
-  public static Intake intake = new Intake();
-  public static Shooter shooter = new Shooter();
+ public static Intake intake = new Intake();
+  //public static Shooter shooter = new Shooter();
     
   public static DebouncedController controller = new DebouncedController(0);
 
@@ -51,7 +51,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
+  //  intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
    
     SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
@@ -79,7 +79,7 @@ public class RobotContainer {
     controller.a.whileTrue(new IntakeRollers(-0.6, intake));
     controller.y.whileTrue(new ClimberHook(0.5, climber));
     controller.x.whileTrue(new ClimberHook(-0.5, climber));
-    controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
+    //controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
     // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
     // controller.a.onTrue(new ArmTest(arm,0));
     // controller.x.onTrue(new ArmTest(arm, -1));

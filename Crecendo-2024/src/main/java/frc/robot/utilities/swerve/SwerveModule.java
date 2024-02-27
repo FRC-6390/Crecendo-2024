@@ -44,7 +44,7 @@ public class SwerveModule {
         this(config, null);
     }
 
-    private static PIDController rotationPidController = new PIDController(0.35, 0.1, 0);
+    private static PIDController rotationPidController = new PIDController(0.25, 0, 0);
    
     
 
