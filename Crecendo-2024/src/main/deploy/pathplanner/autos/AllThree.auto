@@ -5,7 +5,7 @@
       "x": 1.384284651596358,
       "y": 6.991369417831561
     },
-    "rotation": 180.0
+    "rotation": 179.28384005453069
   },
   "command": {
     "type": "sequential",
@@ -36,15 +36,57 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "TurnCommand"
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Segment2Mid"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "PivotMoveHalf"
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnCommand"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnAlign"
           }
         }
       ]

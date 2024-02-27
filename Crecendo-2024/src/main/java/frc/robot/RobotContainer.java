@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.IntakeDrive;
@@ -39,10 +40,18 @@ public class RobotContainer {
   //public static Shooter shooter = new Shooter();
     
   public static DebouncedController controller = new DebouncedController(0);
+  public SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   public RobotContainer() {
     driveTrain.shuffleboard();
     driveTrain.init();
+    autoChooser.addOption("Baseline", "Baseline");
+    autoChooser.addOption("AutoNonStageBonus", "AutoNonStageBonus");
+    autoChooser.addOption("AutoNonStageWithMid", "AutoNonStageWithMid");
+    autoChooser.addOption("AutoNonStageBasic", "AutoNonStageBasic");
+    autoChooser.addOption("Nothing", "Nothing");
+  
+    SmartDashboard.putData("AutoChoose", autoChooser);
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
     NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
@@ -72,6 +81,12 @@ public class RobotContainer {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
+    
+    // controller.b.whileTrue(new IntakeRollers(0.6, intake));
+    // controller.a.whileTrue(new IntakeRollers(-0.6, intake));
+    // controller.y.whileTrue(new ClimberHook(0.5, climber));
+    // controller.x.whileTrue(new ClimberHook(-0.5, climber));
+    // controller.rightBumper.whileTrue(new ShooterRollers(-1));
     //controller.b.onTrue(new ArmTest(test, 0.5));
     //controller.leftStick.onTrue(new ArmTest(test, 1));
     //controller.rightStick.onTrue(new ArmTest(test, 0));
@@ -81,10 +96,10 @@ public class RobotContainer {
     controller.x.whileTrue(new ClimberHook(-0.5, climber));
     //controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
     // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
-    // controller.a.onTrue(new ArmTest(arm,0));
-    // controller.x.onTrue(new ArmTest(arm, -1));
-    // controller.b.onTrue(new ArmTest(arm, -0.5));
-    // controller.y.onTrue(new InstantCommand(arm::setHome));
+    controller.a.onTrue(new ArmTest(arm,0));
+    controller.x.onTrue(new ArmTest(arm, -1));
+    controller.b.onTrue(new ArmTest(arm, -0.5));
+    controller.y.onTrue(new InstantCommand(arm::setHome));
     //controller.a.whileTrue(new IntakeRollers(-0.2));
 
   }
@@ -97,7 +112,8 @@ public class RobotContainer {
 
   driveTrain.resetHeading();
   arm.setHome();
-  return new PathPlannerAuto("AutoNonStageBonus");
+
+  return new PathPlannerAuto("AllThree");
 
   //-----------------------Janus Autos---------------------------//
 

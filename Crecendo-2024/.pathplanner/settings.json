@@ -4,8 +4,9 @@
   "holonomicMode": true,
   "pathFolders": [
     "AutoNonStageBasic",
+    "AutoNonStageBonus",
     "AutoNonStageWithMid",
-    "AutoNonStageBonus"
+    "AllThree"
   ],
   "autoFolders": [],
   "defaultMaxVel": 1.0,

@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -32,7 +33,7 @@ import frc.robot.utilities.swerve.SwerveModule;
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed = false;
+  private static Boolean isRed = true;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -57,7 +58,7 @@ public class Drivetrain6390 extends SubsystemBase{
       this::resetOdometry,
       this::getSpeeds,
       this::drive,
-      new HolonomicPathFollowerConfig(new PIDConstants(0.85), new PIDConstants(0.035), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
+      new HolonomicPathFollowerConfig(new PIDConstants(0.85), new PIDConstants(3.125), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
       this::getSide,
       this
     );
@@ -258,8 +259,9 @@ feedbackSpeeds.vyMetersPerSecond;
     double thetaSpeed = chassisSpeeds.omegaRadiansPerSecond +
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
-
+    if(DriverStation.isTeleop()){
    driftCorrection(speed);
+    }
 
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
 

@@ -52,14 +52,14 @@ public class IntakeDrive extends Command {
     
   }
     
-  
+   
 
   // Called once the command ends or is interrupted.
  @Override
   public void end(boolean interrupted) 
   {
     drivetrain.drive(new ChassisSpeeds(0,0,0));
-    intake.setRollers(0, 2);
+    intake.setRollers(0, 1);
   }
 
   // Returns true when the command should end.

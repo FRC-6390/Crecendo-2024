@@ -8,6 +8,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utilities.sensors.Button;
 import frc.robot.utilities.sensors.IRBBSensor;
 
  
@@ -15,7 +16,7 @@ public class Climber extends SubsystemBase {
  
   public static TalonFX climbMotorLeft;
   public static TalonFX climbMotorRight;
-
+  public static Button button;
  
  
   public Climber()
@@ -28,11 +29,12 @@ public class Climber extends SubsystemBase {
     
   climbMotorLeft = new TalonFX(10, Constants.DRIVETRAIN.CANBUS);
   climbMotorRight = new TalonFX(16, Constants.DRIVETRAIN.CANBUS);
+  button = new Button(9);
   //intakeBeamBreak = new DigitalInput(0);
   TalonFXConfiguration config = new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
   curr.SupplyCurrentLimitEnable = true;
-  curr.SupplyCurrentLimit = 30;
+  curr.SupplyCurrentLimit = 5;
   
   
   config.withCurrentLimits(curr);
@@ -85,6 +87,16 @@ public class Climber extends SubsystemBase {
   @Override
   public void periodic()
   {
+    if(button.isPressed())
+    {
+      climbMotorLeft.setNeutralMode(NeutralModeValue.Coast);
+      climbMotorRight.setNeutralMode(NeutralModeValue.Coast);
+    }
+    else
+    {
+      climbMotorLeft.setNeutralMode(NeutralModeValue.Brake);
+      climbMotorRight.setNeutralMode(NeutralModeValue.Brake);
+    }
     //System.out.println(getLowerBeamBreak());
   }
 }
