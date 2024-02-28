@@ -46,8 +46,6 @@ public class Arm extends SubsystemBase {
     coastButton = new Button(new DigitalInput(1));
     this.joystick = joystick;
     joystick.one.onFalse(new InstantCommand(this::stopAll));
-    // coastButton.whileFalse(new InstantCommand(this::motorCoast));    
-    // coastButton.whileTrue(new InstantCommand(this::motorBrake));    
 
     PID = new PID(Constants.ARM.PID_config);
     rotorPos = ArmMotorLeft.getRotorPosition();
@@ -61,8 +59,7 @@ public class Arm extends SubsystemBase {
     curr.SupplyCurrentLimit = 80;
     con.withCurrentLimits(curr);
     motorBrake();
-    //ArmMotorLeft.getConfigurator().apply(con);
-    //ArmMotorRight.getConfigurator().apply(con);
+
   }
 
   public void setSpeed(double speed)
@@ -95,7 +92,7 @@ public class Arm extends SubsystemBase {
   public boolean atPosition()
   {
     return Math.abs((maxPos * setpoint) - rotorPos.getValueAsDouble()) < 0.6; 
-    //return  rotorPos.getValueAsDouble() >= ((maxPos * setpoint)- 0.2) && rotorPos.getValueAsDouble() <= ((maxPos * setpoint) - 0.2); 
+  
   }
 
 public boolean override(){
@@ -129,23 +126,7 @@ public void motorCoast(){
 
     amperage.refresh();
 
-    // if(limitSwitch.get()){
-    //   setHome();
-    // }
-    // else{
-    //   setSpeed(0.2);
-    // }
-    // SmartDashboard.putString("Rotor Pos", Double.toString(rotorPos.getValueAsDouble()));
-    // SmartDashboard.putString("Max Pos", Double.toString(maxPos));
-    // SmartDashboard.putString("Converted Value", Double.toString(maxPos * setpoint));
-    // SmartDashboard.putString("Calculated Speed", Double.toString(PID.calculate(maxPos * setpoint)));
-
-    // SmartDashboard.putBoolean("Difference", atPosition());
-
     
-    // convertedValue = (maxPos)*setpoint;
-    // double speed = PID.calculate(convertedValue);
-    // setSpeed(speed * -1);
 if (DriverStation.isDisabled()){
   if (coastButton.isPressed()){
     motorCoast();
@@ -154,32 +135,6 @@ else{
 motorBrake();
 }
 }
-
-    // if (shouldCoast == true){
-    //   ArmMotor.setNeutralMode(NeutralModeValue.Coast);
-
-    // }
-    // else{
-    //   ArmMotor.setNeutralMode(NeutralModeValue.Brake);
-    // }
-    // rotorPos.refresh();
-    // amperage.refresh();
-    // // This method will be called once per scheduler run
-
-    // System.out.println(maxPos);
-    // convertedValue = (maxPos)*setpoint;
-    // double speed = PID.calculate(convertedValue);
-    // if(!homePosSet){
-    //   setSpeed(0.1);
-    //   if(!limitSwitch.get()){
-    //     setHome();
-    //     maxPos = -7;
-    //     homePosSet = true;
-    //   }
-    // }else{
-   // setSpeed(speed);
-
-   // }
 
 
     

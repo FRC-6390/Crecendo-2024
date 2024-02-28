@@ -13,7 +13,7 @@ public class ShooterRollers extends Command{
   public Shooter shooter;
   public boolean isDone;
   public int numPresses = 0;
-  public Intake intake;
+public Intake intake;
   public double startTime;
   
   public ShooterRollers(double speed, Shooter shooter, Intake intake) {
@@ -25,8 +25,8 @@ public class ShooterRollers extends Command{
 
   @Override
   public void initialize() {
-    
-    isDone = false;
+   
+isDone = false;
     startTime = System.currentTimeMillis();
     // numPresses++;
     // if(numPresses > 2)
@@ -40,23 +40,23 @@ public class ShooterRollers extends Command{
   @Override
   public void execute() 
   {
-    double curTime = System.currentTimeMillis();
+  double curTime = System.currentTimeMillis();
     shooter.setPID(speed);
-    if(shooter.atSetpoint() || (curTime - startTime) > 5500)
+if(shooter.atSetpoint() || (curTime - startTime) > 5500)
     {
         intake.feed(-1);
     }
     System.out.println("SetpointAt: " + shooter.atSetpoint());
     System.out.println("Velocity: " + shooter.getRotorVelocity());
-    System.out.println("Beam" + Intake.getUpperBeamBreak());
+  System.out.println("Beam" + Intake.getUpperBeamBreak());
   }
 
   @Override
   public void end(boolean interrupted) 
-  {  
-  //intake.feed(0);
+  {
+//intake.feed(0);
   //shooter.stopShooter();
-  }
+      }
 
   @Override
   public boolean isFinished() {

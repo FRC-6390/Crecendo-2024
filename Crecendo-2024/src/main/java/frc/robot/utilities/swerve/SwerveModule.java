@@ -81,14 +81,14 @@ public class SwerveModule {
     }
 
     public double getDriveMotorVelocity(){
-        // .getSensorCollection().getIntegratedSensorVelocity() this is not good as it does not match the CAN frame aparently
+
         return driveVel.getValueAsDouble()  * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
         
     }
     
     public double getDriveMotorPosition(){
-        // .getSensorCollection().getIntegratedSensorPosition() this is not good as it does not match the CAN frame aparently
-        return drivePos.getValueAsDouble()* SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
+
+       return drivePos.getValueAsDouble()* SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
     }
 
     public double getRotationMotorPosition(){
@@ -141,10 +141,10 @@ public class SwerveModule {
 
             return;
         }
-    //SmartDashboard.putNumber(driveMotor.getDeviceID()+"", getEncoderRadians());
+
       state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND);
-        // rotationMotor.set(ControlMode.PercentOutput, pid.calculate(state.angle.getRadians()));
+
         rotationMotor.set(rotationPidController.calculate(-getEncoderRadians(), -state.angle.getRadians()));
     }
 
@@ -155,7 +155,7 @@ public class SwerveModule {
 
     public void setToAngle(double angle){
         SwerveModuleState state = new SwerveModuleState(0, new Rotation2d(angle));
-        //setDesiredState(state);
+
         rotationMotor.set(rotationPidController.calculate(-getEncoderRadians(), -state.angle.getRadians()));
     }
 

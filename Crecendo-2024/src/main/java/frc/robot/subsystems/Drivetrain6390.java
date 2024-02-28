@@ -65,8 +65,7 @@ public class Drivetrain6390 extends SubsystemBase{
   }
 //5 and 10
   static {
-    // tab = Shuffleboard.getTab("Drive Train");
-    // autoTab = Shuffleboard.getTab("Auto");
+
     gameField = new Field2d();
     swerveModules = new SwerveModule[4];
     swerveModules[0] = new

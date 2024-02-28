@@ -33,15 +33,12 @@ import frc.robot.commands.auto.TurnCommand;
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
   public static Arm arm;
-<<<<<<< HEAD
-=======
- 
->>>>>>> 97e6de1a062326ef3c40a584def9c1cfd93784a5
+
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
-  //public static Shooter shooter = new Shooter();
+public static Shooter shooter = new Shooter();
 // public static EventLoop eventLoop = new EventLoop();
     
   public static DebouncedController controller = new DebouncedController(0);
@@ -88,7 +85,7 @@ public class RobotContainer {
   {
 
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-  //  controller.a.whileTrue(new ShooterRollers(-50, shooter));
+   controller.a.whileTrue(new ShooterRollers(-50, shooter));
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
    // controller.a.whileTrue(new ShooterRollers(-50, shooter, intake));
