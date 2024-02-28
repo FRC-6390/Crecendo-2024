@@ -19,13 +19,10 @@ import frc.robot.commands.auto.TurnAlign;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
@@ -63,8 +60,8 @@ public class RobotContainer {
    // SmartDashboard.putData("AutoChoose", autoChooser);
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
-    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
-    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
+    //NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
+    //NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
@@ -90,6 +87,7 @@ public class RobotContainer {
     //  controller.a.onTrue(new PIDTuneTest(driveTrain, 90));
     //  controller.b.onTrue(new PIDTuneTest(driveTrain, 180));
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
+    controller.a.whileTrue(new ShooterRollers(-50, shooter));
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
     
@@ -105,7 +103,7 @@ public class RobotContainer {
     // controller.a.whileTrue(new IntakeRollers(-0.6, intake));
     // controller.y.whileTrue(new ClimberHook(0.5, climber));
     // controller.x.whileTrue(new ClimberHook(-0.5, climber));
-   // controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
+    //controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
     // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
     // controller.a.onTrue(new ArmTest(arm,0));
     // controller.x.onTrue(new ArmTest(arm, -1));
@@ -136,6 +134,7 @@ public class RobotContainer {
 
 
   }
+
 
   public Command getAutonomousCommand()
   {

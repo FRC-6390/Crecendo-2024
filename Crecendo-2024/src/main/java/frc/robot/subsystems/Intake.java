@@ -2,8 +2,8 @@ package frc.robot.subsystems;
  
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utilities.controller.DebouncedJoystick;
@@ -47,7 +47,10 @@ public class Intake extends SubsystemBase {
     return upperIntakeBeamBreak.isBroken();
    }
 
- 
+  public void feed(double speed)
+  {
+    feedingRollers.set(speed);
+  }
  
   //Sets the intake rollers
   public void setRollers(double speed, int num)
@@ -69,6 +72,12 @@ public class Intake extends SubsystemBase {
  
   }
  
+
+  public void setRollersRPS(double speed)
+  {
+    VelocityDutyCycle vel = new VelocityDutyCycle(speed);
+    centerIntakeRoller.setControl(vel);
+  }
   //Sets the lift to a certain speed
  
  
