@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHalf"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Segment1Basic"
@@ -26,30 +32,24 @@
         {
           "type": "named",
           "data": {
-            "name": "PivotMoveHalf"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "TurnAlign"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "TurnCommand"
+            "name": "Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PivotMoveHalf"
+            "name": "Feed"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "General Autos",
   "choreoAuto": false
 }

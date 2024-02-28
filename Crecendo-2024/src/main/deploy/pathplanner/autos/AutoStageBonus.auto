@@ -2,25 +2,19 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.384284651596358,
-      "y": 6.991369417831561
+      "x": 1.477971343959805,
+      "y": 4.122214464115091
     },
-    "rotation": 180.0
+    "rotation": 179.43161169048918
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveHalf"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Segment1Bonus"
+            "pathName": "AutoStageBonus1"
           }
         },
         {
@@ -33,12 +27,6 @@
           "type": "named",
           "data": {
             "name": "TurnAlign"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
           }
         },
         {
@@ -50,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Segment2Bonus"
+            "pathName": "AutoStageBonus2"
           }
         },
         {
@@ -62,19 +50,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Segment3Bonus"
+            "pathName": "AutoStageBonus3"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "TurnAlign"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
           }
         }
       ]

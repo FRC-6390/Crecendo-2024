@@ -102,8 +102,8 @@ public interface Constants {
     }
 
     public interface SHOOTER{
-        int RIGHT_SHOOTER_MOTOR = 100; //NOT THE RIGHT VALUES
-        int LEFT_SHOOTER_MOTOR = 101; //NOT THE RIGHT VALUES
+        int RIGHT_SHOOTER_MOTOR = 23; //NOT THE RIGHT VALUES
+        int LEFT_SHOOTER_MOTOR = 24; //NOT THE RIGHT VALUES
     }
 
     
@@ -112,6 +112,7 @@ public interface Constants {
         int ARM_MOTOR_LEFT = 7;
         int ARM_MOTOR_RIGHT = 13;
         double ARM_MAX = -17.139;
+        //0.03
         PIDConfig PID_config = new PIDConfig(0.03, 0.003, 0);
     }
     

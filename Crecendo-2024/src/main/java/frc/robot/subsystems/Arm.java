@@ -87,9 +87,6 @@ public class Arm extends SubsystemBase {
   {
   pos = Math.min(Math.max(pos, -1), 0);
   setpoint = pos;
-  convertedValue = (maxPos)*setpoint;
-  double speed = PID.calculate(convertedValue);
-  setSpeed(-speed);
   }
 
   public boolean atPosition()
@@ -125,9 +122,12 @@ public void motorCoast(){
       double joystickPos = (((input - (-1)) * newRange)/oldRange)+(-1);
       setPosition(joystickPos);
     }
-    rotorPos.refresh();
+  convertedValue = (maxPos)*setpoint;
+  double speed = PID.calculate(convertedValue);
+  setSpeed(-speed);
+  rotorPos.refresh();
 
-    amperage.refresh();
+  amperage.refresh();
 
     // if(limitSwitch.get()){
     //   setHome();

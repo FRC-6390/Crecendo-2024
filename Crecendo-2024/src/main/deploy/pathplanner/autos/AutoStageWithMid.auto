@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.384284651596358,
-      "y": 6.991369417831561
+      "x": 1.4662605074140238,
+      "y": 4.133925300660873
     },
-    "rotation": 180.0
+    "rotation": 179.70916097764947
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Segment1Bonus"
+            "pathName": "AutoStageWithMid1"
           }
         },
         {
@@ -36,9 +36,15 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.0
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
           }
         },
         {
@@ -50,7 +56,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Segment2Bonus"
+            "pathName": "AutoStageWithMid2"
           }
         },
         {
@@ -60,26 +66,20 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Segment3Bonus"
+            "name": "Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "TurnAlign"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "Feed"
           }
         }
       ]
     }
   },
-  "folder": "BonusAutos",
+  "folder": "2NotePickup",
   "choreoAuto": false
 }

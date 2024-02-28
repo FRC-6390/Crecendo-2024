@@ -28,8 +28,8 @@ public class TurnCommand extends Command {
   double kI2 = 0.003;
   double kD2 = 0;
 
-  double kP3 = 0.052;
-  double kI3 = 0.0065;
+  double kP3 = 0.0825;
+  double kI3 = 0.015;
   double kD3 = 0;
   public double rot;
   public static boolean isDone;

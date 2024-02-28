@@ -67,7 +67,7 @@ public class Intake extends SubsystemBase {
     {
     centerIntakeRoller.set(speed);
     fullWidthIntakeRoller.set(speed);
-    feedingRollers.set(speed+0.2);
+    feedingRollers.set(speed);
    // System.out.println("_____________________________-Beam is INTACT -___________________________________");
     }
  

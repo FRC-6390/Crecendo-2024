@@ -3,6 +3,7 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -45,6 +46,7 @@ public class ShooterRollers extends Command{
     if(shooter.atSetpoint() || (curTime - startTime) > 5500)
     {
         intake.feed(-1);
+        isDone = true;
     }
     System.out.println("SetpointAt: " + shooter.atSetpoint());
     System.out.println("Velocity: " + shooter.getRotorVelocity());
@@ -60,6 +62,12 @@ public class ShooterRollers extends Command{
 
   @Override
   public boolean isFinished() {
+    if(DriverStation.isAutonomous())
+    {
+      return isDone;
+    }
+    else{
     return false;
+    }
   }
 }

@@ -5,7 +5,7 @@
       "x": 1.384284651596358,
       "y": 6.991369417831561
     },
-    "rotation": 180.0
+    "rotation": 179.28384005453069
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Segment1Bonus"
+            "pathName": "Segment1Basic"
           }
         },
         {
@@ -38,7 +38,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 4.0
           }
         },
         {
@@ -50,7 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Segment2Bonus"
+            "pathName": "Segment2Mid"
           }
         },
         {
@@ -60,9 +60,21 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.0
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Segment3Bonus"
+            "pathName": "New Path"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
           }
         },
         {
@@ -70,16 +82,10 @@
           "data": {
             "name": "TurnAlign"
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
         }
       ]
     }
   },
-  "folder": "BonusAutos",
+  "folder": "AllThree",
   "choreoAuto": false
 }

@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHalf"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Segment1Mid"
@@ -26,19 +32,19 @@
         {
           "type": "named",
           "data": {
-            "name": "PivotMoveHalf"
+            "name": "TurnAlign"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "TurnAlign"
+            "name": "Shoot"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.0
+            "name": "Feed"
           }
         },
         {
@@ -62,18 +68,18 @@
         {
           "type": "named",
           "data": {
-            "name": "TurnAlign"
+            "name": "Shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "TurnCommand"
+            "name": "Feed"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "2NotePickup",
   "choreoAuto": false
 }

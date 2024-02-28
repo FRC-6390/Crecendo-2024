@@ -51,8 +51,8 @@ public class ArmTest extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(DriverStation.isTeleop()){
-    test.stopAll();}
+   
+    test.stopAll();
    // System.out.println("/////////////////////////////////////////////////");
   }
 

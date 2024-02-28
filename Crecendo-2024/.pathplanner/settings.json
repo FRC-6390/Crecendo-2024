@@ -3,12 +3,20 @@
   "robotLength": 0.711,
   "holonomicMode": true,
   "pathFolders": [
+    "AllThreeNonStage",
+    "AllThreeStage",
     "AutoNonStageBasic",
     "AutoNonStageBonus",
     "AutoNonStageWithMid",
-    "AllThree"
+    "AutoStageWithMid",
+    "AutoStageBonus"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "2NotePickup",
+    "AllThree",
+    "General Autos",
+    "BonusAutos"
+  ],
   "defaultMaxVel": 1.0,
   "defaultMaxAccel": 1.0,
   "defaultMaxAngVel": 540.0,
