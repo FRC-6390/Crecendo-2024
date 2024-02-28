@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    RobotContainer.arm.setHome();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     //limInput = new DigitalInput(2);
@@ -70,6 +71,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+   RobotContainer.arm.setHome();
    m_robotContainer.getAutonomousCommand().schedule();
   }
 

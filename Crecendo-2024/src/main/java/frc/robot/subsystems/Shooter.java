@@ -19,6 +19,7 @@ public class Shooter extends SubsystemBase {
   public static VelocityVoltage vel;
   public static Slot0Configs configs;
   public double setpoint = 0;
+  public boolean atSetpoint;
 
  
  
@@ -35,9 +36,13 @@ public class Shooter extends SubsystemBase {
   vel = new VelocityVoltage(0);
   configs = new Slot0Configs();
 
+  //0.12
   configs.kV = 0.12;
+  //0.11
   configs.kP = 0.11;
+  //0.48
   configs.kI = 0.48;
+  //0.01
   configs.kD = 0.01;
 
   leftShooterMotor.getConfigurator().apply(configs, 0.050);
@@ -63,10 +68,10 @@ public class Shooter extends SubsystemBase {
   }
   public boolean atSetpoint()
   {
-    return leftShooterMotor.getRotorVelocity().refresh().getValueAsDouble() >= setpoint; 
+    return Math.abs(leftShooterMotor.getRotorVelocity().refresh().getValueAsDouble()) >= Math.abs(setpoint); 
   }
 
-  public static void stopShooter()
+  public void stopShooter()
   {
     vel.Slot = 0;
     leftShooterMotor.setControl(vel.withVelocity(0));
@@ -84,14 +89,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic()
   {
-  if(setpoint > 0 )
-  {
-    SmartDashboard.putBoolean("Shooter Ready?", atSetpoint());
-  }
-
-  else if(setpoint < 0 )
-  {
-    SmartDashboard.putBoolean("Shooter Ready?", !atSetpoint());
-  }
+ 
   }
 }
