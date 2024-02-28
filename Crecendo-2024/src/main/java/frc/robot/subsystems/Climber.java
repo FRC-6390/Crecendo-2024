@@ -21,13 +21,15 @@ public class Climber extends SubsystemBase {
   public static TalonFX climbMotorLeft;
   public static TalonFX climbMotorRight;
   public static Button button;
- 
+  public static DigitalInput leftLimitSwitch;
+  public static DigitalInput rightLimitSwitch;
+
  
   public Climber()
   {
     button = new Button(new DigitalInput(9));
-
-    // button.onTrue(new InstantCommand(this::motorCoast));
+    leftLimitSwitch = new DigitalInput(5);
+    rightLimitSwitch = new DigitalInput(7);
     motorBrake();
   }
  
@@ -36,7 +38,6 @@ public class Climber extends SubsystemBase {
     
   climbMotorLeft = new TalonFX(10, Constants.DRIVETRAIN.CANBUS);
   climbMotorRight = new TalonFX(16, Constants.DRIVETRAIN.CANBUS);
-  //intakeBeamBreak = new DigitalInput(0);
   TalonFXConfiguration config = new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
   curr.SupplyCurrentLimitEnable = true;
@@ -54,13 +55,7 @@ public class Climber extends SubsystemBase {
   
   }
  
-  //Get value of the intake lift limit switch
 
-
-
- 
-  
-  //Sets the intake rollers
   public void setRollers(double speed){
   climbMotorLeft.set(speed);
   climbMotorRight.set(-speed);
@@ -68,27 +63,22 @@ public class Climber extends SubsystemBase {
  
   }
  
-  //Sets the lift to a certain speed
- 
- 
-  //Gets lift position
- 
- 
-  //Gets roller position
- 
+public static boolean leftLimit(){
+
+  return !leftLimitSwitch.get();
+}
+
+public static boolean rightLimit(){
+
+  return !rightLimitSwitch.get();
+}
  
   public static StatusSignal<Double> getRollerCurrent()
   {
     return climbMotorLeft.getSupplyCurrent();
   }
  
-  //Resets lift encoder
- 
- 
-  //Resets roller encoder
- 
- 
-  //Get value of the intake lift limit switch
+
   public void motorBrake(){
     climbMotorLeft.setNeutralMode(NeutralModeValue.Brake);
     climbMotorRight.setNeutralMode(NeutralModeValue.Brake);
@@ -110,6 +100,13 @@ public class Climber extends SubsystemBase {
       motorBrake();
     }
     }
-    //System.out.println(getLowerBeamBreak());
+    
+    if (leftLimit()){
+      climbMotorLeft.set(0);
+    }
+    if (rightLimit()){
+      climbMotorRight.set(0);
+    }
+
   }
 }

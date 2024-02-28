@@ -33,7 +33,6 @@ import frc.robot.commands.auto.TurnCommand;
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
   public static Arm arm;
-  public static Intake in = new Intake();
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
@@ -128,6 +127,9 @@ public class RobotContainer {
 
     joystick.three.whileTrue(new IntakeRollers(0, intake));
     joystick.four.whileTrue(new IntakeRollers(0.6, intake));
+
+    //joystick.ten.whileTrue(new ShooterRollers(0, shooter));
+
 
     
 
