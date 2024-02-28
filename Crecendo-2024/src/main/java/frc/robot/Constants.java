@@ -102,8 +102,8 @@ public interface Constants {
     }
 
     public interface SHOOTER{
-        int RIGHT_SHOOTER_MOTOR = 11; //NOT THE RIGHT VALUES
-        int LEFT_SHOOTER_MOTOR = 19; //NOT THE RIGHT VALUES
+        int RIGHT_SHOOTER_MOTOR = 100; //NOT THE RIGHT VALUES
+        int LEFT_SHOOTER_MOTOR = 101; //NOT THE RIGHT VALUES
     }
 
     

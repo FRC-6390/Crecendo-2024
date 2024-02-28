@@ -33,35 +33,36 @@ import frc.robot.commands.auto.TurnCommand;
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
   public static Arm arm;
-  public static Intake in = new Intake();
+ 
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
- // public static Shooter shooter = new Shooter();
+  //public static Shooter shooter = new Shooter();
 // public static EventLoop eventLoop = new EventLoop();
     
   public static DebouncedController controller = new DebouncedController(0);
   private DebouncedJoystick joystick = new DebouncedJoystick(1);
 
  
-  //public SendableChooser<String> autoChooser = new SendableChooser<>(); 
+  public SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   public RobotContainer() {
     arm = new Arm(joystick);
     //driveTrain.shuffleboard();
     driveTrain.init();
-    // autoChooser.addOption("Baseline", "Baseline");
-    // autoChooser.addOption("AutoNonStageBonus", "AutoNonStageBonus");
-    // autoChooser.addOption("AutoNonStageWithMid", "AutoNonStageWithMid");
-    // autoChooser.addOption("AutoNonStageBasic", "AutoNonStageBasic");
-    // autoChooser.addOption("Nothing", "Nothing");
+    autoChooser.addOption("Baseline", "Baseline");
+    autoChooser.addOption("AutoNonStageBonus", "AutoNonStageBonus");
+    autoChooser.addOption("AutoNonStageWithMid", "AutoNonStageWithMid");
+    autoChooser.addOption("AutoNonStageBasic", "AutoNonStageBasic");
+    autoChooser.addOption("Nothing", "Nothing");
+    autoChooser.addOption("AllThree", "AllThree");
   
-   // SmartDashboard.putData("AutoChoose", autoChooser);
+    SmartDashboard.putData("AutoChoose", autoChooser);
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
-    //NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
-    //NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
+    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
+    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
@@ -83,17 +84,16 @@ public class RobotContainer {
   private void configureBindings() 
   {
 
-    //  controller.y.onTrue(new PIDTuneTest(driveTrain, 0));
-    //  controller.a.onTrue(new PIDTuneTest(driveTrain, 90));
-    //  controller.b.onTrue(new PIDTuneTest(driveTrain, 180));
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
   //  controller.a.whileTrue(new ShooterRollers(-50, shooter));
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
-    
+   // controller.a.whileTrue(new ShooterRollers(-50, shooter, intake));
+
+   // controller.a.whileFalse(new Feed(2, shooter, intake));
     // controller.b.whileTrue(new IntakeRollers(0.6, intake));
     // controller.a.whileTrue(new IntakeRollers(-0.6, intake));
-    // controller.y.whileTrue(new ClimberHook(0.5, climber));
+    //controller.y.whileTrue(new ClimberHook(0.2, climber));
     // controller.x.whileTrue(new ClimberHook(-0.5, climber));
     // controller.rightBumper.whileTrue(new ShooterRollers(-1));
     //controller.b.onTrue(new ArmTest(test, 0.5));
@@ -113,14 +113,15 @@ public class RobotContainer {
 
     //controller.rightTrigger.whileTrue(new ShooterRollers(-1, shooter));
 
+
+  //---------------------------COMP CONTROLS---------------------------------//
     controller.a.onTrue(new ArmTest(arm, 0));
     controller.b.onTrue(new ArmTest(arm, -0.5));
     controller.y.onTrue(new ArmTest(arm, -1));
     controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
-   // controller.rightTrigger.whileTrue(new ShooterRollers(1, shooter));
+    //controller.rightTrigger.whileTrue(new ShooterRollers(1, shooter, intake));
+    // controller.rightTrigger.whileFalse(new Feed(1, shooter, intake));
 
-    //eventLoop.bind(()->CommandScheduler.getInstance().schedule(new IntakeRollers(0.6, intake)));
-    //joystick.button(7, eventLoop);
     joystick.seven.onTrue(new ArmTest(arm, -1));
     joystick.nine.onTrue(new ArmTest(arm, -0.5));
     joystick.eleven.onTrue(new ArmTest(arm, 0));
@@ -142,9 +143,9 @@ public class RobotContainer {
   //--------------------------Pathplanner Autos-----------------------------//
 
   driveTrain.resetHeading();
-  // arm.setHome();
+  arm.setHome();
 
-  return new PathPlannerAuto("AllThree");
+  return new PathPlannerAuto(autoChooser.getSelected());
 
   //-----------------------Janus Autos---------------------------//
 

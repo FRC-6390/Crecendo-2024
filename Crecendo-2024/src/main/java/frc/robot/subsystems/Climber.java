@@ -25,7 +25,7 @@ public class Climber extends SubsystemBase {
  
   public Climber()
   {
-    button = new Button(new DigitalInput(9));
+    
 
     // button.onTrue(new InstantCommand(this::motorCoast));
     motorBrake();
@@ -36,6 +36,7 @@ public class Climber extends SubsystemBase {
     
   climbMotorLeft = new TalonFX(10, Constants.DRIVETRAIN.CANBUS);
   climbMotorRight = new TalonFX(16, Constants.DRIVETRAIN.CANBUS);
+  button = new Button(new DigitalInput(9));
   //intakeBeamBreak = new DigitalInput(0);
   TalonFXConfiguration config = new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();

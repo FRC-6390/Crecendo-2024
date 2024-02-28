@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class ShooterRollers extends Command{
+public class Feed extends Command{
 
   public double speed;
   public Shooter shooter;
@@ -16,7 +16,7 @@ public class ShooterRollers extends Command{
   public Intake intake;
   public double startTime;
   
-  public ShooterRollers(double speed, Shooter shooter, Intake intake) {
+  public Feed(double speed, Shooter shooter, Intake intake) {
     this.speed = speed;
     this.shooter = shooter;
     this.intake = intake;
@@ -25,9 +25,8 @@ public class ShooterRollers extends Command{
 
   @Override
   public void initialize() {
-    
-    isDone = false;
     startTime = System.currentTimeMillis();
+    isDone = false;
     // numPresses++;
     // if(numPresses > 2)
     // {
@@ -41,14 +40,15 @@ public class ShooterRollers extends Command{
   public void execute() 
   {
     double curTime = System.currentTimeMillis();
-    shooter.setPID(speed);
-    if(shooter.atSetpoint() || (curTime - startTime) > 5500)
+    System.out.println(startTime);
+    System.out.println(startTime - curTime);
+    intake.feed(-1);
+    System.out.println("COMMAND RUN");
+    if((curTime - startTime) > 1500)
     {
-        intake.feed(-1);
+      System.out.println("COMMAND SHOULD END");
+      isDone = true;
     }
-    System.out.println("SetpointAt: " + shooter.atSetpoint());
-    System.out.println("Velocity: " + shooter.getRotorVelocity());
-    System.out.println("Beam" + Intake.getUpperBeamBreak());
   }
 
   @Override
@@ -56,10 +56,13 @@ public class ShooterRollers extends Command{
   {  
   //intake.feed(0);
   //shooter.stopShooter();
+  System.out.println("COMMAND ENDED");
+  intake.feed(0);
+  shooter.stopShooter();
   }
 
   @Override
   public boolean isFinished() {
-    return false;
+    return isDone;
   }
 }
