@@ -12,6 +12,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 //import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
+import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
 
 import frc.robot.commands.auto.TurnAlign;
@@ -34,17 +35,18 @@ import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
-   public static Arm arm = new Arm();
+  public static Arm arm = new Arm();
   public static Intake in = new Intake();
-//  public static frc.robot.subsystems.Test test = new Test();
+//public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
- public static Intake intake = new Intake();
- // public static Shooter shooter = new Shooter();
-  public static Joystick joystick = new Joystick(1);
-  public static EventLoop eventLoop = new EventLoop();
+  public static Intake intake = new Intake();
+  public static Shooter shooter = new Shooter();
+// public static EventLoop eventLoop = new EventLoop();
     
   public static DebouncedController controller = new DebouncedController(0);
+  private DebouncedJoystick joystick = new DebouncedJoystick(1);
+
  
   //public SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
@@ -66,13 +68,14 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers(-0.4, intake));
+    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
 
     // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     // SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
     // //ShuffleboardTab Tab = Shuffleboard.getTab("COMP");
-    // SmartDashboard.putBoolean("Game Piece", Intake.getUpperBeamBreak());
-    SmartDashboard.putBoolean("Game Piece", Intake.getUpperBeamBreak());
+    
+
+
     
 
     configureBindings();
@@ -115,9 +118,19 @@ public class RobotContainer {
     controller.b.onTrue(new ArmTest(arm, -0.5));
     controller.y.onTrue(new ArmTest(arm, -1));
     controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
+    controller.rightTrigger.whileTrue(new ShooterRollers(1, shooter));
 
-    eventLoop.bind(()->CommandScheduler.getInstance().schedule(new IntakeRollers(0.6, intake)));
-    joystick.button(7, eventLoop);
+    //eventLoop.bind(()->CommandScheduler.getInstance().schedule(new IntakeRollers(0.6, intake)));
+    //joystick.button(7, eventLoop);
+    joystick.seven.onTrue(new ArmTest(arm, -1));
+    joystick.nine.onTrue(new ArmTest(arm, -0.5));
+    joystick.seven.onTrue(new ArmTest(arm, 0));
+
+    joystick.three.whileTrue(new IntakeRollers(0, intake));
+    joystick.four.whileTrue(new IntakeRollers(0.6, intake));
+
+
+
   }
 
   public Command getAutonomousCommand()

@@ -1,5 +1,6 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -10,7 +11,7 @@ public class IntakeRollers extends Command {
   public double pos;
  
   public boolean lowerStopped = false;
-  public boolean upperStopped = false;
+  public static boolean upperStopped = false;
   public Intake intake = new Intake();
  
  
@@ -44,12 +45,15 @@ public class IntakeRollers extends Command {
     if(!upperStopped)
     {
       intake.setRollers(speed, 2);
+
      // Intake.setRollers(speed, 4);
     }
     else
     {
       intake.setRollers(speed, 1);
      // Intake.setRollers(speed, 3);
+     
+
     }
     }
    
