@@ -35,13 +35,13 @@ import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
   public static Drivetrain6390 driveTrain = new Drivetrain6390();
-  public static Arm arm = new Arm();
+  public static Arm arm;
   public static Intake in = new Intake();
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
-  public static Shooter shooter = new Shooter();
+ // public static Shooter shooter = new Shooter();
 // public static EventLoop eventLoop = new EventLoop();
     
   public static DebouncedController controller = new DebouncedController(0);
@@ -51,6 +51,7 @@ public class RobotContainer {
   //public SendableChooser<String> autoChooser = new SendableChooser<>(); 
 
   public RobotContainer() {
+    arm = new Arm(joystick);
     //driveTrain.shuffleboard();
     driveTrain.init();
     // autoChooser.addOption("Baseline", "Baseline");
@@ -68,7 +69,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
+   // intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
 
     // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     // SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
@@ -118,16 +119,19 @@ public class RobotContainer {
     controller.b.onTrue(new ArmTest(arm, -0.5));
     controller.y.onTrue(new ArmTest(arm, -1));
     controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
-    controller.rightTrigger.whileTrue(new ShooterRollers(1, shooter));
+   // controller.rightTrigger.whileTrue(new ShooterRollers(1, shooter));
 
     //eventLoop.bind(()->CommandScheduler.getInstance().schedule(new IntakeRollers(0.6, intake)));
     //joystick.button(7, eventLoop);
     joystick.seven.onTrue(new ArmTest(arm, -1));
     joystick.nine.onTrue(new ArmTest(arm, -0.5));
-    joystick.seven.onTrue(new ArmTest(arm, 0));
+    joystick.eleven.onTrue(new ArmTest(arm, 0));
+    
 
     joystick.three.whileTrue(new IntakeRollers(0, intake));
     joystick.four.whileTrue(new IntakeRollers(0.6, intake));
+
+    
 
 
 

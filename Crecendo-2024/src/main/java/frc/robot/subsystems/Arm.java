@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.Drive;
+import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.sensors.Button;
 
@@ -29,6 +30,7 @@ public class Arm extends SubsystemBase {
   public double setpoint = 0;
   public double convertedValue = 0;
   public Button coastButton;
+  private DebouncedJoystick joystick;
  // public DigitalInput limitSwitch = new DigitalInput(2);
   
 
@@ -38,11 +40,11 @@ public class Arm extends SubsystemBase {
   public boolean shouldCoast;
  
 
-  public Arm() {    
+  public Arm(DebouncedJoystick joystick) {    
     ArmMotorLeft = new TalonFX(Constants.ARM.ARM_MOTOR_LEFT, Constants.DRIVETRAIN.CANBUS);
     ArmMotorRight = new TalonFX(Constants.ARM.ARM_MOTOR_RIGHT, Constants.DRIVETRAIN.CANBUS);
     coastButton = new Button(new DigitalInput(1));
-
+    this.joystick = joystick;
     // coastButton.whileFalse(new InstantCommand(this::motorCoast));    
     // coastButton.whileTrue(new InstantCommand(this::motorBrake));    
 
@@ -82,6 +84,7 @@ public class Arm extends SubsystemBase {
   }
   public void setPosition(double pos)
   {
+  pos = Math.min(Math.max(pos, -1), 0);
   setpoint = pos;
   convertedValue = (maxPos)*setpoint;
   double speed = PID.calculate(convertedValue);
@@ -111,7 +114,13 @@ public void motorCoast(){
     // }
   @Override
   public void periodic() {
- 
+    if (joystick.one.getAsBoolean()){
+      double input = joystick.leftY.getAsDouble();
+      double newRange = (0 - (-1));
+      double oldRange = (1-(-1));
+      double joystickPos = (((input - (-1)) * newRange)/oldRange)+(-1);
+      setPosition(joystickPos);
+    }
     rotorPos.refresh();
 
     amperage.refresh();

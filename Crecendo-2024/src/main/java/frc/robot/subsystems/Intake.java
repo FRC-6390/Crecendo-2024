@@ -2,8 +2,11 @@ package frc.robot.subsystems;
  
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.sensors.IRBBSensor;
  
 public class Intake extends SubsystemBase {
@@ -13,6 +16,7 @@ public class Intake extends SubsystemBase {
   public static TalonFX feedingRollers;
   public static IRBBSensor lowerIntakeBeamBreak;
   public static IRBBSensor upperIntakeBeamBreak;
+
  
  
   public Intake()
@@ -91,6 +95,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic()
   {
-    //System.out.println(getLowerBeamBreak());
+   SmartDashboard.putBoolean("Game Piece", Intake.getUpperBeamBreak());
   }
 }
