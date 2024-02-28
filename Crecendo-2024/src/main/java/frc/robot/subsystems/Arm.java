@@ -45,6 +45,7 @@ public class Arm extends SubsystemBase {
     ArmMotorRight = new TalonFX(Constants.ARM.ARM_MOTOR_RIGHT, Constants.DRIVETRAIN.CANBUS);
     coastButton = new Button(new DigitalInput(1));
     this.joystick = joystick;
+    joystick.one.onFalse(new InstantCommand(this::stopAll));
     // coastButton.whileFalse(new InstantCommand(this::motorCoast));    
     // coastButton.whileTrue(new InstantCommand(this::motorBrake));    
 
@@ -97,6 +98,9 @@ public class Arm extends SubsystemBase {
     //return  rotorPos.getValueAsDouble() >= ((maxPos * setpoint)- 0.2) && rotorPos.getValueAsDouble() <= ((maxPos * setpoint) - 0.2); 
   }
 
+public boolean override(){
+  return joystick.one.getAsBoolean();
+}
  public void setHalf(){
   setPosition(0.5);
  }

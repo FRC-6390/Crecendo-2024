@@ -42,7 +42,7 @@ public class ArmTest extends Command {
   public void execute() {
     //test.setPosition(pos);
     test.setPosition(pos);
-    if(test.atPosition())
+    if(test.atPosition()||test.override())
     {
       isDone = true;
     }
