@@ -34,21 +34,22 @@ public class Shooter extends SubsystemBase {
   leftShooterMotor = new TalonFX(Constants.SHOOTER.LEFT_SHOOTER_MOTOR, Constants.DRIVETRAIN.CANBUS);
   rightShooterMotor = new TalonFX(Constants.SHOOTER.RIGHT_SHOOTER_MOTOR, Constants.DRIVETRAIN.CANBUS);
   vel = new VelocityVoltage(0);
+  
   configs = new Slot0Configs();
 
-  // //0.12
-  // configs.kV = 0.12;
-  // //0.11
-  // configs.kP = 0.11;
-  // //0.48
-  // configs.kI = 0.48;
-  // //0.01
-  // configs.kD = 0.01;
+  //0.12
+  configs.kV = 0.12;
+  //0.11
+  configs.kP = 0.5;
+  //0.48
+  configs.kI = 0.48;
+  //0.01
+  configs.kD = 0.01;
 
-  // leftShooterMotor.getConfigurator().apply(configs, 0.050);
-  // rightShooterMotor.getConfigurator().apply(configs, 0.050);
-  // }
+  leftShooterMotor.getConfigurator().apply(configs, 0.050);
+  rightShooterMotor.getConfigurator().apply(configs, 0.050);
   }
+  
   public void setRollers(double speed){
 
     leftShooterMotor.set(speed);

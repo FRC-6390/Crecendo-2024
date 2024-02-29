@@ -43,10 +43,10 @@ isDone = false;
   {
   double curTime = System.currentTimeMillis();
     shooter.setPID(speed);
-if(shooter.atSetpoint() || (curTime - startTime) > 5500)
+if(shooter.atSetpoint() || (curTime - startTime) > 2500)
     {
-        intake.feed(-1);
-        isDone = true;
+      isDone = true;  
+      intake.feed(-1);
     }
     System.out.println("SetpointAt: " + shooter.atSetpoint());
     System.out.println("Velocity: " + shooter.getRotorVelocity());

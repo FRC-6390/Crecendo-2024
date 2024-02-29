@@ -27,21 +27,21 @@ public class Climber extends SubsystemBase {
  
   public Climber()
   {
-    button = new Button(new DigitalInput(9));
-    leftLimitSwitch = new DigitalInput(5);
-    rightLimitSwitch = new DigitalInput(7);
+    
+    //leftLimitSwitch = new DigitalInput(5);
+    //rightLimitSwitch = new DigitalInput(7);
     motorBrake();
   }
  
   static
   {
-    
+  button = new Button(new DigitalInput(9));  
   climbMotorLeft = new TalonFX(10, Constants.DRIVETRAIN.CANBUS);
   climbMotorRight = new TalonFX(16, Constants.DRIVETRAIN.CANBUS);
   TalonFXConfiguration config = new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
   curr.SupplyCurrentLimitEnable = true;
-  curr.SupplyCurrentLimit = 5;
+  curr.SupplyCurrentLimit = 30;
   
   
   config.withCurrentLimits(curr);
@@ -101,12 +101,12 @@ public static boolean rightLimit(){
     }
     }
     
-    if (leftLimit()){
-      climbMotorLeft.set(0);
-    }
-    if (rightLimit()){
-      climbMotorRight.set(0);
-    }
+    // if (leftLimit()){
+    //   climbMotorLeft.set(0);
+    // }
+    // if (rightLimit()){
+    //   climbMotorRight.set(0);
+    // }
 
   }
 }
