@@ -94,10 +94,10 @@ public class RobotContainer {
   {
 
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    //  controller.a.whileTrue(new ShooterRollers(-50, shooter));
+    
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
-    controller.a.whileTrue(new ShooterRollers(100, shooter, intake));
+    //controller.a.whileTrue(new ShooterRollers(100, shooter, intake));
     //controller.a.onFalse(new Feed(-1, shooter, intake));
    //controller.start.onTrue(new TurnCommand(driveTrain,0));
    // controller.a.whileFalse(new Feed(2, shooter, intake));
@@ -121,18 +121,15 @@ public class RobotContainer {
     // controller.y.onTrue(new InstantCommand(arm::setHome));
     //controller.a.whileTrue(new IntakeRollers(-0.2));
 
-    controller.rightBumper.whileTrue(new Shoot(shooter, intake));
-    controller.a.whileTrue(new Feed(-1, shooter, intake));
+ 
+    //controller.a.whileTrue(new Feed(-1, shooter, intake));
     //controller.rightTrigger.whileTrue(new ShooterRollers(-1, shooter));
 
 
   //---------------------------COMP CONTROLS---------------------------------//
-   // controller.a.onTrue(new ArmTest(arm, 0));
-    controller.b.onTrue(new ArmTest(arm, -0.5));
-    controller.y.onTrue(new ArmTest(arm, -1));
     controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
-    //controller.rightTrigger.whileTrue(new ShooterRollers(1, shooter, intake));
-    //controller.rightTriggerB.whileFalse(new Feed(1, shooter, intake));
+    controller.rightBumper.whileTrue(new ShooterRollers(100, shooter, intake));
+    controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
 
     joystick.seven.onTrue(new ArmTest(arm, -1));
     joystick.nine.onTrue(new ArmTest(arm, -0.5));

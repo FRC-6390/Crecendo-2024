@@ -40,7 +40,7 @@ public class IntakeRollers extends Command {
   public void execute()
   {
   if(DriverStation.isTeleop()){
-   //System.out.print("_____________________"+Intake.getUpperBeamBreak()+"---------------------------------");
+
    upperStopped = false;
    if(Intake.getUpperBeamBreak())
     {
@@ -50,42 +50,22 @@ public class IntakeRollers extends Command {
     {
       intake.setRollers(speed, 2);
 
-     // Intake.setRollers(speed, 4);
     }
     else
     {
       intake.setRollers(speed, 1);
-     // Intake.setRollers(speed, 3);
-     
+
 
     }
     }
    
   }
-    // else{
-    //   System.out.println(Intake.centerIntakeRoller.getPosition().refresh().getValueAsDouble());
-    //   if (isHomeSet == false){
-    //     Intake.centerIntakeRoller.setPosition(0);
-    //     isHomeSet = true;
-    //   }
-     
-    //       if (Intake.centerIntakeRoller.getPosition().refresh().getValueAsDouble() < 50.0){
-    //         Intake.setRollers(speed);
-    //       }
-    //       else{
- 
-    //         Intake.setRollers(0);
-    //       }
-    //       }
- 
- 
+
  
  
   @Override
   public void end(boolean interrupted) {
-  // if(Intake.getLowerBeamBreak()==false){
-  //   Intake.setRollers(0,2);
-  // }
+ 
   intake.setRollers(0, 1);
   }
  

@@ -12,14 +12,10 @@ public class Button {
     public Button(DigitalInput input)
     {
         this.input = input;
-       // super(input::get);
-        // input = new DigitalInput(port);
-        // debouncer = new Debouncer(this, 0.5f);
+
     }
 
-    // private boolean get(){
-    //     return !input.get();
-    // }
+
 
     public boolean isPressed()
     {

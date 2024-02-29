@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase {
   lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK);
   upperIntakeBeamBreak = new IRBBSensor(6);
   feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
-  //intakeBeamBreak = new DigitalInput(0);
+
   }
  
   //Get value of the intake lift limit switch
@@ -61,7 +61,7 @@ public class Intake extends SubsystemBase {
     centerIntakeRoller.set(0);
     fullWidthIntakeRoller.set(0);
     feedingRollers.set(0);
-   // System.out.println("-------------------------------------------Beam is BROKEN---------------------------------------------------------------------");
+   //Beam is BROKEN
     }
     else if(num == 2)
     {
@@ -79,29 +79,14 @@ public class Intake extends SubsystemBase {
     VelocityDutyCycle vel = new VelocityDutyCycle(speed);
     centerIntakeRoller.setControl(vel);
   }
-  //Sets the lift to a certain speed
- 
- 
-  //Gets lift position
- 
- 
-  //Gets roller position
- 
+
  
   public static StatusSignal<Double> getRollerCurrent()
   {
     return centerIntakeRoller.getSupplyCurrent();
   }
  
-  //Resets lift encoder
- 
- 
-  //Resets roller encoder
- 
- 
-  //Get value of the intake lift limit switch
- 
- 
+
   @Override
   public void periodic()
   {

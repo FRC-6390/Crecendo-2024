@@ -57,7 +57,7 @@ public class TeleopAlign extends Command {
     if(limelight.hasValidTarget())
     {
       drivetrain.drive(new ChassisSpeeds(yController.calculate(limelight.getTargetHorizontalOffset(), Ypos),controller.calculate(limelight.getTargetVerticalOffset(), Xpos) * -1,0));
-     //yController.calculate(drivetrain.getHeading(), -180
+
       if(yController.calculate(limelight.getTargetHorizontalOffset(), 0) < 0.2)
       {
         drivetrain.drive(new ChassisSpeeds(0,0,0));

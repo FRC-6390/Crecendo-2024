@@ -146,19 +146,6 @@ public interface Constants {
 
         BLUE_AMP(6, 90);
 
-
-
-        // Blue right X: 138cm - 41cm = 0.97m Y: 65cm+23.5cm + 5cm + 5cm = 0.985m
-        // Blue middle X: 138cm - 41cm = 0.97m Y: 191cm + 2.5cm+ 47cm+ + 5cm + 23.5cm = 2.69m
-        // Blue left X: 138cm - 41cm = 0.97m Y: 191cm + 168cm + 2.5cm + 47cm + 5cm + 23.5cm = 4.37m
-        
-        // Red loading X: 36cm = 0.36m Y: 550cm + 117cm = 6.67m
-        // Blue loading X: 1654cm - 36cm = 16.18m Y: 550cm + 117cm = 6.67m
-        
-        // Red right X: 1654cm - 138cm + 41cm = 15.57m Y: 65cm+23.5cm + 5cm + 5cm = 0.985m
-        // Red middle X: 1654cm - 138cm + 41cm = 15.57m Y: 191cm + 2.5cm+ 47cm+ + 5cm + 23.5cm = 2.69m
-        // Red left X: 1654cm - 138cm + 41cm = 15.57m Y: 191cm + 168cm + 2.5cm + 47cm + 5cm + 23.5cm = 4.37m
-
         long id;
         double heading;
         private APRILTAGS(long id, double heading){

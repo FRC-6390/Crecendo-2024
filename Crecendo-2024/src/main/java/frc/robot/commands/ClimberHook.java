@@ -7,7 +7,7 @@ public class ClimberHook extends Command {
  
   public double speed;
   public double pos;
-
+  public boolean isHit = false;
   public Climber climber = new Climber();
 
  
@@ -23,7 +23,7 @@ public class ClimberHook extends Command {
  
   @Override
   public void initialize() {
-
+    isHit = false;
 
  
   }
@@ -39,9 +39,7 @@ public class ClimberHook extends Command {
  
   @Override
   public void end(boolean interrupted) {
-  // if(Intake.getLowerBeamBreak()==false){
-  //   Intake.setRollers(0,2);
-  // }
+
   climber.setRollers(0);
   }
  
