@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
+import frc.robot.commands.auto.AutoFeed;
 import frc.robot.commands.auto.IntakeDrive;
 import frc.robot.commands.auto.Shoot;
 import frc.robot.commands.auto.TurnCommand;
@@ -69,6 +70,7 @@ public class RobotContainer {
     autoChooser.addOption("StageSideExtra", "StageSideExtra");
     autoChooser.addOption("NonStageSideExtra", "NonStageSideExtra");
     
+    
     SmartDashboard.putData("AutoChoose", autoChooser);
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
@@ -81,7 +83,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Shoot", new ShooterRollers(80, shooter, intake));
     NamedCommands.registerCommand("WShoot", new ShooterRollers(80, shooter, intake));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
+    NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
+    NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
     
+
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
     intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
     
