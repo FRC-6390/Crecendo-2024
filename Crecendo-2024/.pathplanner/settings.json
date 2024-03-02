@@ -8,17 +8,22 @@
     "AutoNonStageBasic",
     "AutoNonStageBonus",
     "AutoNonStageWithMid",
+    "AutoStageBonus",
     "AutoStageWithMid",
-    "AutoStageBonus"
+    "Center",
+    "StageSide",
+    "NonStageSide"
   ],
   "autoFolders": [
     "2NotePickup",
     "AllThree",
-    "General Autos",
-    "BonusAutos"
+    "Basics",
+    "BonusAutos",
+    "Extras",
+    "General Autos"
   ],
-  "defaultMaxVel": 1.0,
-  "defaultMaxAccel": 1.0,
+  "defaultMaxVel": 4.0,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "maxModuleSpeed": 5.21

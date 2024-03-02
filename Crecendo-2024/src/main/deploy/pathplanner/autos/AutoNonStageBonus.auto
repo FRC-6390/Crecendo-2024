@@ -26,6 +26,30 @@
         {
           "type": "named",
           "data": {
+            "name": "TurnAlign"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "TurnCommand"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "IntakeDrive"
           }
         },
@@ -36,9 +60,15 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.0
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
           }
         },
         {
@@ -72,9 +102,15 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 1.0
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
           }
         }
       ]

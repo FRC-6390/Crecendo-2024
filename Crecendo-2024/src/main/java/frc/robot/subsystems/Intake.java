@@ -2,6 +2,8 @@ package frc.robot.subsystems;
  
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,6 +36,13 @@ public class Intake extends SubsystemBase {
   upperIntakeBeamBreak = new IRBBSensor(6);
   feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
 
+  TalonFXConfiguration con2 =  new TalonFXConfiguration();
+  CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
+  curr.SupplyCurrentLimitEnable = true;
+  curr.SupplyCurrentLimit = 40;
+  con2.withCurrentLimits(curr);
+
+  feedingRollers.getConfigurator().apply(con2);
   }
  
   //Get value of the intake lift limit switch
@@ -52,7 +61,15 @@ public class Intake extends SubsystemBase {
   {
     feedingRollers.set(speed);
   }
+  public void centerIntake(double speed)
+  {
+    centerIntakeRoller.set(speed);
+  }
  
+  public void fullWidth(double speed)
+  {
+    fullWidthIntakeRoller.set(0);
+  }
   //Sets the intake rollers
   public void setRollers(double speed, int num)
   {
@@ -65,9 +82,9 @@ public class Intake extends SubsystemBase {
     }
     else if(num == 2)
     {
-    centerIntakeRoller.set(speed);
+    centerIntakeRoller.set(speed - 0.2);
     fullWidthIntakeRoller.set(speed);
-    feedingRollers.set(speed + 0.1);
+    feedingRollers.set(speed + 0.2);
    // System.out.println("_____________________________-Beam is INTACT -___________________________________");
     }
  

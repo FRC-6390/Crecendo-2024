@@ -2,31 +2,25 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.477971343959805,
-      "y": 4.122214464115091
+      "x": 0.83,
+      "y": 4.5
     },
-    "rotation": 179.43161169048918
+    "rotation": 120.85778606115218
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "AutoStageBonus1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnAlign"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHigh"
           }
         },
         {
@@ -36,45 +30,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "TurnCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeDrive"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnAlign"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Feed"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnCommand"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "AutoStageBonus2"
+            "pathName": "New New Path"
           }
         },
         {
@@ -86,19 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "AutoStageBonus3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnAlign"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
+            "pathName": "New New New Path"
           }
         },
         {
@@ -108,14 +54,32 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra1"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "TurnCommand"
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
           }
         }
       ]
     }
   },
-  "folder": "BonusAutos",
+  "folder": "Extras",
   "choreoAuto": false
 }

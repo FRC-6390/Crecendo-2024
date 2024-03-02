@@ -63,7 +63,12 @@ public class RobotContainer {
     autoChooser.addOption("AllThreeNonStage", "AllThreeNonStage");
     autoChooser.addOption("AllThreeStage", "AllThreeStage");
     autoChooser.addOption("AutoStageBasic", "AutoStageBasic");
-  
+    autoChooser.addOption("StageSide", "StageSide");
+    autoChooser.addOption("Center", "Center");
+    autoChooser.addOption("NonStageSide", "NonStageSide");
+    autoChooser.addOption("StageSideExtra", "StageSideExtra");
+    autoChooser.addOption("NonStageSideExtra", "NonStageSideExtra");
+    
     SmartDashboard.putData("AutoChoose", autoChooser);
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
@@ -72,12 +77,14 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
-    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, 0));
-    NamedCommands.registerCommand("Shoot", new ShooterRollers(90, shooter, intake));
+    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.2));
+    NamedCommands.registerCommand("Shoot", new ShooterRollers(80, shooter, intake));
+    NamedCommands.registerCommand("WShoot", new ShooterRollers(80, shooter, intake));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
     intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
+    
 
     // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
     // SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
@@ -133,17 +140,17 @@ public class RobotContainer {
     controller.rightBumper.whileTrue(new ShooterRollers(80, shooter, intake));
     controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
 
-    joystick.eight.onTrue(new ArmTest(arm, 0));
+    joystick.eight.onTrue(new ArmTest(arm, 0.08));
     joystick.seven.onTrue(new ArmTest(arm, -1));
-    joystick.eleven.onTrue(new ArmTest(arm, -0.15));
+    joystick.eleven.onTrue(new ArmTest(arm, -0.2));
     joystick.nine.onTrue(new ArmTest(arm, -0.5));
-    joystick.ten.whileTrue(new ClimberHook(1, climber));
-    joystick.twelve.whileTrue(new ClimberHook(-1, climber));
+    //joystick.ten.whileTrue(new ClimberHook(0.2, climber));
+    //joystick.twelve.whileTrue(new ClimberHook(-0.2 , climber));
     
     
     joystick.three.whileTrue(new StopIntake(0, intake));
     joystick.four.whileTrue(new Reverse(0.6, intake));
-
+    joystick.six.whileTrue(new StopShooter(shooter));
     
 
     //RAND

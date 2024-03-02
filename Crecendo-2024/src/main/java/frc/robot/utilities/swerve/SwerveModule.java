@@ -7,6 +7,8 @@ import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -58,7 +60,15 @@ public class SwerveModule {
         encoderOffset = config.encoderOffset();
         driveMotor.setInverted(config.driveMotorReversed());
         rotationMotor.setInverted(config.rotationMotorReversed());
+        TalonFXConfiguration con2 =  new TalonFXConfiguration();
+        CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
+        curr.SupplyCurrentLimitEnable = true;
+        curr.SupplyCurrentLimit = 60;
+        con2.withCurrentLimits(curr);
+
+        driveMotor.getConfigurator().apply(con2);
         encoderPos=encoder.getPosition();
+        
         if(offsetEntry != null) encoderOffset = offsetEntry.getDouble(0.0);
         
         CANcoderConfiguration  con = new CANcoderConfiguration();

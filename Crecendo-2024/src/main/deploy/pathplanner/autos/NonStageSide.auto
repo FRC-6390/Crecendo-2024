@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.87,
+      "y": 6.5463576290918635
+    },
+    "rotation": -120.50795362006203
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHigh"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NonStageSide1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "NonStageSide2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Basics",
+  "choreoAuto": false
+}

@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,7 +22,7 @@ public class Shooter extends SubsystemBase {
   public static Slot0Configs configs;
   public double setpoint = 0;
   public boolean atSetpoint;
-
+  //public static Follower rightShooterMotor = new Follower(Constants.SHOOTER.LEFT_SHOOTER_MOTOR, true);
  
  
   public Shooter()
@@ -32,7 +34,9 @@ public class Shooter extends SubsystemBase {
   static
   {
   leftShooterMotor = new TalonFX(Constants.SHOOTER.LEFT_SHOOTER_MOTOR, Constants.DRIVETRAIN.CANBUS);
+  
   rightShooterMotor = new TalonFX(Constants.SHOOTER.RIGHT_SHOOTER_MOTOR, Constants.DRIVETRAIN.CANBUS);
+  //rightShooterMotor.setControl(new Follower(Constants.SHOOTER.LEFT_SHOOTER_MOTOR, true));
   vel = new VelocityVoltage(0);
   
   configs = new Slot0Configs();
@@ -42,7 +46,7 @@ public class Shooter extends SubsystemBase {
   //0.11
   configs.kP = 0.5;
   //0.48
-  configs.kI = 0.48;
+  configs.kI = 0.00;
   //0.01
   configs.kD = 0.01;
 
@@ -62,6 +66,7 @@ public class Shooter extends SubsystemBase {
     vel.Slot = 0;
     leftShooterMotor.setControl(vel.withVelocity(desireSpeed));
     rightShooterMotor.setControl(vel.withVelocity(-desireSpeed));
+    
   }
 
   public double getRotorVelocity()
@@ -76,8 +81,9 @@ public class Shooter extends SubsystemBase {
   public void stopShooter()
   {
     vel.Slot = 0;
-    leftShooterMotor.setControl(vel.withVelocity(0));
-    rightShooterMotor.setControl(vel.withVelocity(0));
+    leftShooterMotor.set(0);
+    rightShooterMotor.set (0);
+    System.out.println("//------------------SHOOTER IS STOPPED ------------------///");
   }
 
  
@@ -89,8 +95,6 @@ public class Shooter extends SubsystemBase {
  
  
   @Override
-  public void periodic()
-  {
- 
+  public void periodic(){
   }
 }

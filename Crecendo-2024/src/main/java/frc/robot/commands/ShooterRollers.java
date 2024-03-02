@@ -42,11 +42,15 @@ isDone = false;
   public void execute() 
   {
   double curTime = System.currentTimeMillis();
-    shooter.setPID(speed);
-if(shooter.atSetpoint() || (curTime - startTime) > 2500)
+  shooter.setPID(speed);
+
+
+if(shooter.atSetpoint() || (curTime - startTime) > 4000)
     {
       isDone = true;  
       intake.feed(-1);
+      intake.centerIntake(-0.6);
+      //shooter.stopShooter();
     }
     System.out.println("SetpointAt: " + shooter.atSetpoint());
     System.out.println("Velocity: " + shooter.getRotorVelocity());
