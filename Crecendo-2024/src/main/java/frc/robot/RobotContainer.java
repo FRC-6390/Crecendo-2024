@@ -16,13 +16,28 @@ import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
 
 import frc.robot.commands.auto.TurnAlign;
+
+import java.util.List;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.commands.PathfindHolonomic;
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.pathfinding.Pathfinding;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
@@ -33,14 +48,16 @@ import frc.robot.commands.auto.Shoot;
 import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
-  public static Drivetrain6390 driveTrain = new Drivetrain6390();
+  
   public static Arm arm;
- 
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
+ // public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
   public static Shooter shooter = new Shooter();
+  public static Pose2d scoringPos = new Pose2d(1.24, 5.52, new Rotation2d());
+  public static Pose2d scoringPosR = new Pose2d(15.26, 5.52, new Rotation2d());
 // public static EventLoop eventLoop = new EventLoop();
     
   public static DebouncedController controller = new DebouncedController(0);
@@ -52,7 +69,7 @@ public class RobotContainer {
   public RobotContainer() {
     arm = new Arm(joystick);
     //driveTrain.shuffleboard();
-    driveTrain.init();
+    //driveTrain.init();
     autoChooser.addOption("Baseline", "Baseline");
     autoChooser.addOption("AutoNonStageBonus", "AutoNonStageBonus");
     autoChooser.addOption("AutoNonStageWithMid", "AutoNonStageWithMid");
@@ -69,26 +86,27 @@ public class RobotContainer {
     autoChooser.addOption("NonStageSide", "NonStageSide");
     autoChooser.addOption("StageSideExtra", "StageSideExtra");
     autoChooser.addOption("NonStageSideExtra", "NonStageSideExtra");
-    
+    autoChooser.addOption("StageSideExtraFast", "StageSideExtraFast");
+    autoChooser.addOption("StageSideRed", "StageSideRed");
     
     SmartDashboard.putData("AutoChoose", autoChooser);
-    NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
-    NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
-    NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
+    // NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
+    // NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
+    // NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
     NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
-    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
+   //NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.2));
-    NamedCommands.registerCommand("Shoot", new ShooterRollers(80, shooter, intake));
-    NamedCommands.registerCommand("WShoot", new ShooterRollers(80, shooter, intake));
+    NamedCommands.registerCommand("Shoot", new ShooterRollers(1, shooter, intake, 80));
+    // NamedCommands.registerCommand("WShoot", new ShooterRollers(1, shooter, intake, 80));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
-    NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
+   // NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
     
 
-    driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
+    //driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
+    //intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
     
 
     // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
@@ -106,7 +124,15 @@ public class RobotContainer {
   private void configureBindings() 
   {
 
-    controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
+    // controller.a.onTrue(new ArmTest(arm, -0.5));
+    // controller.b.onTrue(new ArmTest(arm, -1));
+    // controller.y.onTrue(new ArmTest(arm, 0));
+    SmartDashboard.putData("Down", new ArmTest(arm, -1));
+    SmartDashboard.putData("Half",new ArmTest(arm, -0.5));
+    SmartDashboard.putData("Up",new ArmTest(arm, 0));
+    
+
+    //controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     
     //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
    // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
@@ -141,22 +167,73 @@ public class RobotContainer {
 
   //---------------------------COMP CONTROLS---------------------------------//
     
-  controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
-    controller.rightBumper.whileTrue(new ShooterRollers(80, shooter, intake));
-    controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
+  // controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
+  //   controller.rightBumper.whileTrue(new ShooterRollers(1, shooter, intake, 70));
+  //   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
+  //   //controller.y.onTrue(new PathfindHolonomic(null, null, null, null, null, null, null));
+  //   //controller.y.onTrue(new PathfindingCommand(null, null, null, null, null, null, 0, null, null, null))
+  //   Command pathFind; 
+                        
+  //   if(!driveTrain.getSide())
+  //   {
+  //     pathFind = AutoBuilder.pathfindToPose(scoringPos, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
+  //   }
+  //   else
+  //   {
+  //     pathFind = AutoBuilder.pathfindToPose(scoringPosR, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
+  //   }
 
-    joystick.eight.onTrue(new ArmTest(arm, 0.08));
-    joystick.seven.onTrue(new ArmTest(arm, -1));
-    joystick.eleven.onTrue(new ArmTest(arm, -0.2));
-    joystick.nine.onTrue(new ArmTest(arm, -0.5));
+  //   controller.b.onTrue(pathFind);
+
+  //   controller.y.onTrue
+  //   (
+  //     AutoBuilder.pathfindToPose
+  //     (
+  //       new Pose2d(1.24, 5.52, new Rotation2d(0)), 
+  //       new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
+  //     )
+  //   );
+
+  //   controller.x.onTrue(Commands.runOnce(() -> 
+  //   {
+     
+  //     Pose2d startPos = new Pose2d(driveTrain.getPose().getTranslation(), driveTrain.getRotation2d());
+  //     double ydis = scoringPos.getY() - startPos.getY();
+  //     double xdis = scoringPos.getX() - startPos.getX();
+  //     Pose2d endPos = new Pose2d(startPos.getTranslation().plus(new Translation2d(xdis, ydis)), new Rotation2d());
+  //     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+  //     PathPlannerPath path = new PathPlannerPath(
+  //       bezierPoints, 
+  //       new PathConstraints(
+  //         4.0, 4.0, 
+  //         Units.degreesToRadians(360), Units.degreesToRadians(540)
+  //       ),  
+  //       new GoalEndState(0.0, startPos.getRotation())
+  //     );
+
+  //     // Prevent this path from being flipped on the red alliance, since the given positions are already correct
+  //     path.preventFlipping = true;
+
+  //     AutoBuilder.followPath(path).schedule();
+
+
+  //   }));
+
+    
+
+    // joystick.eight.onTrue(new ArmTest(arm, 0.08));
+    // joystick.seven.onTrue(new ArmTest(arm, -1));
+    // joystick.eleven.onTrue(new ArmTest(arm, -0.2));
+    // joystick.nine.onTrue(new ArmTest(arm, -0.5));
     //joystick.ten.whileTrue(new ClimberHook(0.2, climber));
     //joystick.twelve.whileTrue(new ClimberHook(-0.2 , climber));
     
     
     joystick.three.whileTrue(new StopIntake(0, intake));
     joystick.four.whileTrue(new Reverse(0.6, intake));
-    joystick.six.whileTrue(new StopShooter(shooter));
-    
+   // joystick.six.whileTrue(new StopShooter(shooter));
+   // joystick.five.whileTrue(new ShooterRollers (1, shooter, intake, 70));
+    joystick.five.onFalse(new Feed(-1, shooter, intake));
 
     //RAND
     // joystick.two.whileTrue(new ShooterRollers(10, shooter, intake));
@@ -170,7 +247,7 @@ public class RobotContainer {
 
   //--------------------------Pathplanner Autos-----------------------------//
 
-  driveTrain.resetHeading();
+  //driveTrain.resetHeading();
   arm.setHome();
 
   return new PathPlannerAuto(autoChooser.getSelected());

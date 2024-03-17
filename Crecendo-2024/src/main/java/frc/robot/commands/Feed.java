@@ -58,12 +58,12 @@ public class Feed extends Command{
   public void end(boolean interrupted) 
   {  
   //intake.feed(0);
-  //shooter.stopShooter();
+  shooter.stopShooter();
   System.out.println("COMMAND ENDED");
   intake.feed(0);
   intake.centerIntake(0);
   intake.fullWidth(0);
-  shooter.setPID(0);
+  //shooter.setPID(0);
   //shooter.setPID(0);
   }
 

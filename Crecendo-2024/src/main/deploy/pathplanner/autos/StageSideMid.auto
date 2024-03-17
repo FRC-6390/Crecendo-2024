@@ -2,33 +2,15 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.384284651596358,
-      "y": 6.991369417831561
+      "x": 0.8104536608502588,
+      "y": 4.543804579763226
     },
-    "rotation": 180.0
+    "rotation": 122.15229514128232
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveHalf"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Segment1Basic"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Turn25"
-          }
-        },
         {
           "type": "named",
           "data": {
@@ -38,13 +20,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Feed"
+            "name": "PivotMoveHalf"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "TurnCommand"
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New New Path"
           }
         },
         {
@@ -54,15 +42,33 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "Turn25"
+            "pathName": "New New New Path"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideMid1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideMid2"
           }
         },
         {
@@ -74,6 +80,6 @@
       ]
     }
   },
-  "folder": "General Autos",
+  "folder": "Mids",
   "choreoAuto": false
 }

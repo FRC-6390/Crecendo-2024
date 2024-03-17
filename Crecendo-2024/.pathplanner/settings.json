@@ -15,12 +15,9 @@
     "NonStageSide"
   ],
   "autoFolders": [
-    "2NotePickup",
-    "AllThree",
     "Basics",
-    "BonusAutos",
     "Extras",
-    "General Autos"
+    "Mids"
   ],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 4.0,

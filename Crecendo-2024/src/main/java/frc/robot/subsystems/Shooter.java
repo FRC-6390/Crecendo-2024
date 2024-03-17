@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
  
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.Orchestra;
+import com.fasterxml.jackson.databind.module.SimpleAbstractTypeResolver;
+// import com.ctre.phoenix.music.Orchestra;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -20,6 +23,9 @@ public class Shooter extends SubsystemBase {
   public static TalonFX rightShooterMotor;
   public static VelocityVoltage vel;
   public static Slot0Configs configs;
+ 
+  
+
   public double setpoint = 0;
   public boolean atSetpoint;
   //public static Follower rightShooterMotor = new Follower(Constants.SHOOTER.LEFT_SHOOTER_MOTOR, true);
@@ -41,17 +47,21 @@ public class Shooter extends SubsystemBase {
   
   configs = new Slot0Configs();
 
-  //0.12
-  configs.kV = 0.12;
-  //0.11
-  configs.kP = 0.5;
-  //0.48
-  configs.kI = 0.00;
-  //0.01
-  configs.kD = 0.01;
 
-  leftShooterMotor.getConfigurator().apply(configs, 0.050);
-  rightShooterMotor.getConfigurator().apply(configs, 0.050);
+
+
+
+  // //0.12
+  // configs.kV = 0.12;
+  // //0.11
+  // configs.kP = 0.5;
+  // //0.48
+  // configs.kI = 0.00;
+  // //0.01
+  // configs.kD = 0.01;
+
+  // leftShooterMotor.getConfigurator().apply(configs, 0.050);
+  // rightShooterMotor.getConfigurator().apply(configs, 0.050);
   }
   
   public void setRollers(double speed){
@@ -96,5 +106,6 @@ public class Shooter extends SubsystemBase {
  
   @Override
   public void periodic(){
+    SmartDashboard.putNumber("Shooter Velocity", getRotorVelocity());
   }
 }

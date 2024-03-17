@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands;
 
 
 import frc.robot.subsystems.Intake;
@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class AutoFeed extends Command{
+public class NewFeed extends Command{
 
   public double speed;
   public Shooter shooter;
@@ -16,7 +16,7 @@ public class AutoFeed extends Command{
   public Intake intake;
   public double startTime;
   
-  public AutoFeed(double speed, Shooter shooter, Intake intake) {
+  public NewFeed(double speed, Shooter shooter, Intake intake) {
     this.speed = speed;
     this.shooter = shooter;
     this.intake = intake;
@@ -45,11 +45,11 @@ public class AutoFeed extends Command{
     intake.feed(-1);
     intake.centerIntake(-0.6);
     System.out.println("COMMAND RUN");
-    if((curTime - startTime) > 1000)
+    if((curTime - startTime) > 1500)
     {
       System.out.println("COMMAND SHOULD END");
       //shooter.setPID(0);
-      //shooter.stopShooter();
+      shooter.stopShooter();
       isDone = true;
     }
   }
@@ -63,7 +63,7 @@ public class AutoFeed extends Command{
   intake.feed(0);
   intake.centerIntake(0);
   intake.fullWidth(0);
-  // shooter.setPID(0);
+  //shooter.setPID(0);
   //shooter.setPID(0);
   }
 

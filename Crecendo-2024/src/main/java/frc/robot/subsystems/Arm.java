@@ -13,6 +13,11 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,16 +26,22 @@ import frc.robot.commands.Drive;
 import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.sensors.Button;
+// import frc.robot.utilities.telemetry.PivotTelemetry;
 
 public class Arm extends SubsystemBase {
   /** Creates a new Test. */
   private TalonFX ArmMotorLeft;
   private TalonFX ArmMotorRight;
+  // private PivotTelemetry tele;
   private PID PID;
   public double setpoint = 0;
   public double convertedValue = 0;
   public Button coastButton;
+  public Mechanism2d arm = new Mechanism2d(3, 3);
+  public MechanismRoot2d root = arm.getRoot("pivot", 2, 0);
   private DebouncedJoystick joystick;
+  public MechanismLigament2d pivot;
+  public ShuffleboardTab tab = Shuffleboard.getTab("Arm");
  // public DigitalInput limitSwitch = new DigitalInput(2);
   
 
@@ -59,6 +70,10 @@ public class Arm extends SubsystemBase {
     curr.SupplyCurrentLimit = 80;
     con.withCurrentLimits(curr);
     motorBrake();
+    pivot = root.append(new MechanismLigament2d("Pivot", 2, 0));
+    // tele = new PivotTelemetry(ArmMotorLeft, PID, tab, arm);
+
+    
 
   }
 
@@ -112,6 +127,7 @@ public void motorCoast(){
     // }
   @Override
   public void periodic() {
+
     if (joystick.one.getAsBoolean()){
       double input = joystick.leftY.getAsDouble();
       double newRange = (0 - (-1));
@@ -137,7 +153,8 @@ motorBrake();
 }
 }
 
-
+pivot.setAngle(setpoint * 90);
+// tele.updateShuffleboatelerd();
     
     
   }

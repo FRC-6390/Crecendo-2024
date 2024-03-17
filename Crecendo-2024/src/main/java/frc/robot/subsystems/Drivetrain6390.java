@@ -1,21 +1,26 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -29,27 +34,42 @@ import frc.robot.Constants.SWERVEMODULE;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
 import frc.robot.utilities.swerve.SwerveModule;
+// import frc.robot.utilities.telemetry.SwerveTelemetry;
+import frc.robot.utilities.vission.LimeLight;
  
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed = true;
+  private static Boolean isRed = false;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
+  // private static SwerveTelemetry tele;
   public static SwerveDriveKinematics kinematics;
   private static SwerveDriveOdometry odometry;
   private static Pose2d pose;
-  private static ShuffleboardTab tab, autoTab;
+  private static ShuffleboardTab tab = Shuffleboard.getTab("Swerve");
   private static Field2d gameField;
+  private static Field2d gameFieldVision;
   private static double desiredHeading;
   public static ReplanningConfig c;
   private static PIDConfig driftCorrectionPID = new PIDConfig(0.1, 0,0).setContinuous(-Math.PI, Math.PI);
-  //old value for p was 0.09, 0.05 is not good
+  private static Pose2d visionPose;
   private static PID pid;
-  private static PIDController rotationPidController = new PIDController(0.3, 0, 0);
+  public LimeLight limeLight;
 
-  public Drivetrain6390()
+  // public static Orchestra orchestra = new Orchestra();
+  
+  public SwerveDrivePoseEstimator estimator = 
+  new SwerveDrivePoseEstimator(
+    kinematics, 
+    getRotation2d(), 
+    getModulePostions(), 
+    new Pose2d(), 
+    VecBuilder.fill(0.1,0.1,Units.degreesToRadians(10)), 
+    VecBuilder.fill(5,5,Units.degreesToRadians(500)));
+
+  public Drivetrain6390(LimeLight limelight)
   {
     
     AutoBuilder.configureHolonomic
@@ -62,20 +82,38 @@ public class Drivetrain6390 extends SubsystemBase{
       this::getSide,
       this
     );
-  }
-//5 and 10
-  static {
+  
+    // orchestra.addInstrument(swerveModules[0].driveMotor);
+    // orchestra.addInstrument(swerveModules[1].driveMotor);
+    // orchestra.addInstrument(swerveModules[2].driveMotor);
+    // orchestra.addInstrument(swerveModules[3].driveMotor);
+    
+    // orchestra.addInstrument(swerveModules[0].rotationMotor);
+    // orchestra.addInstrument(swerveModules[1].rotationMotor);
+    // orchestra.addInstrument(swerveModules[2].rotationMotor);
+    // orchestra.addInstrument(swerveModules[3].rotationMotor);
 
+  
+    // orchestra.loadMusic("output.chrp");
+  
+    // orchestra.play();
+  }
+
+  static {
+  
     gameField = new Field2d();
+    gameFieldVision = new Field2d();
+    
+   
     swerveModules = new SwerveModule[4];
     swerveModules[0] = new
-SwerveModule(DRIVETRAIN.FRONT_LEFT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.FRONT_LEFT_MODULE_CONFIG, tab);
     swerveModules[1] = new
-SwerveModule(DRIVETRAIN.FRONT_RIGHT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.FRONT_RIGHT_MODULE_CONFIG, tab);
     swerveModules[2] = new
-SwerveModule(DRIVETRAIN.BACK_LEFT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.BACK_LEFT_MODULE_CONFIG, tab);
     swerveModules[3] = new
-SwerveModule(DRIVETRAIN.BACK_RIGHT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.BACK_RIGHT_MODULE_CONFIG, tab);
     gyro = new Pigeon2(DRIVETRAIN.PIGEON, DRIVETRAIN.CANBUS);
 
     pdh = new PowerDistribution(DRIVETRAIN.REV_PDH, ModuleType.kRev);
@@ -83,44 +121,19 @@ SwerveModule(DRIVETRAIN.BACK_RIGHT_MODULE_CONFIG, tab);
     feedbackSpeeds = new ChassisSpeeds();
 
     SwerveModulePosition[] SwervePositions =
-{swerveModules[0].getPostion(), swerveModules[1].getPostion(),
-swerveModules[2].getPostion(), swerveModules[3].getPostion()};
+    {swerveModules[0].getPostion(), swerveModules[1].getPostion(),
+    swerveModules[2].getPostion(), swerveModules[3].getPostion()};
 
     kinematics = new SwerveDriveKinematics(DRIVETRAIN.SWERVE_MODULE_LOCATIONS);
     odometry = new SwerveDriveOdometry(kinematics,
-Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), SwervePositions);
+    Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), SwervePositions);
     pose = new Pose2d();
+    visionPose = new Pose2d();
 
     pid = new PID(driftCorrectionPID).setMeasurement(() ->
-pose.getRotation().getDegrees());
+    pose.getRotation().getDegrees());
+    // tele = new SwerveTelemetry(swerveModules[0], swerveModules[1], swerveModules[2], swerveModules[3], pid, odometry, gameField, tab);
 }
-
-
-  public void shuffleboard(){
-//     tab.addDouble("Front Left Encoder", () ->
-// swerveModules[0].getEncoderRadians());
-//     tab.addDouble("Front Right Encoder", () ->
-// swerveModules[1].getEncoderRadians());
-//     tab.addDouble("Back Left Encoder", () ->
-// swerveModules[2].getEncoderRadians());
-//     tab.addDouble("Back Right Encoder", () ->
-// swerveModules[3].getEncoderRadians());
-
-//     autoTab.addDouble("Desired Heading", () ->
-// pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
-//     autoTab.addDouble("PID Desired Heading", () ->
-// pid.calculate(pose.getRotation().getDegrees())).withWidget(BuiltInWidgets.kTextView);
-
-//     autoTab.add(gameField);
-//     autoTab.addDouble("Odometry Heading", () ->
-// pose.getRotation().getDegrees()).withWidget(BuiltInWidgets.kTextView);
-//     autoTab.addDouble("Odometry X", () ->
-// pose.getX()).withWidget(BuiltInWidgets.kTextView);
-//     autoTab.addDouble("Odometry Y", () ->
-// pose.getY()).withWidget(BuiltInWidgets.kTextView);
-
-
-  }
 
   public void init(){
     pdh.clearStickyFaults();
@@ -174,8 +187,13 @@ pose.getRotation().getDegrees();
     return pose;
   }
 
+  public Pose2d getVisionPose(){
+   return visionPose;
+  }
+
   public void resetOdometry(Pose2d pose){
     odometry.resetPosition(getRotation2d(), getModulePostions(), pose);
+    estimator.resetPosition(getRotation2d(), getModulePostions(), visionPose);
   }
 
   public void setModuleStates(SwerveModuleState[] states){
@@ -222,22 +240,18 @@ SwerveModulePosition[swerveModules.length];
   }
 
   private void updateOdometry(){
-    // if(limeLight.hasBotPose()){
-      // if(limeLight.getPipeline() == 0){
-      //   APRILTAGS tag = APRILTAGS.getByID((int)limeLight.getAprilTagID());
-      //   if(!tag.equals(APRILTAGS.INVALID)){
-      //     Pose2d relativePose =limeLight.getBot2DPosition();
-      //     Pose2d tagPose = tag.getPose2d();
-      //     pose = new Pose2d(relativePose.getX() + tagPose.getX(),
-      //relativePose.getY() + tagPose.getY(), getRotation2d());
-      //   }
-      // }
-    // }else{
       odometry.update(getRotation2d(), getModulePostions());
       pose = odometry.getPoseMeters();
-    // }
+      if(limeLight.hasValidTarget())
+      {
+      estimator.addVisionMeasurement(limeLight.getBot2DPosition(), Timer.getFPGATimestamp());
+      }
+      estimator.update(getRotation2d(), getModulePostions());
+      visionPose = estimator.getEstimatedPosition();
+
 
     gameField.setRobotPose(pose);
+    gameFieldVision.setRobotPose(visionPose);
   }
 
   public ChassisSpeeds getSpeeds()
@@ -249,8 +263,6 @@ SwerveModulePosition[swerveModules.length];
   
   @Override
   public void periodic() {
-  // SmartDashboard.putNumber("Robot Heading", pose.getRotation().getDegrees());
-  // SmartDashboard.putNumber("Desired Heading", desiredHeading);
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
     double ySpeed = chassisSpeeds.vyMetersPerSecond +
@@ -258,25 +270,30 @@ feedbackSpeeds.vyMetersPerSecond;
     double thetaSpeed = chassisSpeeds.omegaRadiansPerSecond +
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
-    if(DriverStation.isTeleop()){
-   //driftCorrection(speed);
-    }
+    
 
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
 
     setModuleStates(states);
 
     updateOdometry();
-    // SmartDashboard.putNumber("Odometry Headin", pose.getRotation().getDegrees());
-    // SmartDashboard.putNumber("Odometry X", pose.getX());
-    // SmartDashboard.putNumber("Odometry Y", pose.getY());
+
+   
+
+   System.out.println(visionPose);
+
+    SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry X", visionPose.getX());
+    SmartDashboard.putNumber("Odometry Y", visionPose.getY());
+
+   SmartDashboard.putData("Vision Pose", gameFieldVision);
 
     
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
-   // System.out.println(getPose());
+    // tele.updateShuffleboard();
   }
 
   @Override
