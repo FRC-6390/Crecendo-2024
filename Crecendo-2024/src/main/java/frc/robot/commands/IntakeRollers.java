@@ -14,12 +14,7 @@ public class IntakeRollers extends Command {
   public boolean lowerStopped = false;
   public static boolean upperStopped = false;
   public Intake intake = new Intake();
-
-
- 
- 
-
- 
+  public boolean isDone = false;
  
   public IntakeRollers(double speed, Intake intake) {
     this.speed = speed;
@@ -33,6 +28,7 @@ public class IntakeRollers extends Command {
 
     lowerStopped = false;
    upperStopped = false;
+   isDone = false;
  
   }
  
@@ -54,10 +50,25 @@ public class IntakeRollers extends Command {
     else
     {
       intake.setRollers(speed, 1);
-
-
     }
     }
+
+    if(DriverStation.isAutonomous()){
+
+      upperStopped = false;
+      if(Intake.getUpperBeamBreak())
+       {
+         upperStopped = true;
+       }
+       if(!upperStopped)
+       {
+         intake.setRollers(speed, 2);
+       }
+       else
+       {
+        isDone = true;
+       }
+       }  
    
   }
 
@@ -71,8 +82,14 @@ public class IntakeRollers extends Command {
  
   @Override
   public boolean isFinished() {
-   
+   if(DriverStation.isTeleop())
+   {
     return false;
+   }
+   else
+   {
+    return isDone;
+   }
    
   }
 }

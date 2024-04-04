@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.24,
-        "y": 5.5
+        "x": 2.56,
+        "y": 4.1
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2400000000000015,
-        "y": 5.5
+        "x": 2.5905008158090483,
+        "y": 4.04023860829462
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 15.26,
-        "y": 5.5
+        "x": 1.8995614596079393,
+        "y": 4.8248646568619815
       },
       "prevControl": {
-        "x": 14.26,
-        "y": 5.5
+        "x": 1.918784334002332,
+        "y": 4.809102131756333
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,25 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "AutoAim"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 4.0,
     "maxAcceleration": 4.0,
@@ -39,13 +57,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 158.28606491822362,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "FinalAutoPaths",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": 179.0155890696294,
     "velocity": 0
   },
   "useDefaultConstraints": true

@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7636103146671328,
+      "y": 4.520382906671662
+    },
+    "rotation": 120.7354877019201
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2NoteAuto1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3NoteAuto"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3NoteAuto2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Feed"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Finals",
+  "choreoAuto": false
+}

@@ -52,7 +52,7 @@ public class RobotContainer {
   public static Arm arm;
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
- // public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
+  public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
   public static Shooter shooter = new Shooter();
@@ -69,7 +69,7 @@ public class RobotContainer {
   public RobotContainer() {
     arm = new Arm(joystick);
     //driveTrain.shuffleboard();
-    //driveTrain.init();
+    driveTrain.init();
     autoChooser.addOption("Baseline", "Baseline");
     autoChooser.addOption("AutoNonStageBonus", "AutoNonStageBonus");
     autoChooser.addOption("AutoNonStageWithMid", "AutoNonStageWithMid");
@@ -90,11 +90,11 @@ public class RobotContainer {
     autoChooser.addOption("StageSideRed", "StageSideRed");
     
     SmartDashboard.putData("AutoChoose", autoChooser);
-    // NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
-    // NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
-    // NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
+    NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
+    NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
+    NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
     NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
-   //NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
+    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.2));
@@ -102,11 +102,13 @@ public class RobotContainer {
     // NamedCommands.registerCommand("WShoot", new ShooterRollers(1, shooter, intake, 80));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
-   // NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
+    NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
+    
+    NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, arm));
     
 
-    //driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    //intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
+    driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
+    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
     
 
     // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
@@ -124,107 +126,41 @@ public class RobotContainer {
   private void configureBindings() 
   {
 
-    // controller.a.onTrue(new ArmTest(arm, -0.5));
-    // controller.b.onTrue(new ArmTest(arm, -1));
-    // controller.y.onTrue(new ArmTest(arm, 0));
-    SmartDashboard.putData("Down", new ArmTest(arm, -1));
-    SmartDashboard.putData("Half",new ArmTest(arm, -0.5));
-    SmartDashboard.putData("Up",new ArmTest(arm, 0));
-    
-
-    //controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    
-    //controller.y.onTrue(new SequentialCommandGroup(new AutoAlign(driveTrain, limelight, 0, 0, 0, 0.06), new TurnAlign(driveTrain, limelight, 0)));
-   // controller.b.onTrue(new AutoAim(driveTrain, limelight, test));
-    //controller.a.whileTrue(new ShooterRollers(100, shooter, intake));
-    //controller.a.onFalse(new Feed(-1, shooter, intake));
-   //controller.start.onTrue(new TurnCommand(driveTrain,0));
-   // controller.a.whileFalse(new Feed(2, shooter, intake));
-    // controller.b.whileTrue(new IntakeRollers(0.6, intake));
-    // controller.a.whileTrue(new IntakeRollers(-0.6, intake));
-    //controller.y.whileTrue(new ClimberHook(0.2, climber));
-    // controller.x.whileTrue(new ClimberHook(-0.5, climber));
-    // controller.rightBumper.whileTrue(new ShooterRollers(-1));
-    //controller.b.onTrue(new ArmTest(test, 0.5));
-    //controller.leftStick.onTrue(new ArmTest(test, 1));
-    //controller.rightStick.onTrue(new ArmTest(test, 0));
-    // controller.b.whileTrue(new IntakeRollers(0.6, intake));
-    // controller.a.whileTrue(new IntakeRollers(-0.6, intake));
-    // controller.y.whileTrue(new ClimberHook(0.5, climber));
-    // controller.x.whileTrue(new ClimberHook(-0.5, climber));
-    //controller.rightBumper.whileTrue(new ShooterRollers(-1, shooter));
-    // //controller.a.onTrue(new IntakeDrive(driveTrain, 0, -0.3, 0));
-    // controller.a.onTrue(new ArmTest(arm,0));
-    // controller.x.onTrue(new ArmTest(arm, -1));
-    // controller.b.onTrue(new ArmTest(arm, -0.5));
-    // controller.y.onTrue(new InstantCommand(arm::setHome));
-    //controller.a.whileTrue(new IntakeRollers(-0.2));
-
- 
-    //controller.a.whileTrue(new Feed(-1, shooter, intake));
-    //controller.rightTrigger.whileTrue(new ShooterRollers(-1, shooter));
-
+    controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
 
   //---------------------------COMP CONTROLS---------------------------------//
     
-  // controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
-  //   controller.rightBumper.whileTrue(new ShooterRollers(1, shooter, intake, 70));
-  //   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
-  //   //controller.y.onTrue(new PathfindHolonomic(null, null, null, null, null, null, null));
-  //   //controller.y.onTrue(new PathfindingCommand(null, null, null, null, null, null, 0, null, null, null))
-  //   Command pathFind; 
+  controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
+  controller.rightBumper.whileTrue(new ShooterRollers(1, shooter, intake, 70));
+  controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
+    Command pathFind; 
                         
-  //   if(!driveTrain.getSide())
-  //   {
-  //     pathFind = AutoBuilder.pathfindToPose(scoringPos, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
-  //   }
-  //   else
-  //   {
-  //     pathFind = AutoBuilder.pathfindToPose(scoringPosR, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
-  //   }
+    if(!driveTrain.getSide())
+    {
+      pathFind = AutoBuilder.pathfindToPose(scoringPos, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
+    }
+    else
+    {
+      pathFind = AutoBuilder.pathfindToPose(scoringPosR, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
+    }
 
-  //   controller.b.onTrue(pathFind);
+    controller.b.onTrue(pathFind);
 
-  //   controller.y.onTrue
-  //   (
-  //     AutoBuilder.pathfindToPose
-  //     (
-  //       new Pose2d(1.24, 5.52, new Rotation2d(0)), 
-  //       new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
-  //     )
-  //   );
-
-  //   controller.x.onTrue(Commands.runOnce(() -> 
-  //   {
-     
-  //     Pose2d startPos = new Pose2d(driveTrain.getPose().getTranslation(), driveTrain.getRotation2d());
-  //     double ydis = scoringPos.getY() - startPos.getY();
-  //     double xdis = scoringPos.getX() - startPos.getX();
-  //     Pose2d endPos = new Pose2d(startPos.getTranslation().plus(new Translation2d(xdis, ydis)), new Rotation2d());
-  //     List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
-  //     PathPlannerPath path = new PathPlannerPath(
-  //       bezierPoints, 
-  //       new PathConstraints(
-  //         4.0, 4.0, 
-  //         Units.degreesToRadians(360), Units.degreesToRadians(540)
-  //       ),  
-  //       new GoalEndState(0.0, startPos.getRotation())
-  //     );
-
-  //     // Prevent this path from being flipped on the red alliance, since the given positions are already correct
-  //     path.preventFlipping = true;
-
-  //     AutoBuilder.followPath(path).schedule();
-
-
-  //   }));
-
+    controller.y.onTrue
+    (
+      AutoBuilder.pathfindToPose
+      (
+        new Pose2d(1.24, 5.52, new Rotation2d(0)), 
+        new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
+      )
+    );
     
 
-    // joystick.eight.onTrue(new ArmTest(arm, 0.08));
-    // joystick.seven.onTrue(new ArmTest(arm, -1));
-    // joystick.eleven.onTrue(new ArmTest(arm, -0.2));
-    // joystick.nine.onTrue(new ArmTest(arm, -0.5));
+    //joystick.eight.onTrue(new ArmTest(arm, 0.08));
+    joystick.eight.onTrue(new AutoAim(driveTrain, arm));
+    joystick.seven.onTrue(new ArmTest(arm, -1));
+    joystick.eleven.onTrue(new ArmTest(arm, -0.2));
+    joystick.nine.onTrue(new ArmTest(arm, -0.5));
     //joystick.ten.whileTrue(new ClimberHook(0.2, climber));
     //joystick.twelve.whileTrue(new ClimberHook(-0.2 , climber));
     
@@ -247,7 +183,7 @@ public class RobotContainer {
 
   //--------------------------Pathplanner Autos-----------------------------//
 
-  //driveTrain.resetHeading();
+  driveTrain.resetHeading();
   arm.setHome();
 
   return new PathPlannerAuto(autoChooser.getSelected());
@@ -328,6 +264,32 @@ public class RobotContainer {
     // new TurnAlign(driveTrain, limelight, 0),
     // new AutoAim(driveTrain, limelight, test)
     // );
+
+    // controller.x.onTrue(Commands.runOnce(() -> 
+    // {
+     
+    //   Pose2d startPos = new Pose2d(driveTrain.getPose().getTranslation(), driveTrain.getRotation2d());
+    //   double ydis = scoringPos.getY() - startPos.getY();
+    //   double xdis = scoringPos.getX() - startPos.getX();
+    //   Pose2d endPos = new Pose2d(startPos.getTranslation().plus(new Translation2d(xdis, ydis)), new Rotation2d());
+    //   List<Translation2d> bezierPoints = PathPlannerPath.bezierFromPoses(startPos, endPos);
+    //   PathPlannerPath path = new PathPlannerPath(
+    //     bezierPoints, 
+    //     new PathConstraints(
+    //       4.0, 4.0, 
+    //       Units.degreesToRadians(360), Units.degreesToRadians(540)
+    //     ),  
+    //     new GoalEndState(0.0, startPos.getRotation())
+    //   );
+
+    //   // Prevent this path from being flipped on the red alliance, since the given positions are already correct
+    //   path.preventFlipping = true;
+
+    //   AutoBuilder.followPath(path).schedule();
+
+
+    // }));
+
 
 
 

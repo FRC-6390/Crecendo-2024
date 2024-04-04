@@ -11,13 +11,15 @@
     "AutoStageBonus",
     "AutoStageWithMid",
     "Center",
-    "StageSide",
-    "NonStageSide"
+    "FinalAutoPaths",
+    "NonStageSide",
+    "StageSide"
   ],
   "autoFolders": [
     "Basics",
     "Extras",
-    "Mids"
+    "Mids",
+    "Finals"
   ],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 4.0,
