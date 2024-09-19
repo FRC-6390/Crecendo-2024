@@ -16,6 +16,7 @@ import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
 
 import frc.robot.commands.auto.TurnAlign;
+import frc.robot.commands.ClimberHook;
 
 import java.util.List;
 
@@ -97,7 +98,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
-    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.2));
+    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.25));
     NamedCommands.registerCommand("Shoot", new ShooterRollers(1, shooter, intake, 80));
     // NamedCommands.registerCommand("WShoot", new ShooterRollers(1, shooter, intake, 80));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
@@ -108,7 +109,7 @@ public class RobotContainer {
     
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
+    // intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
     
 
     // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
@@ -127,11 +128,17 @@ public class RobotContainer {
   {
 
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
+    
+    //Near Shot
+    //-9.21875
+    //-0.5
+
+
 
   //---------------------------COMP CONTROLS---------------------------------//
     
   controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
-  controller.rightBumper.whileTrue(new ShooterRollers(1, shooter, intake, 70));
+  controller.rightBumper.whileTrue(new ShooterRollers(-0.5, shooter, intake, 60));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
     Command pathFind; 
                         
@@ -150,19 +157,20 @@ public class RobotContainer {
     (
       AutoBuilder.pathfindToPose
       (
-        new Pose2d(1.24, 5.52, new Rotation2d(0)), 
+        new Pose2d(1.24, 5.52, new Rotation2d(3.142)), 
         new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
       )
     );
     
 
     //joystick.eight.onTrue(new ArmTest(arm, 0.08));
-    joystick.eight.onTrue(new AutoAim(driveTrain, arm));
+    joystick.two.onTrue(new AutoAim(driveTrain, arm));
     joystick.seven.onTrue(new ArmTest(arm, -1));
-    joystick.eleven.onTrue(new ArmTest(arm, -0.2));
+    joystick.eleven.onTrue(new ArmTest(arm, -0.211));
     joystick.nine.onTrue(new ArmTest(arm, -0.5));
     //joystick.ten.whileTrue(new ClimberHook(0.2, climber));
-    //joystick.twelve.whileTrue(new ClimberHook(-0.2 , climber));
+    //joystick.twelve.whileTrue(new
+    //  ClimberHook(-0.2 , climber);
     
     
     joystick.three.whileTrue(new StopIntake(0, intake));

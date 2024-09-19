@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Feed"
+            "name": "AutoFeed"
           }
         },
         {
@@ -45,12 +45,6 @@
           "type": "path",
           "data": {
             "pathName": "New New New Path"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WShoot"
           }
         },
         {

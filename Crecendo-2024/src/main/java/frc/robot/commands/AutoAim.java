@@ -43,11 +43,12 @@ public class AutoAim extends Command {
   public void execute() 
   {
     // LimeLight.getDistanceFromTarget(45, Units.inchesToMeters(9), 1.36652);
-    arm.setPosition(distanceToAngle(drivetrain.getPose().getX(), 1.36652) * -1);
+    arm.setPosition(distanceToAngle(drivetrain.getPose().getX(), 2.083) * -1);
     if(arm.atPosition())
     {
         isDone = true;
     }
+    SmartDashboard.putNumber("Angle",distanceToAngle(drivetrain.getPose().getX(), 2.083) * -1);
   }
 
   // Called once the command ends or is interrupted.

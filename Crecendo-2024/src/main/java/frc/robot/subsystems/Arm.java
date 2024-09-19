@@ -67,7 +67,7 @@ public class Arm extends SubsystemBase {
     TalonFXConfiguration con = new TalonFXConfiguration();
     CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
     curr.SupplyCurrentLimitEnable = true;
-    curr.SupplyCurrentLimit = 80;
+    curr.SupplyCurrentLimit = 80; //USed to be 80
     con.withCurrentLimits(curr);
     motorBrake();
     pivot = root.append(new MechanismLigament2d("Pivot", 2, 0));
@@ -137,7 +137,10 @@ public void motorCoast(){
     }
   //System.out.println(ArmMotorLeft.getRotorPosition());
   convertedValue = (maxPos)*setpoint;
-  double speed = PID.calculate(convertedValue);
+  double speed = PID.calculate(-convertedValue);
+  SmartDashboard.putNumber("Arm Pos", rotorPos.getValueAsDouble());
+  SmartDashboard.putNumber("PID Arm", speed);
+  SmartDashboard.putNumber("Setpoint Arm", -convertedValue);
   setSpeed(-speed);
   rotorPos.refresh();
 

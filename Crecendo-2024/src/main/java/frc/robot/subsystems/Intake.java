@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
   public static TalonFX centerIntakeRoller;
   public static TalonFX fullWidthIntakeRoller;
   public static TalonFX feedingRollers;
-  public static IRBBSensor lowerIntakeBeamBreak;
+  // public static IRBBSensor lowerIntakeBeamBreak;
   public static IRBBSensor upperIntakeBeamBreak;
 
  
@@ -29,13 +29,13 @@ public class Intake extends SubsystemBase {
  
   static
   {
- 
+    
   centerIntakeRoller = new TalonFX(Constants.INTAKE.CENTER_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
   fullWidthIntakeRoller = new TalonFX(Constants.INTAKE.FULL_WIDTH_INTAKE_MOTOR, Constants.DRIVETRAIN.CANBUS);
-  lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK);
-  upperIntakeBeamBreak = new IRBBSensor(6);
+  // lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK);
+  upperIntakeBeamBreak = new IRBBSensor(4);
   feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
-
+  
   TalonFXConfiguration con2 =  new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
   curr.SupplyCurrentLimitEnable = true;
@@ -43,14 +43,17 @@ public class Intake extends SubsystemBase {
   con2.withCurrentLimits(curr);
 
   feedingRollers.getConfigurator().apply(con2);
-  }
+  fullWidthIntakeRoller.getConfigurator().apply(con2);
+  centerIntakeRoller.getConfigurator().apply(con2);
+
+}
  
-  //Get value of the intake lift limit switch
-  public static boolean getLowerBeamBreak()
-  {
-    //false for triggered, otherwise true
-  return lowerIntakeBeamBreak.isBroken();
-  }
+  // //Get value of the intake lift limit switch
+  // public static boolean getLowerBeamBreak()
+  // {
+  //   //false for triggered, otherwise true
+  // return lowerIntakeBeamBreak.isBroken();
+  // }
  
    public static boolean getUpperBeamBreak(){
  
@@ -84,7 +87,7 @@ public class Intake extends SubsystemBase {
     {
     centerIntakeRoller.set(speed - 0.2);
     fullWidthIntakeRoller.set(speed);
-    feedingRollers.set(speed + 0.2);
+    feedingRollers.set(speed + 0.4);
    // System.out.println("_____________________________-Beam is INTACT -___________________________________");
     }
  
@@ -107,6 +110,9 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic()
   {
-   SmartDashboard.putBoolean("Game Piece", Intake.getUpperBeamBreak());
+   SmartDashboard.putBoolean("Game Piece", getUpperBeamBreak());
+   SmartDashboard.putNumber("Full Width", fullWidthIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
+   SmartDashboard.putNumber("Center", centerIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
+   SmartDashboard.putNumber("Feeder", feedingRollers.getSupplyCurrent().refresh().getValueAsDouble());
   }
 }

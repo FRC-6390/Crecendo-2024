@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -95,7 +94,6 @@ public class LimeLight {
         }
     }
 
-
     public enum SnapshotMode{
         RESET(0),
         ONCE(1);
@@ -129,7 +127,7 @@ public class LimeLight {
         camtran = limelightTable.getEntry("camtran");
         tid = limelightTable.getEntry("tid");
         json = limelightTable.getEntry("json");
-        botpose = limelightTable.getEntry("botpose");
+        botpose = limelightTable.getEntry("botpose_orb_wpiblue");
         tclass = limelightTable.getEntry("tclass");
         tc = limelightTable.getEntry("tc");
         ledMode = limelightTable.getEntry("ledMode");
@@ -156,17 +154,6 @@ public class LimeLight {
         cy1 = limelightTable.getEntry("cy1");
     }
     
-    // private static Pose2d toPose2D(double[] inData){
-    //     if(inData.length < 6)
-    //     {
-    //         //System.err.println("Bad LL 2D Pose Data!");
-    //         return new Pose2d();
-    //     }
-    //     Translation2d tran2d = new Translation2d(inData[0], inData[1]);
-    //     Rotation2d r2d = new Rotation2d(Units.degreesToRadians(inData[5]));
-    //     return new Pose2d(tran2d, r2d);
-    // }
-
     
     /**
      * Whether the limelight has any valid targets
@@ -280,6 +267,12 @@ public class LimeLight {
         return poseReal;
     }
 
+    public Double[] getBotPositionRawM2(){
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = botpose.getDoubleArray(dub);
+        return poseReal;
+    }
+
     /**
      * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z)
      */
@@ -298,6 +291,16 @@ public class LimeLight {
         Rotation2d rotation = new Rotation2d(pose[5]);
         return new Pose2d(translation, rotation);
     }
+
+    public Pose2d getBot2DPositionM2(){
+        Double[] pose = getBotPositionRawM2();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    
 
     /**
      * Class ID of primary neural detector result or neural classifier result

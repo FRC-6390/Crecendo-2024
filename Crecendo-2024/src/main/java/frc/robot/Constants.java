@@ -96,7 +96,7 @@ public interface Constants {
 
     public interface INTAKE {
         int CENTER_INTAKE_MOTOR = 11;//was 23, changed for testing
-        int BEAM_BREAK = 0;
+        // int BEAM_BREAK = 1;
         int FULL_WIDTH_INTAKE_MOTOR = 19;
         int FEEDNG_ROLLER_MOTOR = 18;
 
@@ -112,9 +112,9 @@ public interface Constants {
     public interface ARM{
         int ARM_MOTOR_LEFT = 7;
         int ARM_MOTOR_RIGHT = 13;
-        double ARM_MAX = -17.139;
+        double ARM_MAX = -43.7095;
         //0.03
-        PIDConfig PID_config = new PIDConfig(0.03, 0.003, 0);
+        PIDConfig PID_config = new PIDConfig(0.065, 0.003, 0);
     }
     
     public interface ROBOT {

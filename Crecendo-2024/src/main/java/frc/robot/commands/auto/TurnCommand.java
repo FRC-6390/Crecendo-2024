@@ -58,9 +58,7 @@ public class TurnCommand extends Command {
           thetaController.calculate(drivetrain.getHeading(), rot))
       );
      
-      if(
-        thetaController.calculate(drivetrain.getHeading(), rot) < 0.1 && thetaController.calculate(drivetrain.getHeading(), rot) > -0.1
-      )
+      if(thetaController.calculate(drivetrain.getHeading(), rot) < 0.1 && thetaController.calculate(drivetrain.getHeading(), rot) > -0.1)
       {
         drivetrain.drive(new ChassisSpeeds(0,0,0));
         isDone = true;

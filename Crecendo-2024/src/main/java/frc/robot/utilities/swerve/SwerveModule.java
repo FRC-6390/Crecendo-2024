@@ -170,8 +170,8 @@ public class SwerveModule {
     }
 
     public void lock(){
-        driveMotor.setNeutralMode(NeutralModeValue.Brake);
-        rotationMotor.setNeutralMode(NeutralModeValue.Brake);
+        driveMotor.setNeutralMode(NeutralModeValue.Coast);
+        rotationMotor.setNeutralMode(NeutralModeValue.Coast);
     }
 
     public void unlock(){

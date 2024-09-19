@@ -36,11 +36,12 @@ import frc.robot.utilities.controlloop.PIDConfig;
 import frc.robot.utilities.swerve.SwerveModule;
 // import frc.robot.utilities.telemetry.SwerveTelemetry;
 import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimelightHelpers;
  
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed = false;
+  private static Boolean isRed = true;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -53,7 +54,8 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Field2d gameFieldVision;
   private static double desiredHeading;
   public static ReplanningConfig c;
-  private static PIDConfig driftCorrectionPID = new PIDConfig(0.1, 0,0).setContinuous(-Math.PI, Math.PI);
+  //0.1
+  private static PIDConfig driftCorrectionPID = new PIDConfig(5, 0,0).setContinuous(-Math.PI, Math.PI);
   private static Pose2d visionPose;
   private static PID pid;
   public LimeLight limeLight;
@@ -67,36 +69,24 @@ public class Drivetrain6390 extends SubsystemBase{
     getModulePostions(), 
     new Pose2d(), 
     VecBuilder.fill(0.1,0.1,Units.degreesToRadians(10)), 
-    VecBuilder.fill(5,5,Units.degreesToRadians(500)));
+    VecBuilder.fill(.7,.7,99999));
 
   public Drivetrain6390(LimeLight limelight)
   {
-    
+    this.limeLight = limelight;
     AutoBuilder.configureHolonomic
     (
-      this::getPose,
-      this::resetOdometry,
+      this::getVisionPose,
+      this::resetOdometryVision,
       this::getSpeeds,
       this::drive,
-      new HolonomicPathFollowerConfig(new PIDConstants(0.85), new PIDConstants(3.125), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
+      //0.85 translation 3.125 rotation
+      new HolonomicPathFollowerConfig(new PIDConstants(0.9), new PIDConstants(3.125), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
       this::getSide,
       this
     );
-  
-    // orchestra.addInstrument(swerveModules[0].driveMotor);
-    // orchestra.addInstrument(swerveModules[1].driveMotor);
-    // orchestra.addInstrument(swerveModules[2].driveMotor);
-    // orchestra.addInstrument(swerveModules[3].driveMotor);
     
-    // orchestra.addInstrument(swerveModules[0].rotationMotor);
-    // orchestra.addInstrument(swerveModules[1].rotationMotor);
-    // orchestra.addInstrument(swerveModules[2].rotationMotor);
-    // orchestra.addInstrument(swerveModules[3].rotationMotor);
-
   
-    // orchestra.loadMusic("output.chrp");
-  
-    // orchestra.play();
   }
 
   static {
@@ -195,6 +185,10 @@ pose.getRotation().getDegrees();
     odometry.resetPosition(getRotation2d(), getModulePostions(), pose);
     estimator.resetPosition(getRotation2d(), getModulePostions(), visionPose);
   }
+   public void resetOdometryVision(Pose2d pose)
+  {
+    estimator.resetPosition(getRotation2d(), getModulePostions(), pose);
+  }
 
   public void setModuleStates(SwerveModuleState[] states){
     SwerveDriveKinematics.desaturateWheelSpeeds(states,
@@ -239,19 +233,46 @@ SwerveModulePosition[swerveModules.length];
     }
   }
 
-  private void updateOdometry(){
+ private void updateOdometry(){
       odometry.update(getRotation2d(), getModulePostions());
       pose = odometry.getPoseMeters();
-      if(limeLight.hasValidTarget())
-      {
-      estimator.addVisionMeasurement(limeLight.getBot2DPosition(), Timer.getFPGATimestamp());
-      }
+
+      boolean doRejectUpdate = false;
       estimator.update(getRotation2d(), getModulePostions());
-      visionPose = estimator.getEstimatedPosition();
+      
+      //MY VERSION
+      Pose2d roboPos = LimelightHelpers.getBotPose2d_wpiBlue("limelight");
+      int tagCount = LimelightHelpers.getTargetCount("limelight");
 
+      Pose2d roboPos2 = limeLight.getBot2DPositionM2();
 
+      System.out.println(roboPos);
+      System.out.println(roboPos2);
+      if(Math.abs(gyro.getRate()) > 720) 
+      {
+        doRejectUpdate = true;
+      }
+      if(tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
+      if(!doRejectUpdate)
+      {
+      if(DriverStation.isTeleop())
+      {
+        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.575,.575,9999999));
+      }
+      else
+      {
+        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+      }
+        estimator.addVisionMeasurement(
+            roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+      }
     gameField.setRobotPose(pose);
-    gameFieldVision.setRobotPose(visionPose);
+    gameFieldVision.setRobotPose(estimator.getEstimatedPosition());
+    visionPose = estimator.getEstimatedPosition();
+    
   }
 
   public ChassisSpeeds getSpeeds()
@@ -278,16 +299,18 @@ feedbackSpeeds.omegaRadiansPerSecond;
 
     updateOdometry();
 
-   
+    if(DriverStation.isTeleop())
+    {
+    driftCorrection(speed);
+    }
 
-   System.out.println(visionPose);
-
-    SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
-    SmartDashboard.putNumber("Odometry X", visionPose.getX());
-    SmartDashboard.putNumber("Odometry Y", visionPose.getY());
+    SmartDashboard.putNumber("Odometry Headin", pose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry X", pose.getX());
+    SmartDashboard.putNumber("Odometry Y", pose.getY());
 
    SmartDashboard.putData("Vision Pose", gameFieldVision);
 
+   SmartDashboard.putData("Pose", gameField);
     
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {
