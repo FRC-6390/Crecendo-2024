@@ -143,7 +143,7 @@ public void motorCoast(){
   SmartDashboard.putNumber("Setpoint Arm", -convertedValue);
   setSpeed(-speed);
   rotorPos.refresh();
-
+  
   amperage.refresh();
 
     

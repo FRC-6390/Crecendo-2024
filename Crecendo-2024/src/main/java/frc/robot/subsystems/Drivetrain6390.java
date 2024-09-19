@@ -304,9 +304,9 @@ feedbackSpeeds.omegaRadiansPerSecond;
     driftCorrection(speed);
     }
 
-    SmartDashboard.putNumber("Odometry Headin", pose.getRotation().getDegrees());
-    SmartDashboard.putNumber("Odometry X", pose.getX());
-    SmartDashboard.putNumber("Odometry Y", pose.getY());
+    SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
+    SmartDashboard.putNumber("Odometry X", visionPose.getX());
+    SmartDashboard.putNumber("Odometry Y", visionPose.getY());
 
    SmartDashboard.putData("Vision Pose", gameFieldVision);
 

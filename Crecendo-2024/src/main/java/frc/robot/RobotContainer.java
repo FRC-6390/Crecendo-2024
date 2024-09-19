@@ -16,7 +16,6 @@ import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
 
 import frc.robot.commands.auto.TurnAlign;
-import frc.robot.commands.ClimberHook;
 
 import java.util.List;
 
@@ -34,10 +33,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -53,6 +54,7 @@ public class RobotContainer {
   public static Arm arm;
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
+  public static double speed = -0.40;
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
@@ -109,12 +111,22 @@ public class RobotContainer {
     
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
+    
+    // if(DriverStation.isTeleop())
+    // {
+    // if(driveTrain.getVisionPose().getX() > 15)
+    // {
+    //   CommandScheduler.getInstance().schedule(new ArmTest(arm, -0.211));
+    //   speed = -0.5;
+    // }
+    // if(driveTrain.getVisionPose().getX() < 15)
+    // {
+    //   CommandScheduler.getInstance().schedule(new ArmTest(arm, 0));
+    //   speed = -1;
+    // }
+    // }
     // intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
     
-
-    // SmartDashboard.putNumber("Heading", driveTrain.getHeading());
-    // SmartDashboard.putNumber("Rotation2D", driveTrain.getRotation2d().getDegrees());
-    // //ShuffleboardTab Tab = Shuffleboard.getTab("COMP");
     
 
 
@@ -133,12 +145,15 @@ public class RobotContainer {
     //-9.21875
     //-0.5
 
+    //Truss shot
+// -17.355
+//-0.65
 
 
   //---------------------------COMP CONTROLS---------------------------------//
     
-  controller.leftBumper.onTrue(new TurnAlign(driveTrain, limelight, 0));
-  controller.rightBumper.whileTrue(new ShooterRollers(-0.5, shooter, intake, 60));
+  controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
+  controller.rightBumper.whileTrue(new ShooterRollers(speed, shooter, intake, 80));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
     Command pathFind; 
                         
@@ -167,7 +182,7 @@ public class RobotContainer {
     joystick.two.onTrue(new AutoAim(driveTrain, arm));
     joystick.seven.onTrue(new ArmTest(arm, -1));
     joystick.eleven.onTrue(new ArmTest(arm, -0.211));
-    joystick.nine.onTrue(new ArmTest(arm, -0.5));
+    joystick.nine.onTrue(new ArmTest(arm, -0.469006));
     //joystick.ten.whileTrue(new ClimberHook(0.2, climber));
     //joystick.twelve.whileTrue(new
     //  ClimberHook(-0.2 , climber);
@@ -194,7 +209,8 @@ public class RobotContainer {
   driveTrain.resetHeading();
   arm.setHome();
 
-  return new PathPlannerAuto(autoChooser.getSelected());
+  // return new PathPlannerAuto(autoChooser.getSelected());
+  return new PathPlannerAuto("testauto");
 
   //-----------------------Janus Autos---------------------------//
 
