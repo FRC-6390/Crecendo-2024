@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.384284651596358,
-      "y": 6.991369417831561
+      "x": 0.83,
+      "y": 4.5
     },
-    "rotation": 180.0
+    "rotation": 119.29136217098429
   },
   "command": {
     "type": "sequential",
@@ -14,19 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PivotMoveHalf"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Segment1Basic"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "TurnAlign"
+            "name": "PivotMoveHigh"
           }
         },
         {
@@ -42,9 +30,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "TurnCommand"
+            "pathName": "New New Path"
           }
         },
         {
@@ -54,15 +42,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "TurnAlign"
+            "pathName": "New New New Path"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "WShoot"
           }
         },
         {
@@ -74,6 +62,6 @@
       ]
     }
   },
-  "folder": "General Autos",
+  "folder": "Finals",
   "choreoAuto": false
 }

@@ -2,27 +2,15 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.384284651596358,
-      "y": 6.991369417831561
+      "x": 0.83,
+      "y": 4.5
     },
-    "rotation": 180.0
+    "rotation": 120.85778606115218
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveHalf"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Segment1Basic"
-          }
-        },
         {
           "type": "named",
           "data": {
@@ -32,13 +20,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Feed"
+            "name": "PivotMoveHigh"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "TurnCommand"
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Red1"
           }
         },
         {
@@ -48,26 +42,44 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "TurnAlign"
+            "pathName": "Red2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Feed"
+            "name": "FastIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoFeed"
           }
         }
       ]
     }
   },
-  "folder": "General Autos",
+  "folder": "Extras",
   "choreoAuto": false
 }

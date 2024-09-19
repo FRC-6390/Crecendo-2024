@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.384284651596358,
-      "y": 6.991369417831561
+      "x": 1.2351263164064805,
+      "y": 5.545221859674489
     },
-    "rotation": -179.18154453831275
+    "rotation": -178.8147391813776
   },
   "command": {
     "type": "sequential",
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Segment1Basic"
+            "pathName": "Testpath"
           }
         }
       ]
     }
   },
-  "folder": "General Autos",
+  "folder": null,
   "choreoAuto": false
 }

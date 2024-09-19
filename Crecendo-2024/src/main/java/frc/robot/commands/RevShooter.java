@@ -3,15 +3,12 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-
-import com.ctre.phoenix.music.Orchestra;
-
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
-public class ShooterRollers extends Command{
+public class RevShooter extends Command{
 
   public double speed;
   public Shooter shooter;
@@ -19,23 +16,18 @@ public class ShooterRollers extends Command{
   public int numPresses = 0;
 public Intake intake;
   public double startTime;
-  public double threshold;
-    // public static Orchestra orchestra;
+  // public double threshold;
   
-
-  
-  public ShooterRollers(double speed, Shooter shooter, Intake intake, double threshold) {
+  public RevShooter(double speed, Shooter shooter, Intake intake) {
     this.speed = speed;
     this.shooter = shooter;
     this.intake = intake;
-    this.threshold = threshold;
+    // this.threshold = threshold;
     addRequirements(shooter, intake);
   }
 
   @Override
   public void initialize() {
-    
-  // orchestra = new Orchestra();
    
 isDone = false;
     startTime = System.currentTimeMillis();
@@ -53,20 +45,17 @@ isDone = false;
   {
   // double curTime = System.currentTimeMillis();
   shooter.setRollers(speed);
-  
-  // orchestra.loadMusic("output.chrp");
-  // orchestra.addInstrument(shooter.sh)
 
 
 // if(shooter.atSetpoint() || (curTime - startTime) > 3000)
 
-  if(Math.abs(shooter.getRotorVelocity()) >= threshold)
-      {
-        isDone = true;  
-        intake.feed(-0.75);
-        intake.centerIntake(-0.6);
-        //shooter.stopShooter();
-      }
+  // if(Math.abs(shooter.getRotorVelocity()) >= threshold)
+  //     {
+  //       isDone = true;  
+  //       intake.feed(-1);
+  //       intake.centerIntake(-0.6);
+  //       //shooter.stopShooter();
+  //     }
     System.out.println("SetpointAt: " + shooter.atSetpoint());
     System.out.println("Velocity: " + shooter.getRotorVelocity());
   System.out.println("Beam" + Intake.getUpperBeamBreak());
@@ -76,17 +65,18 @@ isDone = false;
   public void end(boolean interrupted) 
   {
 //intake.feed(0);
-  //shooter.stopShooter();
-      }
+  shooter.stopShooter();
+  
+}
 
   @Override
   public boolean isFinished() {
-    if(DriverStation.isAutonomous())
-    {
-      return isDone;
-    }
-    else{
+    // if(DriverStation.isAutonomous())
+    // {
+    //   return isDone;
+    // }
+    // else{
     return false;
-    }
+    //}
   }
 }

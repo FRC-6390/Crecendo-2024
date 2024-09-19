@@ -3,6 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import com.pathplanner.lib.pathfinding.LocalADStar;
+import com.pathplanner.lib.pathfinding.Pathfinder;
+import com.pathplanner.lib.pathfinding.Pathfinding;
+import com.pathplanner.lib.pathfinding.RemoteADStar;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,6 +38,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     RobotContainer.arm.setHome();
+    Pathfinding.setPathfinder(new LocalADStar());
+    // Pathfinding.setPathfinder(new RemoteADStar());
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     //limInput = new DigitalInput(2);

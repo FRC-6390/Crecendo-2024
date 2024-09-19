@@ -26,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Feed"
+            "name": "AutoFeed"
           }
         },
         {
@@ -50,13 +50,7 @@
         {
           "type": "named",
           "data": {
-            "name": "WShoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Feed"
+            "name": "AutoFeed"
           }
         }
       ]

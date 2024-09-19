@@ -2,21 +2,15 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.83,
-      "y": 4.5
+      "x": 0.7636103146671328,
+      "y": 4.520382906671662
     },
-    "rotation": 119.29136217098429
+    "rotation": 120.7354877019201
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveHigh"
-          }
-        },
         {
           "type": "named",
           "data": {
@@ -32,30 +26,30 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New New Path"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeDrive"
+            "pathName": "2NoteAuto1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "New New New Path"
+            "pathName": "3NoteAutoFar"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Feed"
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3NoteAutoFar2"
           }
         }
       ]
     }
   },
-  "folder": "Basics",
+  "folder": "Finals",
   "choreoAuto": false
 }

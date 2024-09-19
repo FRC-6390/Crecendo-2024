@@ -24,8 +24,8 @@ import frc.robot.utilities.controlloop.PID;
 
 
 public class SwerveModule {
-    private TalonFX driveMotor;
-    private TalonFX rotationMotor;
+    public TalonFX driveMotor;
+    public TalonFX rotationMotor;
 
     private CANcoder encoder;
     private PID pid;
@@ -41,7 +41,7 @@ public class SwerveModule {
         this(config, null);
     }
 
-    private static PIDController rotationPidController = new PIDController(0.25, 0, 0);
+    public static PIDController rotationPidController = new PIDController(0.25, 0, 0);
    
     
 
