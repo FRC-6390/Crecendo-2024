@@ -2,8 +2,10 @@ package frc.robot.utilities;
 
 import java.lang.reflect.Array;
 
+import edu.wpi.first.math.geometry.Pose2d;
+
 public class ShooterHelper {
-public double[] coordinates(double theta, double distance){
+public static double[] coordinates(double theta, double distance){
   double x = Math.cos(theta)*distance;
   double y = Math.sin(theta)*distance;
 return new double [] {x,y};

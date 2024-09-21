@@ -3,6 +3,8 @@ package frc.robot.commands.auto;
 
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -25,7 +27,7 @@ public class AutoFeed extends Command{
 
   @Override
   public void initialize() {
-    startTime = System.currentTimeMillis();
+    startTime = Timer.getFPGATimestamp();
     isDone = false;
     // numPresses++;
     // if(numPresses > 2)
@@ -39,15 +41,15 @@ public class AutoFeed extends Command{
   @Override
   public void execute() 
   {
-    double curTime = System.currentTimeMillis();
+    double curTime = Timer.getFPGATimestamp();
     System.out.println(startTime);
     System.out.println(startTime - curTime);
     intake.feed(-1);
     intake.centerIntake(-0.6);
-    System.out.println("COMMAND RUN");
-    if((curTime - startTime) > 1000)
+    System.out.println("-------------------------------COMMAND RUN----------------------------");
+    if((curTime - startTime) > 1)
     {
-      System.out.println("COMMAND SHOULD END");
+      System.out.println("---------------------------------COMMAND SHOULD END---------------------------");
       //shooter.setPID(0);
       //shooter.stopShooter();
       isDone = true;

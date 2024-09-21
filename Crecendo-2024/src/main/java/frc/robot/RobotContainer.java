@@ -14,7 +14,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
-
+import frc.robot.utilities.vission.LimelightHelpers;
 import frc.robot.commands.auto.TurnAlign;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class RobotContainer {
   public static Arm arm;
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
-  public static double speed = -0.40;
+  public static double speed = -0.5;
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
@@ -98,10 +98,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
     NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
     NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
-    NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.5));
-    NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, -1));
-    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.25));
-    NamedCommands.registerCommand("Shoot", new ShooterRollers(1, shooter, intake, 80));
+    NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
+    NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
+    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
+    NamedCommands.registerCommand("Shoot", new ShooterRollers(speed, shooter, intake, 30));
     // NamedCommands.registerCommand("WShoot", new ShooterRollers(1, shooter, intake, 80));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
@@ -125,7 +125,7 @@ public class RobotContainer {
     //   speed = -1;
     // }
     // }
-    // intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
+    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
     
     
 
@@ -153,29 +153,33 @@ public class RobotContainer {
   //---------------------------COMP CONTROLS---------------------------------//
     
   controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
-  controller.rightBumper.whileTrue(new ShooterRollers(speed, shooter, intake, 80));
+  controller.rightBumper.whileTrue(new ShooterRollers(speed, shooter, intake, 30));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
-    Command pathFind; 
+  if(LimelightHelpers.getTargetCount("limelight") != 0 && Math.abs(driveTrain.getRate()) < 720)
+  {
+    controller.rightStick.onTrue(new InstantCommand(driveTrain::setOdometryVision));
+  }
+  // Command pathFind; 
                         
-    if(!driveTrain.getSide())
-    {
-      pathFind = AutoBuilder.pathfindToPose(scoringPos, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
-    }
-    else
-    {
-      pathFind = AutoBuilder.pathfindToPose(scoringPosR, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
-    }
+    // if(!driveTrain.getSide())
+    // {
+    //   pathFind = AutoBuilder.pathfindToPose(scoringPos, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
+    // }
+    // else
+    // {
+    //   pathFind = AutoBuilder.pathfindToPose(scoringPosR, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
+    // }
 
-    controller.b.onTrue(pathFind);
+    // controller.b.onTrue(pathFind);
 
-    controller.y.onTrue
-    (
-      AutoBuilder.pathfindToPose
-      (
-        new Pose2d(1.24, 5.52, new Rotation2d(3.142)), 
-        new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
-      )
-    );
+    // controller.y.onTrue
+    // (
+    //   AutoBuilder.pathfindToPose
+    //   (
+    //     new Pose2d(1.24, 5.52, new Rotation2d(3.142)), 
+    //     new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
+    //   )
+    // );
     
 
     //joystick.eight.onTrue(new ArmTest(arm, 0.08));
@@ -209,8 +213,8 @@ public class RobotContainer {
   driveTrain.resetHeading();
   arm.setHome();
 
-  // return new PathPlannerAuto(autoChooser.getSelected());
-  return new PathPlannerAuto("testauto");
+  return new PathPlannerAuto(autoChooser.getSelected());
+  // return new PathPlannerAuto("testauto");
 
   //-----------------------Janus Autos---------------------------//
 

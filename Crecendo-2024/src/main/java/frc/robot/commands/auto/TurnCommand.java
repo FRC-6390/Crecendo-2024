@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import java.util.Stack;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -28,11 +30,12 @@ public class TurnCommand extends Command {
   double kI2 = 0.003;
   double kD2 = 0;
 
-  double kP3 = 0.0825;
+  double kP3 = 0.082;
   double kI3 = 0.015;
   double kD3 = 0;
   public double rot;
   public static boolean isDone;
+  Stack<Double> over_time = new Stack<>();
 
   public TurnCommand(Drivetrain6390 drivetrain, double rot)
   {
@@ -53,23 +56,21 @@ public class TurnCommand extends Command {
   @Override
   public void execute() 
   {
-      drivetrain.drive(
+    double currentHeading = drivetrain.getHeading();
+    double speed = thetaController.calculate(currentHeading, rot);
+      drivetrain.feedbackDrive(
         new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond,drivetrain.getSpeeds().vyMetersPerSecond,
-          thetaController.calculate(drivetrain.getHeading(), rot))
+        speed)
       );
      
-      if(thetaController.calculate(drivetrain.getHeading(), rot) < 0.1 && thetaController.calculate(drivetrain.getHeading(), rot) > -0.1)
-      {
-        drivetrain.drive(new ChassisSpeeds(0,0,0));
-        isDone = true;
-      }
+      isDone = Math.abs(Math.abs(currentHeading) - Math.abs(rot)) < 1;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    //drivetrain.drive(new ChassisSpeeds(0,0,0));
+    drivetrain.feedbackDrive(new ChassisSpeeds(0,0,0));
     //System.out.println("Command Ended");
   }
 

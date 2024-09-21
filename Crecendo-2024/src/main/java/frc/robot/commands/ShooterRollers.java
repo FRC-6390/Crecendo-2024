@@ -65,6 +65,7 @@ isDone = false;
         isDone = true;  
         intake.feed(-0.75);
         intake.centerIntake(-0.6);
+        intake.fullWidth(-0.6);
         //shooter.stopShooter();
       }
     System.out.println("SetpointAt: " + shooter.atSetpoint());
@@ -77,6 +78,7 @@ isDone = false;
   {
 //intake.feed(0);
   //shooter.stopShooter();
+  System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
       }
 
   @Override

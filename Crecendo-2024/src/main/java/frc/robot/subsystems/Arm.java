@@ -103,7 +103,12 @@ public class Arm extends SubsystemBase {
 
   public boolean atPosition()
   {
-    return Math.abs((maxPos * setpoint) - rotorPos.getValueAsDouble()) < 0.6; 
+    // PID.
+    SmartDashboard.putBoolean("At Setpoint Arm", Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())) < 0.6);
+    SmartDashboard.putNumber("Arm Dist to setpoi nt", Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())));
+    SmartDashboard.putNumber("Arm pos rotations", Math.abs(maxPos * setpoint));
+    return Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())) < 0.6; 
+
   
   }
 

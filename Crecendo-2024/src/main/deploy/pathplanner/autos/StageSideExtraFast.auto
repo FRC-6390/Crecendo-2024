@@ -30,6 +30,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "New New Path"
@@ -50,7 +56,19 @@
         {
           "type": "named",
           "data": {
+            "name": "PivotMoveHigh"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
           }
         },
         {
@@ -74,7 +92,19 @@
         {
           "type": "named",
           "data": {
+            "name": "PivotMoveHalf"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
           }
         }
       ]

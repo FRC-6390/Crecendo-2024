@@ -44,6 +44,7 @@ public class Feed extends Command{
     System.out.println(startTime - curTime);
     intake.feed(-1);
     intake.centerIntake(-0.6);
+    intake.fullWidth(-0.6);
     System.out.println("COMMAND RUN");
     if((curTime - startTime) > 1500)
     {

@@ -41,7 +41,7 @@ import frc.robot.utilities.vission.LimelightHelpers;
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed = true;
+  private static Boolean isRed = false;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -68,8 +68,8 @@ public class Drivetrain6390 extends SubsystemBase{
     getRotation2d(), 
     getModulePostions(), 
     new Pose2d(), 
-    VecBuilder.fill(0.1,0.1,Units.degreesToRadians(10)), 
-    VecBuilder.fill(.7,.7,99999));
+    VecBuilder.fill(0.1,0.1,Units.degreesToRadians(3)), 
+    VecBuilder.fill(.475,.475,99999));
 
   public Drivetrain6390(LimeLight limelight)
   {
@@ -135,6 +135,12 @@ public class Drivetrain6390 extends SubsystemBase{
   public void zeroHeading(){
     gyro.setYaw(0);
     resetOdometry(pose);
+  }
+  public void setOdometryVision(){
+    resetOdometryVision(LimelightHelpers.getBotPose2d_wpiBlue("limelight"));
+  }
+  public double getRate(){
+    return gyro.getRate();
   }
 
   public  void resetHeading(){
@@ -246,8 +252,8 @@ SwerveModulePosition[swerveModules.length];
 
       Pose2d roboPos2 = limeLight.getBot2DPositionM2();
 
-      System.out.println(roboPos);
-      System.out.println(roboPos2);
+      // System.out.println(roboPos);
+      // System.out.println(roboPos2);
       if(Math.abs(gyro.getRate()) > 720) 
       {
         doRejectUpdate = true;
@@ -258,17 +264,18 @@ SwerveModulePosition[swerveModules.length];
       }
       if(!doRejectUpdate)
       {
-      if(DriverStation.isTeleop())
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.575,.575,9999999));
-      }
-      else
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      }
+      // if(DriverStation.isTeleop())
+      // {
+      //   estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.475,.475,9999999));
+      // }
+      // else
+      // {
+      //   estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+      // }
         estimator.addVisionMeasurement(
             roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
       }
+      //
     gameField.setRobotPose(pose);
     gameFieldVision.setRobotPose(estimator.getEstimatedPosition());
     visionPose = estimator.getEstimatedPosition();
@@ -307,6 +314,7 @@ feedbackSpeeds.omegaRadiansPerSecond;
     SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
     SmartDashboard.putNumber("Odometry X", visionPose.getX());
     SmartDashboard.putNumber("Odometry Y", visionPose.getY());
+    SmartDashboard.putNumber("Odometry Heading REALL", getHeading());
 
    SmartDashboard.putData("Vision Pose", gameFieldVision);
 
@@ -316,6 +324,7 @@ feedbackSpeeds.omegaRadiansPerSecond;
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
+    
     // tele.updateShuffleboard();
   }
 
