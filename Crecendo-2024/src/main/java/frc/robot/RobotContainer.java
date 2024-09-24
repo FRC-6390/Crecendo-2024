@@ -55,6 +55,7 @@ public class RobotContainer {
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   public static double speed = -0.5;
+  public static double threshold = 1000;
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
@@ -89,10 +90,19 @@ public class RobotContainer {
     autoChooser.addOption("NonStageSide", "NonStageSide");
     autoChooser.addOption("StageSideExtra", "StageSideExtra");
     autoChooser.addOption("NonStageSideExtra", "NonStageSideExtra");
-    autoChooser.addOption("StageSideExtraFast", "StageSideExtraFast");
     autoChooser.addOption("StageSideRed", "StageSideRed");
-    
+
+    //GOOOD
+    autoChooser.addOption("StageSideExtraFast", "StageSideExtraFast");
+    autoChooser.addOption("StageSideExtraFastV2", "StageSideExtraFastV2");
+    autoChooser.addOption("StageSideExtraFastRed", "StageSideExtraFastRed");
+    autoChooser.addOption("StageSideExtraFastV2Red", "StageSideExtraFastV2Red");
+    autoChooser.addOption("Sweeper", "Sweeper");    
+
     SmartDashboard.putData("AutoChoose", autoChooser);
+    SmartDashboard.putNumber("Shooter Speed", speed);
+    SmartDashboard.putNumber("Shooter Speed Setpoint", threshold);
+    
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
     NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
@@ -101,36 +111,16 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
-    NamedCommands.registerCommand("Shoot", new ShooterRollers(speed, shooter, intake, 30));
+    NamedCommands.registerCommand("Shoot", new ShooterRollers(speed, shooter, intake, 25));
     // NamedCommands.registerCommand("WShoot", new ShooterRollers(1, shooter, intake, 80));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
     NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
-    
     NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, arm));
     
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    
-    // if(DriverStation.isTeleop())
-    // {
-    // if(driveTrain.getVisionPose().getX() > 15)
-    // {
-    //   CommandScheduler.getInstance().schedule(new ArmTest(arm, -0.211));
-    //   speed = -0.5;
-    // }
-    // if(driveTrain.getVisionPose().getX() < 15)
-    // {
-    //   CommandScheduler.getInstance().schedule(new ArmTest(arm, 0));
-    //   speed = -1;
-    // }
-    // }
-    intake.setDefaultCommand(new IntakeRollers(-0.6, intake));
-    
-    
-
-
-    
+    intake.setDefaultCommand(new IntakeRollers(-0.4, intake));
 
     configureBindings();
 
@@ -152,55 +142,33 @@ public class RobotContainer {
 
   //---------------------------COMP CONTROLS---------------------------------//
     
+  //AUTO AIM
   controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
-  controller.rightBumper.whileTrue(new ShooterRollers(speed, shooter, intake, 30));
+
+  //SUBWOOFER SHOT
+  controller.rightBumper.whileTrue(new ShooterRollers(speed, shooter, intake, threshold));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
-  if(LimelightHelpers.getTargetCount("limelight") != 0 && Math.abs(driveTrain.getRate()) < 720)
-  {
-    controller.rightStick.onTrue(new InstantCommand(driveTrain::setOdometryVision));
-  }
-  // Command pathFind; 
-                        
-    // if(!driveTrain.getSide())
-    // {
-    //   pathFind = AutoBuilder.pathfindToPose(scoringPos, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
-    // }
-    // else
-    // {
-    //   pathFind = AutoBuilder.pathfindToPose(scoringPosR, new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540)));
-    // }
+  //AMP SHOT
+  controller.y.whileTrue(new ShooterRollers(-0.1, shooter, intake, 1));
+  controller.y.onFalse(new Feed(-1, shooter, intake));
+  //HALF COURT SHOT
+  controller.b.whileTrue(new ShooterRollers(speed, shooter, intake, threshold));
+  controller.b.onFalse(new Feed(-1, shooter, intake)); 
 
-    // controller.b.onTrue(pathFind);
-
-    // controller.y.onTrue
-    // (
-    //   AutoBuilder.pathfindToPose
-    //   (
-    //     new Pose2d(1.24, 5.52, new Rotation2d(3.142)), 
-    //     new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
-    //   )
-    // );
-    
-
-    //joystick.eight.onTrue(new ArmTest(arm, 0.08));
-    joystick.two.onTrue(new AutoAim(driveTrain, arm));
-    joystick.seven.onTrue(new ArmTest(arm, -1));
+    //HOME POS
+    joystick.seven.onTrue(new ArmTest(arm, 0));
+    //SUBWOOFER POS
     joystick.eleven.onTrue(new ArmTest(arm, -0.211));
+    //HALF COURT POS
     joystick.nine.onTrue(new ArmTest(arm, -0.469006));
-    //joystick.ten.whileTrue(new ClimberHook(0.2, climber));
-    //joystick.twelve.whileTrue(new
-    //  ClimberHook(-0.2 , climber);
-    
-    
-    joystick.three.whileTrue(new StopIntake(0, intake));
+    //AMP POS
+    joystick.eight.onTrue(new ArmTest(arm, -1));
+    //INTAKE
+    joystick.ten.whileTrue(new IntakeOverride(-0.5, intake));
+    //BACKFEED
     joystick.four.whileTrue(new Reverse(0.6, intake));
-   // joystick.six.whileTrue(new StopShooter(shooter));
-   // joystick.five.whileTrue(new ShooterRollers (1, shooter, intake, 70));
-    joystick.five.onFalse(new Feed(-1, shooter, intake));
-
-    //RAND
-    // joystick.two.whileTrue(new ShooterRollers(10, shooter, intake));
-    // joystick.two.onFalse(new Feed(-1, shooter, intake));
+    //SHOOTER STOP
+    joystick.six.whileTrue(new StopShooter(shooter));
 
   }
 

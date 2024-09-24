@@ -1,10 +1,13 @@
 package frc.robot.commands;
 
 
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
 public class Feed extends Command{
@@ -64,6 +67,7 @@ public class Feed extends Command{
   intake.feed(0);
   intake.centerIntake(0);
   intake.fullWidth(0);
+  CommandScheduler.getInstance().schedule(new ArmTest(RobotContainer.arm, 0));
   //shooter.setPID(0);
   //shooter.setPID(0);
   }

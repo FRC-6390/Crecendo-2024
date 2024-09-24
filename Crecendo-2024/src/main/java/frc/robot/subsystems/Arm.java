@@ -104,9 +104,9 @@ public class Arm extends SubsystemBase {
   public boolean atPosition()
   {
     // PID.
-    SmartDashboard.putBoolean("At Setpoint Arm", Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())) < 0.6);
-    SmartDashboard.putNumber("Arm Dist to setpoi nt", Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())));
-    SmartDashboard.putNumber("Arm pos rotations", Math.abs(maxPos * setpoint));
+    // SmartDashboard.putBoolean("At Setpoint Arm", Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())) < 0.6);
+    // SmartDashboard.putNumber("Arm Dist to setpoi nt", Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())));
+    // SmartDashboard.putNumber("Arm pos rotations", Math.abs(maxPos * setpoint));
     return Math.abs(Math.abs(maxPos * setpoint) - Math.abs(rotorPos.getValueAsDouble())) < 0.6; 
 
   
@@ -144,8 +144,8 @@ public void motorCoast(){
   convertedValue = (maxPos)*setpoint;
   double speed = PID.calculate(-convertedValue);
   SmartDashboard.putNumber("Arm Pos", rotorPos.getValueAsDouble());
-  SmartDashboard.putNumber("PID Arm", speed);
-  SmartDashboard.putNumber("Setpoint Arm", -convertedValue);
+  // SmartDashboard.putNumber("PID Arm", speed);
+  // SmartDashboard.putNumber("Setpoint Arm", -convertedValue);
   setSpeed(-speed);
   rotorPos.refresh();
   

@@ -113,26 +113,26 @@ public class AutoAim extends Command {
     double[] coords = ShooterHelper.coordinates(radians, distances[index]);
     double desXCoord = (scoringPosRC.getX() - coords[0]);
     double desYCoord = (scoringPosRC.getY() - coords[1]);
-    SmartDashboard.putNumber("xdiff", xdiff);
-    SmartDashboard.putNumber("ydiff", ydiff);
-    SmartDashboard.putNumber("Coords X", coords[0]);
-    SmartDashboard.putNumber("Coords Y", coords[1]);
-    SmartDashboard.putNumber("combined X", desXCoord);
-    SmartDashboard.putNumber("combined Y", desYCoord);
-    SmartDashboard.putNumber("Distance", c);
-    SmartDashboard.putNumber("Degrees", degrees);
-    SmartDashboard.putNumber("Radians", radians);
+    // SmartDashboard.putNumber("xdiff", xdiff);
+    // SmartDashboard.putNumber("ydiff", ydiff);
+    // SmartDashboard.putNumber("Coords X", coords[0]);
+    // SmartDashboard.putNumber("Coords Y", coords[1]);
+    // SmartDashboard.putNumber("combined X", desXCoord);
+    // SmartDashboard.putNumber("combined Y", desYCoord);
+    // SmartDashboard.putNumber("Distance", c);
+    // SmartDashboard.putNumber("Degrees", degrees);
+    // SmartDashboard.putNumber("Radians", radians);
 
-    CommandScheduler.getInstance().schedule(
-      AutoBuilder.pathfindToPose
-      (
-        new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
-        new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
-      )
-    );
+    // CommandScheduler.getInstance().schedule(
+    //   AutoBuilder.pathfindToPose
+    //   (
+    //     new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
+    //     new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
+    //   )
+    // );
     // double clampedDegrees = Math.max(-, Math.min(0, 0));
 
-      // CommandScheduler.getInstance().schedule(new TurnCommand(drivetrain, degrees));
+      CommandScheduler.getInstance().schedule(new TurnCommand(drivetrain, degrees));
   }
   else
   {
@@ -162,15 +162,15 @@ public class AutoAim extends Command {
     double[] coords = ShooterHelper.coordinates(radians, distances[index]);
     double desXCoord = (scoringPosC.getX() + coords[0]);
     double desYCoord = (scoringPosC.getY() - coords[1]);
-    SmartDashboard.putNumber("xdiff", xdiff);
-    SmartDashboard.putNumber("ydiff", ydiff);
-    SmartDashboard.putNumber("Coords X", coords[0]);
-    SmartDashboard.putNumber("Coords Y", coords[1]);
-    SmartDashboard.putNumber("combined X", desXCoord);
-    SmartDashboard.putNumber("combined Y", desYCoord);
-    SmartDashboard.putNumber("Distance", c);
-    SmartDashboard.putNumber("Degrees", degrees);
-    SmartDashboard.putNumber("Radians", radians);
+    // SmartDashboard.putNumber("xdiff", xdiff);
+    // SmartDashboard.putNumber("ydiff", ydiff);
+    // SmartDashboard.putNumber("Coords X", coords[0]);
+    // SmartDashboard.putNumber("Coords Y", coords[1]);
+    // SmartDashboard.putNumber("combined X", desXCoord);
+    // SmartDashboard.putNumber("combined Y", desYCoord);
+    // SmartDashboard.putNumber("Distance", c);
+    // SmartDashboard.putNumber("Degrees", degrees);
+    // SmartDashboard.putNumber("Radians", radians);
 
     CommandScheduler.getInstance().schedule(
       AutoBuilder.pathfindToPose
@@ -179,6 +179,9 @@ public class AutoAim extends Command {
         new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
       )
     );
+
+    // CommandScheduler.getInstance().schedule(new TurnCommand(drivetrain, degrees));
+
   }
   
 

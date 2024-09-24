@@ -5,6 +5,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.subsystems.Intake;
@@ -19,6 +20,7 @@ public class IntakeDrive extends Command {
   public double rotspd;
   public static boolean isDone;
   public Intake intake = new Intake();
+  double startTime = 0;
 
   public IntakeDrive(Drivetrain6390 drivetrain, double Yspd, double Xspd, double rotspd, Intake intake)
   {
@@ -33,6 +35,7 @@ public class IntakeDrive extends Command {
   @Override
   public void initialize() 
   {
+    startTime = Timer.getFPGATimestamp();
     isDone = false;
   }
 
@@ -40,10 +43,13 @@ public class IntakeDrive extends Command {
   @Override
   public void execute() 
   {
-  if(!Intake.getUpperBeamBreak())
+  double curTime = Timer.getFPGATimestamp();
+  boolean timerOff = ((curTime - startTime) > 1.5);
+  if(!timerOff)
+  // if(!Intake.getUpperBeamBreak())
   {
     drivetrain.drive(new ChassisSpeeds(Xspd, Yspd, rotspd));
-    intake.setRollers(-0.6, 2);
+    intake.setRollers(-0.35, 2);
   }
   else
   {

@@ -73,6 +73,10 @@ public class Intake extends SubsystemBase {
   {
     fullWidthIntakeRoller.set(0);
   }
+  public void fullWidthMove(double speed)
+  {
+    fullWidthIntakeRoller.set(speed);
+  }
   //Sets the intake rollers
   public void setRollers(double speed, int num)
   {
@@ -111,8 +115,8 @@ public class Intake extends SubsystemBase {
   public void periodic()
   {
    SmartDashboard.putBoolean("Game Piece", getUpperBeamBreak());
-   SmartDashboard.putNumber("Full Width", fullWidthIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
-   SmartDashboard.putNumber("Center", centerIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
-   SmartDashboard.putNumber("Feeder", feedingRollers.getSupplyCurrent().refresh().getValueAsDouble());
+  //  SmartDashboard.putNumber("Full Width", fullWidthIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
+  //  SmartDashboard.putNumber("Center", centerIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
+  //  SmartDashboard.putNumber("Feeder", feedingRollers.getSupplyCurrent().refresh().getValueAsDouble());
   }
 }

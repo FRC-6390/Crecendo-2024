@@ -1,0 +1,115 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.83,
+      "y": 4.5
+    },
+    "rotation": 120.85778606115218
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHigh"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New New Path Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeDrive"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "New New New Path Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHigh"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra1Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "FastIntake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra2Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveHalf"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AutoFeed"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Extras",
+  "choreoAuto": false
+}

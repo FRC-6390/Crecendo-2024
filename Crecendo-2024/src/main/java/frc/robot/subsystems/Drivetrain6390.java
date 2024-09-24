@@ -52,6 +52,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static ShuffleboardTab tab = Shuffleboard.getTab("Swerve");
   private static Field2d gameField;
   private static Field2d gameFieldVision;
+  private static Field2d gameFieldVision2;
   private static double desiredHeading;
   public static ReplanningConfig c;
   //0.1
@@ -93,6 +94,7 @@ public class Drivetrain6390 extends SubsystemBase{
   
     gameField = new Field2d();
     gameFieldVision = new Field2d();
+    gameFieldVision2 = new Field2d();
     
    
     swerveModules = new SwerveModule[4];
@@ -264,22 +266,23 @@ SwerveModulePosition[swerveModules.length];
       }
       if(!doRejectUpdate)
       {
-      // if(DriverStation.isTeleop())
-      // {
-      //   estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.475,.475,9999999));
-      // }
-      // else
-      // {
-      //   estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
-      // }
+      if(DriverStation.isTeleop())
+      {
+        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.1,.1,9999999));
+      }
+      else
+      {
+        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.475,.475,9999999));
+      }
         estimator.addVisionMeasurement(
             roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
       }
       //
     gameField.setRobotPose(pose);
-    gameFieldVision.setRobotPose(estimator.getEstimatedPosition());
+    gameFieldVision2.setRobotPose(roboPos);
     visionPose = estimator.getEstimatedPosition();
-    
+    gameFieldVision.setRobotPose(visionPose);
+
   }
 
   public ChassisSpeeds getSpeeds()
@@ -311,14 +314,16 @@ feedbackSpeeds.omegaRadiansPerSecond;
     driftCorrection(speed);
     }
 
-    SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
-    SmartDashboard.putNumber("Odometry X", visionPose.getX());
-    SmartDashboard.putNumber("Odometry Y", visionPose.getY());
-    SmartDashboard.putNumber("Odometry Heading REALL", getHeading());
+    // SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
+    // SmartDashboard.putNumber("Odometry X", visionPose.getX());
+    // SmartDashboard.putNumber("Odometry Y", visionPose.getY());
+    // SmartDashboard.putNumber("Odometry Heading REALL", getHeading());
+    
 
    SmartDashboard.putData("Vision Pose", gameFieldVision);
+  //  SmartDashboard.putData("Vision Pose Raw", gameFieldVision2);
 
-   SmartDashboard.putData("Pose", gameField);
+  //  SmartDashboard.putData("Pose", gameField);
     
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {

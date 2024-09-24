@@ -7,6 +7,7 @@ import frc.robot.subsystems.Shooter;
 import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -38,7 +39,7 @@ public Intake intake;
   // orchestra = new Orchestra();
    
 isDone = false;
-    startTime = System.currentTimeMillis();
+    startTime = Timer.getFPGATimestamp();
     // numPresses++;
     // if(numPresses > 2)
     // {
@@ -51,16 +52,16 @@ isDone = false;
   @Override
   public void execute() 
   {
-  // double curTime = System.currentTimeMillis();
+  double curTime =Timer.getFPGATimestamp();
   shooter.setRollers(speed);
   
   // orchestra.loadMusic("output.chrp");
   // orchestra.addInstrument(shooter.sh)
 
 
-// if(shooter.atSetpoint() || (curTime - startTime) > 3000)
+// if(shooter.atSetpoint() || )
 
-  if(Math.abs(shooter.getRotorVelocity()) >= threshold)
+  if((curTime - startTime) > 3)
       {
         isDone = true;  
         intake.feed(-0.75);
