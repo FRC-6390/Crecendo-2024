@@ -13,6 +13,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
@@ -29,10 +30,10 @@ public class SwerveModule {
     public TalonFX rotationMotor;
 
     private CANcoder encoder;
-    // private PID pid;
     public SwerveMotor driveMotorRecord;
     public SwerveMotor rotationMotorRecord;
     public double encoderGearRatio;
+    public Translation2d module_location;
 
     //SWERVE MOTOR RECORD
     public record SwerveMotor(int motor, boolean motorReversed, double gearRatio, double maxSpeedMetersPerSecond, String canbus)
@@ -43,7 +44,7 @@ public class SwerveModule {
         }
     }
 
-    public record SwerveModuleConfig(SwerveMotor driveMotor,SwerveMotor rotationMotor,int encoder, double encoderOffset,PIDController rotationPID, double encoderGearRatio) 
+    public record SwerveModuleConfig(SwerveMotor driveMotor,SwerveMotor rotationMotor,int encoder, double encoderOffset,PIDController rotationPID, double encoderGearRatio, Translation2d module_location) 
     {
 
     }
@@ -55,7 +56,7 @@ public class SwerveModule {
     //CHANGING
     public static PIDController rotationPidController;
 
-    public SwerveModule(SwerveModuleConfig config, ShuffleboardTab tab){
+    public SwerveModule(SwerveModuleConfig config){
         //INITIALIZING RECORD
         driveMotorRecord = config.driveMotor();
         rotationMotorRecord = config.rotationMotor();
@@ -99,6 +100,9 @@ public class SwerveModule {
         //DRIVE MOTOR POSITION AND VELOCITY
         drivePos=driveMotor.getRotorPosition();
         driveVel=driveMotor.getRotorVelocity();
+
+        //MODULE LOCATION
+        module_location = config.module_location();
 
         //RESET ENCODERS AND BRAKE MODE MODULES
         resetEncoders();

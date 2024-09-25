@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -48,6 +49,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Boolean isRed;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
+  private static Translation2d[] swerve_module_poses;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
   // private static SwerveTelemetry tele;
   public static SwerveDriveKinematics kinematics;
@@ -105,13 +107,13 @@ public class Drivetrain6390 extends SubsystemBase{
    
     swerveModules = new SwerveModule[4];
     swerveModules[0] = new
-    SwerveModule(DRIVETRAIN.FRONT_LEFT_MODULE_CONFIG,tab);
+    SwerveModule(DRIVETRAIN.FRONT_LEFT_MODULE_CONFIG);
     swerveModules[1] = new
-    SwerveModule(DRIVETRAIN.FRONT_RIGHT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.FRONT_RIGHT_MODULE_CONFIG);
     swerveModules[2] = new
-    SwerveModule(DRIVETRAIN.BACK_LEFT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.BACK_LEFT_MODULE_CONFIG);
     swerveModules[3] = new
-    SwerveModule(DRIVETRAIN.BACK_RIGHT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.BACK_RIGHT_MODULE_CONFIG);
     gyro = new Pigeon2(DRIVETRAIN.PIGEON, DRIVETRAIN.CANBUS);
 
     pdh = new PowerDistribution(DRIVETRAIN.REV_PDH, ModuleType.kRev);
@@ -122,9 +124,10 @@ public class Drivetrain6390 extends SubsystemBase{
     {swerveModules[0].getPostion(), swerveModules[1].getPostion(),
     swerveModules[2].getPostion(), swerveModules[3].getPostion()};
 
-    kinematics = new SwerveDriveKinematics(DRIVETRAIN.SWERVE_MODULE_LOCATIONS);
-    odometry = new SwerveDriveOdometry(kinematics,
-    Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), SwervePositions);
+    Translation2d[] swerve_module_positions = {swerveModules[0].module_location, swerveModules[1].module_location,swerveModules[2].module_location,swerveModules[3].module_location};
+    swerve_module_poses = swerve_module_positions;
+    kinematics = new SwerveDriveKinematics(swerve_module_poses);
+    odometry = new SwerveDriveOdometry(kinematics,Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), SwervePositions);
     pose = new Pose2d();
     visionPose = new Pose2d();
 
