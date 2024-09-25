@@ -105,7 +105,7 @@ public class Drivetrain6390 extends SubsystemBase{
    
     swerveModules = new SwerveModule[4];
     swerveModules[0] = new
-    SwerveModule(DRIVETRAIN.FRONT_LEFT_MODULE_CONFIG, tab);
+    SwerveModule(DRIVETRAIN.FRONT_LEFT_MODULE_CONFIG,tab);
     swerveModules[1] = new
     SwerveModule(DRIVETRAIN.FRONT_RIGHT_MODULE_CONFIG, tab);
     swerveModules[2] = new
@@ -130,7 +130,6 @@ public class Drivetrain6390 extends SubsystemBase{
 
     pid = new PID(driftCorrectionPID).setMeasurement(() ->
     pose.getRotation().getDegrees());
-    // tele = new SwerveTelemetry(swerveModules[0], swerveModules[1], swerveModules[2], swerveModules[3], pid, odometry, gameField, tab);
 }
 
   public void init(){

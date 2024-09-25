@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
 import frc.robot.Constants.SWERVEMODULE;
 import frc.robot.utilities.controlloop.PID;
+import frc.robot.utilities.controlloop.PIDConfig;
 
 
 public class SwerveModule {
@@ -29,23 +30,57 @@ public class SwerveModule {
 
     private CANcoder encoder;
     private PID pid;
+    public double encoderConversion;
+    public double maxSpeedMpS;
+
     
-    private GenericEntry offsetEntry;
+
+    public record SwerveModuleConfig(
+    int driveMotor, 
+    boolean driveMotorReversed, 
+    int rotationMotor, 
+    boolean rotationMotorReversed, 
+    int encoder, 
+    double encoderOffset, 
+    String canbus,
+    PIDConfig rotationPID,
+    double encoderConversion,
+    double maxSpeedMpS
+    ) {
+        public SwerveModuleConfig(
+            int driveMotor, 
+            boolean driveMotorReversed, 
+            int rotationMotor, 
+            boolean rotationMotorReversed, 
+            int encoder, 
+            double encoderOffset,
+            PIDConfig rotationPID,
+            double encoderConversion,
+            double maxSpeedMpS){
+            this(
+                driveMotor, 
+                driveMotorReversed, 
+                rotationMotor, 
+                rotationMotorReversed,
+                encoder, 
+                encoderOffset, 
+                "can", 
+                rotationPID,
+                encoderConversion,
+                maxSpeedMpS
+            );
+        }
+    }
 
     private double encoderOffset;
-   // private REVMaglimitSwitch limitSwitch;
     private static int instances = 0;
 
    private StatusSignal<Double> drivePos,driveVel, encoderPos;
-    public SwerveModule(SwerveModuleConfig config){
-        this(config, null);
-    }
 
     public static PIDController rotationPidController = new PIDController(0.25, 0, 0);
-   
-    
 
     public SwerveModule(SwerveModuleConfig config, ShuffleboardTab tab){
+        maxSpeedMpS = config.maxSpeedMpS();
         rotationPidController.enableContinuousInput(-Math.PI, Math.PI);
         if(config.canbus() != null){
            // System.out.println(config.canbus());
@@ -65,24 +100,17 @@ public class SwerveModule {
         curr.SupplyCurrentLimitEnable = true;
         curr.SupplyCurrentLimit = 50; //used to be 60
         con2.withCurrentLimits(curr);
-
+        encoderConversion = config.encoderConversion();
         driveMotor.getConfigurator().apply(con2);
         encoderPos=encoder.getPosition();
         
-        if(offsetEntry != null) encoderOffset = offsetEntry.getDouble(0.0);
+        
         
         CANcoderConfiguration  con = new CANcoderConfiguration();
         con.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         con.MagnetSensor.MagnetOffset = encoderOffset;
         encoder.getConfigurator().apply(con);
-        pid = new PID(SWERVEMODULE.ROTATION_PID).setMeasurement(() -> getRotationMotorPosition());
-        //if(tab != null){
-            // ShuffleboardLayout layout = tab.getLayout("Swerve Module "+instances, BuiltInLayouts.kList).withSize(2, 6);
-            // layout.add(pid);
-            // offsetEntry = layout.add("Offset "+ instances, getEncoderOffset()).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", -Math.PI, "max", Math.PI)).getEntry();
-            // layout.addDouble("Angle "+instances, () -> getPostion().angle.getDegrees());
-            // layout.addDouble("Absolute "+instances, () -> getAbsolutePosition());
-       // }
+        pid = new PID(config.rotationPID()).setMeasurement(() -> getRotationMotorPosition());
         instances++;
         drivePos=driveMotor.getRotorPosition();
         driveVel=driveMotor.getRotorVelocity();
@@ -92,13 +120,13 @@ public class SwerveModule {
 
     public double getDriveMotorVelocity(){
 
-        return driveVel.getValueAsDouble()  * SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
+        return driveVel.getValueAsDouble()  * encoderConversion;
         
     }
     
     public double getDriveMotorPosition(){
 
-       return drivePos.getValueAsDouble()* SWERVEMODULE.DRIVE_ENCODER_CONVERSION_METERS;
+       return drivePos.getValueAsDouble()* encoderConversion;
     }
 
     public double getRotationMotorPosition(){
@@ -117,6 +145,7 @@ public class SwerveModule {
         this.encoderOffset = encoderOffset;
     }
 
+    //ASK MATHIAS FOR THIS
     public double getEncoderRadians(){
         return (encoderPos.getValueAsDouble()*360 * Math.PI/180d);
     }
@@ -153,7 +182,7 @@ public class SwerveModule {
         }
 
       state = SwerveModuleState.optimize(state, getState().angle);
-        driveMotor.set(state.speedMetersPerSecond / SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND);
+        driveMotor.set(state.speedMetersPerSecond / maxSpeedMpS);
 
         rotationMotor.set(rotationPidController.calculate(-getEncoderRadians(), -state.angle.getRadians()));
     }
