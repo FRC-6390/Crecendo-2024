@@ -8,7 +8,9 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
-import frc.robot.utilities.swerve.*;
+
+
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -19,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
+import frc.robot.utilities.swerve.SwerveModule;
 
 /** Add your docs here. */
 public class SwerveDrivetrain {
@@ -118,16 +121,17 @@ public class SwerveDrivetrain {
 
     public void update()
     {
-    ChassisSpeeds speed = speeds.plus(addedSpeeds);
+        ChassisSpeeds speed = speeds.plus(addedSpeeds);
 
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
 
-    setModuleStates(states);
+        if(shouldCorrect)
+        {
+            driftCorrection(speed);
+        }
 
-    if(shouldCorrect)
-    {
-    driftCorrection(speed);
-    }
+        setModuleStates(states);
+       
     }
 
     public void enableDriftCorrection()
