@@ -115,6 +115,11 @@ public class SwerveModule {
         
     }
     
+    public Translation2d getModuleLocation()
+    {
+        return module_location;
+    }
+
     public double getDriveMotorPosition(){
 
        return drivePos.getValueAsDouble()* driveMotorRecord.gearRatio();
