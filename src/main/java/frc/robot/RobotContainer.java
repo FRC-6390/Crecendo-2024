@@ -55,7 +55,7 @@ public class RobotContainer {
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
   // public static double speed = -0.5;
-  // public static double threshold = 1000;
+  // public static double threshold = 30;
   // public static double armPos = 0;
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
@@ -113,7 +113,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
-    NamedCommands.registerCommand("Shoot", new ShooterRollers(speed, shooter, intake, 25));
+    NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 25));
     // NamedCommands.registerCommand("WShoot", new ShooterRollers(1, shooter, intake, 80));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));

@@ -16,6 +16,8 @@ public class LimeLight {
     public static NetworkTableEntry tv;
     public static NetworkTableEntry tx;
     public NetworkTableEntry ty;
+    public static NetworkTableEntry txnc;
+    public static NetworkTableEntry tync;
     public NetworkTableEntry ta;
     public NetworkTableEntry ts;
     public NetworkTableEntry tl;
@@ -127,7 +129,7 @@ public class LimeLight {
         camtran = limelightTable.getEntry("camtran");
         tid = limelightTable.getEntry("tid");
         json = limelightTable.getEntry("json");
-        botpose = limelightTable.getEntry("botpose_orb_wpiblue");
+        botpose = limelightTable.getEntry("botpose");
         tclass = limelightTable.getEntry("tclass");
         tc = limelightTable.getEntry("tc");
         ledMode = limelightTable.getEntry("ledMode");
@@ -259,15 +261,20 @@ public class LimeLight {
     }
 
      /**
-     * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z)
+     * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z), total latency, tag count, average tag distance from camera, average tag area, 
      */
     public Double[] getBotPositionRaw(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0, };
         Double[] poseReal = botpose.getDoubleArray(dub);
         return poseReal;
     }
 
-    public Double[] getBotPositionRawM2(){
+    public Double[] getBotPositionRawBlue(){
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = botpose.getDoubleArray(dub);
+        return poseReal;
+    }
+    public Double[] getBotPositionRawRed(){
         Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
         Double[] poseReal = botpose.getDoubleArray(dub);
         return poseReal;
