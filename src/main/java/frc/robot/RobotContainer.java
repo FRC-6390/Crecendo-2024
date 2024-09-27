@@ -54,8 +54,9 @@ public class RobotContainer {
   public static Arm arm;
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
-  public static double speed = -0.5;
-  public static double threshold = 1000;
+  // public static double speed = -0.5;
+  // public static double threshold = 1000;
+  // public static double armPos = 0;
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
@@ -100,8 +101,9 @@ public class RobotContainer {
     autoChooser.addOption("Sweeper", "Sweeper");    
 
     SmartDashboard.putData("AutoChoose", autoChooser);
-    SmartDashboard.putNumber("Shooter Speed", speed);
-    SmartDashboard.putNumber("Shooter Speed Setpoint", threshold);
+    // SmartDashboard.putNumber("Shooter Speed", speed);
+    // SmartDashboard.putNumber("Shooter Speed Setpoint", threshold);
+    // SmartDashboard.putNumber("Arm Position Changer", armPos);
     
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
@@ -146,13 +148,13 @@ public class RobotContainer {
   controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
 
   //SUBWOOFER SHOT
-  controller.rightBumper.whileTrue(new ShooterRollers(speed, shooter, intake, threshold));
+  controller.rightBumper.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
   //AMP SHOT
   controller.y.whileTrue(new ShooterRollers(-0.1, shooter, intake, 1));
   controller.y.onFalse(new Feed(-1, shooter, intake));
   //HALF COURT SHOT
-  controller.b.whileTrue(new ShooterRollers(speed, shooter, intake, threshold));
+  controller.b.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30));
   controller.b.onFalse(new Feed(-1, shooter, intake)); 
 
     //HOME POS

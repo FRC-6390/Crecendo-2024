@@ -23,7 +23,7 @@ import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.RobotContainer;
 import frc.robot.commands.auto.TurnCommand;
 import frc.robot.subsystems.Arm;
-import frc.robot.utilities.ShooterHelper;
+import frc.robot.utilities.vission.ShooterHelper;
 import frc.robot.utilities.vission.LimeLight;
 
 public class AutoAim extends Command {
