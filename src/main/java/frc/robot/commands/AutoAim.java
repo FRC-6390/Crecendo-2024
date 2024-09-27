@@ -104,8 +104,7 @@ public class AutoAim extends Command {
 
     // System.out.println("FAR SHOTT");
     CommandScheduler.getInstance().schedule(new ArmTest(arm, armAngles[index]));
-    RobotContainer.speed = -0.52;
-    
+
     double radians = Math.atan2(ydiff, xdiff);
     
     // radians *= -1d;
@@ -154,7 +153,7 @@ public class AutoAim extends Command {
     }
 
     CommandScheduler.getInstance().schedule(new ArmTest(arm, armAngles[index]));
-    RobotContainer.speed = -0.52;
+
     
     double radians = Math.atan2(ydiff, xdiff);
     
