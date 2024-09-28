@@ -41,7 +41,7 @@ import frc.robot.utilities.vission.LimelightHelpers;
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed = false;
+  private static Boolean isRed = true;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -70,7 +70,7 @@ public class Drivetrain6390 extends SubsystemBase{
     getModulePostions(), 
     new Pose2d(), 
     VecBuilder.fill(0.1,0.1,Units.degreesToRadians(3)), 
-    VecBuilder.fill(.475,.475,99999));
+    VecBuilder.fill(.1,.1,99999));
 
   public Drivetrain6390(LimeLight limelight)
   {
@@ -251,7 +251,8 @@ SwerveModulePosition[swerveModules.length];
       //MY VERSION
       Pose2d roboPos = LimelightHelpers.getBotPose2d_wpiBlue("limelight");
       int tagCount = LimelightHelpers.getTargetCount("limelight");
-
+      SmartDashboard.putNumber("Tag Count", tagCount);
+      SmartDashboard.putNumber("Xpos", roboPos.getX());
       Pose2d roboPos2 = limeLight.getBot2DPositionM2();
 
       // System.out.println(roboPos);
@@ -259,23 +260,26 @@ SwerveModulePosition[swerveModules.length];
       if(Math.abs(gyro.getRate()) > 720) 
       {
         doRejectUpdate = true;
+        System.out.println("REJECT GYRO");
       }
       if(tagCount == 0)
       {
         doRejectUpdate = true;
+        System.out.println("REJECT TAG COUNT");
       }
       if(!doRejectUpdate)
       {
-      if(DriverStation.isTeleop())
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.1,.1,9999999));
-      }
-      else
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.475,.475,9999999));
-      }
-        estimator.addVisionMeasurement(
-            roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+      // if(DriverStation.isTeleop())
+      // {
+      //   estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.01,.01,9999999));
+      //   System.out.println("UPDATE");
+      // }
+      // else
+      // {
+      //   estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.475,.475,9999999));
+      // }
+      System.out.println("Update");
+        estimator.addVisionMeasurement(roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
       }
       //
     gameField.setRobotPose(pose);

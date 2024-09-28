@@ -63,7 +63,7 @@ public class SwerveModule {
         TalonFXConfiguration con2 =  new TalonFXConfiguration();
         CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
         curr.SupplyCurrentLimitEnable = true;
-        curr.SupplyCurrentLimit = 60;
+        curr.SupplyCurrentLimit = 50; //used to be 60
         con2.withCurrentLimits(curr);
 
         driveMotor.getConfigurator().apply(con2);

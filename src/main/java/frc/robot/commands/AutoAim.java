@@ -36,8 +36,10 @@ public class AutoAim extends Command {
   public static Pose2d scoringPosC = new Pose2d(0.38, 5.52, new Rotation2d());
   public static Pose2d scoringPosRC = new Pose2d(16.29, 5.53, new Rotation2d());
   public double closestDistance = 10000;
-  public double[] distances = new double[]{2.616,4.796137311277181};
-  public double[] armAngles = new double[]{-0.3970532722, -0.4485960754};
+  // public double[] distances = new double[]{2.616,4.796137311277181};
+  // public double[] armAngles = new double[]{-0.3970532722, -0.4485960754};
+  public double[] distances = new double[]{1.25};
+  public double[] armAngles = new double[]{-0.211};
 
   public double[] distanceToCircles = new double[]{};
   public int index = 0;

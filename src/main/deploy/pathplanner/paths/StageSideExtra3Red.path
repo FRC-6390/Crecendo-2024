@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7636103146671328,
-        "y": 4.356431195030721
+        "x": 0.83,
+        "y": 4.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.585921922207761,
-        "y": 0.32790342327725086
+        "x": 0.8455861704876034,
+        "y": 4.4118287239427545
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.7198472228613495,
-        "y": 2.1665047609695787
+        "x": 8.27025654051308,
+        "y": 2.1
       },
       "prevControl": {
-        "x": 7.746131307754767,
-        "y": 2.131372251332235
+        "x": 5.846113375536307,
+        "y": -0.9096849922658478
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,22 +30,57 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.2,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "PivotMoveLow"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.7,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeRollers"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 4.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 540.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 179.2654789657453,
-    "rotateFast": false
+    "rotation": -134.0906195508008,
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "StageSide",
   "previewStartingState": {
-    "rotation": 120.65066795705295,
+    "rotation": 122.24421393622545,
     "velocity": 0
   },
   "useDefaultConstraints": true

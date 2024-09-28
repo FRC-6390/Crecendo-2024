@@ -99,6 +99,7 @@ public class RobotContainer {
     autoChooser.addOption("StageSideExtraFastRed", "StageSideExtraFastRed");
     autoChooser.addOption("StageSideExtraFastV2Red", "StageSideExtraFastV2Red");
     autoChooser.addOption("Sweeper", "Sweeper");    
+    autoChooser.addOption("testauto", "testauto");
 
     SmartDashboard.putData("AutoChoose", autoChooser);
     // SmartDashboard.putNumber("Shooter Speed", speed);
@@ -109,6 +110,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
     NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
     NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
+    NamedCommands.registerCommand("IntakeStop", new IntakeOverride(0, intake));
     NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
@@ -166,7 +168,9 @@ public class RobotContainer {
     //AMP POS
     joystick.eight.onTrue(new ArmTest(arm, -1));
     //INTAKE
-    joystick.ten.whileTrue(new IntakeOverride(-0.5, intake));
+    joystick.ten.whileTrue(new IntakeOverride(-0.6, intake));
+     //INTAKE STOP
+     joystick.three.whileTrue(new IntakeOverride(0, intake));
     //BACKFEED
     joystick.four.whileTrue(new Reverse(0.6, intake));
     //SHOOTER STOP

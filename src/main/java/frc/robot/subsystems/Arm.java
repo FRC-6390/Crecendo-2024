@@ -143,7 +143,7 @@ public void motorCoast(){
   //System.out.println(ArmMotorLeft.getRotorPosition());
   convertedValue = (maxPos)*setpoint;
   double speed = PID.calculate(-convertedValue);
-  SmartDashboard.putNumber("Arm Pos", rotorPos.getValueAsDouble());
+  // SmartDashboard.putNumber("Arm Pos", rotorPos.getValueAsDouble());
   // SmartDashboard.putNumber("PID Arm", speed);
   // SmartDashboard.putNumber("Setpoint Arm", -convertedValue);
   setSpeed(-speed);

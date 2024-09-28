@@ -30,33 +30,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveLow"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "StageSideExtra3Red"
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "FastIntake"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "StageSideExtra1Red"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveHigh"
+            "pathName": "StageSideExtra4Red"
           }
         },
         {
@@ -66,15 +48,21 @@
           }
         },
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "PivotMoveLow"
+            "pathName": "StageSideExtra1Red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra2Red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "FastIntake"
+            "name": "Feed"
           }
         }
       ]
