@@ -38,8 +38,8 @@ public class AutoAim extends Command {
   public double closestDistance = 10000;
   // public double[] distances = new double[]{2.616,4.796137311277181};
   // public double[] armAngles = new double[]{-0.3970532722, -0.4485960754};
-  public double[] distances = new double[]{1.25};
-  public double[] armAngles = new double[]{-0.211};
+  public double[] distances = new double[]{2.616};
+  public double[] armAngles = new double[]{-0.3970532722};
 
   public double[] distanceToCircles = new double[]{};
   public int index = 0;
@@ -124,16 +124,16 @@ public class AutoAim extends Command {
     // SmartDashboard.putNumber("Degrees", degrees);
     // SmartDashboard.putNumber("Radians", radians);
 
-    // CommandScheduler.getInstance().schedule(
-    //   AutoBuilder.pathfindToPose
-    //   (
-    //     new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
-    //     new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
-    //   )
-    // );
+    CommandScheduler.getInstance().schedule(
+      AutoBuilder.pathfindToPose
+      (
+        new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
+        new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
+      )
+    );
     // double clampedDegrees = Math.max(-, Math.min(0, 0));
 
-      CommandScheduler.getInstance().schedule(new TurnCommand(drivetrain, degrees));
+      // CommandScheduler.getInstance().schedule(new TurnCommand(drivetrain, degrees));
   }
   else
   {
@@ -177,7 +177,7 @@ public class AutoAim extends Command {
       AutoBuilder.pathfindToPose
       (
         new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
-        new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
+        new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))
       )
     );
 

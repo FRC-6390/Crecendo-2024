@@ -55,9 +55,9 @@ public class RobotContainer {
   public static Arm arm;
 //public static frc.robot.subsystems.Test test = new Test();
   public static LimeLight limelight = new LimeLight();
-  // public static double speed = -0.5;
-  // public static double threshold = 1000;
-  // public static double armPos = 0;
+  public static double speed = -0.5;
+  public static double threshold = 10;
+  public static double armPos = 0;
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
@@ -103,9 +103,9 @@ public class RobotContainer {
     autoChooser.addOption("testauto", "testauto");
 
     SmartDashboard.putData("AutoChoose", autoChooser);
-    // SmartDashboard.putNumber("Shooter Speed", speed);
-    // SmartDashboard.putNumber("Shooter Speed Setpoint", threshold);
-    // SmartDashboard.putNumber("Arm Position Changer", armPos);
+    SmartDashboard.putNumber("Shooter Speed", speed);
+    SmartDashboard.putNumber("Shooter Speed Setpoint", threshold);
+    SmartDashboard.putNumber("Arm Position Changer", armPos);
     
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
@@ -141,23 +141,37 @@ public class RobotContainer {
     //-0.5
 
     //Truss shot
-// -17.355
-//-0.65
+    // -17.355
+    //-0.65
 
 
   //---------------------------COMP CONTROLS---------------------------------//
     
-  //AUTO AIM
+  //AUTO AIM TO TRUSS
   controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
 
+  //AUTO AIM TO AMP
+  if(!driveTrain.getSide())
+  {
+    controller.a.onTrue(AutoBuilder.pathfindToPose(new Pose2d(1.88, 7.79, new Rotation2d(-90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
+  }
+  else
+  {
+    controller.a.onTrue(AutoBuilder.pathfindToPose(new Pose2d(14.71, 7.79, new Rotation2d(90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
+  }
+
+  //TUNING SHOT
+  controller.x.whileTrue(new SequentialCommandGroup(new ArmTest(arm, armPos),new ShooterRollers(speed, shooter, intake, threshold)));
+  controller.x.onFalse(new Feed(-1, shooter, intake));
+
   //SUBWOOFER SHOT
-  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.5, shooter, intake, 30)));
+  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.3, shooter, intake, 10)));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
   //AMP SHOT
   controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1)));
   controller.y.onFalse(new Feed(-1, shooter, intake));
   //HALF COURT SHOT
-  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.5, shooter, intake, 30)));
+  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.4),new ShooterRollers(-0.3, shooter, intake, 15)));
   controller.b.onFalse(new Feed(-1, shooter, intake)); 
 
     //HOME POS
@@ -170,8 +184,8 @@ public class RobotContainer {
     joystick.eight.onTrue(new ArmTest(arm, -1));
     //INTAKE
     joystick.ten.whileTrue(new IntakeOverride(-0.6, intake));
-     //INTAKE STOP
-     joystick.three.whileTrue(new IntakeOverride(0, intake));
+    //INTAKE STOP
+    joystick.three.whileTrue(new IntakeOverride(0, intake));
     //BACKFEED
     joystick.four.whileTrue(new Reverse(0.6, intake));
     //SHOOTER STOP
