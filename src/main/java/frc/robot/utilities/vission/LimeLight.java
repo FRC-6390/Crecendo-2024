@@ -35,6 +35,7 @@ public class LimeLight {
     public NetworkTableEntry botpose_orb_wpired;
     public NetworkTableEntry botpose_orb;
     public NetworkTableEntry tclass;
+    public NetworkTableEntry priorityid;
     public NetworkTableEntry tc;
     public static NetworkTableEntry ledMode;
     public NetworkTableEntry camMode;
@@ -118,6 +119,10 @@ public class LimeLight {
         this(LimelightConfig.defualt());
     }
 
+    public LimeLight(String table){
+        this(LimelightConfig.defualt(table));
+    }
+
     public LimeLight(LimelightConfig config){
         this.config = config;
         limelightTable = NetworkTableInstance.getDefault().getTable(config.table());
@@ -142,6 +147,7 @@ public class LimeLight {
         botpose_orb = limelightTable.getEntry("botpose_orb");
         botpose = limelightTable.getEntry("botpose");
         tclass = limelightTable.getEntry("tclass");
+        priorityid = limelightTable.getEntry("priorityid");
         tc = limelightTable.getEntry("tc");
         ledMode = limelightTable.getEntry("ledMode");
         camMode = limelightTable.getEntry("camMode");
@@ -271,7 +277,6 @@ public class LimeLight {
         return json.getString("");
     }
 
-
      /**
      * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z), total latency, tag count, average tag distance from camera, average tag area, 
      */
@@ -363,6 +368,10 @@ public class LimeLight {
         if(pose ==null) return 0.0;
         double tagCount = pose[7];
         return tagCount;
+    }
+
+    public int getPriorityID(){
+        return (int) priorityid.getInteger(-1);
     }
     // public Double[] getBotPositionRawBlue(){
     //     Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
@@ -463,6 +472,10 @@ public class LimeLight {
         double heightDiff = targetHeightMeters - mountingHeightMeters;
         
         return heightDiff == 0 ? Math.tan(angleToTargetRadains) : (heightDiff)/Math.tan(angleToTargetRadains);
+    }
+
+    public void setPriorityID(int tag_id){
+        priorityid.setInteger(tag_id);
     }
 
 }

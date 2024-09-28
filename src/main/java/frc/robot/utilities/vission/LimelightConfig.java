@@ -13,6 +13,10 @@ public class LimelightConfig {
         this.mountingHeightMeters = mountingHeightMeters;
     }
 
+    public static LimelightConfig defualt(String table){
+        return new LimelightConfig(table, 0, 0);
+    }
+
     public static LimelightConfig defualt(){
         return new LimelightConfig(DEFUALT_TABLE, 0, 0);
     }

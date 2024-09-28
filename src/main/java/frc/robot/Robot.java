@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimelightConfig;
+import frc.robot.utilities.vission.RobotVision;
 
 
 
@@ -39,6 +42,10 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     RobotContainer.arm.setHome();
     Pathfinding.setPathfinder(new LocalADStar());
+
+
+    RobotVision vision = new RobotVision("l1", "l2");
+
     // Pathfinding.setPathfinder(new RemoteADStar());
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.

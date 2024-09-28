@@ -2,25 +2,34 @@ package frc.robot.utilities.vission;
 
 import java.util.HashMap;
 
-public class RobotVision 
-{
+public class RobotVision {
 
- HashMap<String, LimeLight> cameras = new HashMap<>();
+   private HashMap<String, LimeLight> cameras;
 
- LimeLight defaultCamera;
- public RobotVision(HashMap<String, LimeLight> camerasPopulate)
- {
-    defaultCamera = new LimeLight(new LimelightConfig("limelight", 0, 0));
-    cameras = camerasPopulate;
- }
+   private LimeLight defaultCamera;
 
- public LimeLight getCamera(String key)
- {
-    return(cameras.get(key));
- }
+   public RobotVision(String... tableNames) {
+      cameras = new HashMap<>();
+      for (int i = 0; i < tableNames.length; i++) {
+         LimeLight limeLight = new LimeLight(tableNames[i]);
+         cameras.put(tableNames[i], limeLight);
+      }
+      defaultCamera = cameras.get(tableNames[0]);
+   }
 
- public LimeLight getDefaultCamera()
- {
-    return(defaultCamera);
- }
+   public RobotVision(LimeLight... camerasPopulate) {
+      cameras = new HashMap<>();
+      defaultCamera = camerasPopulate[0];
+      for (LimeLight limeLight : camerasPopulate) {
+         cameras.put(limeLight.config.table(), limeLight);
+      }
+   }
+
+   public LimeLight getCamera(String key) {
+      return (cameras.get(key));
+   }
+
+   public LimeLight getDefaultCamera() {
+      return (defaultCamera);
+   }
 }
