@@ -29,6 +29,11 @@ public class LimeLight {
     public NetworkTableEntry tid;
     public NetworkTableEntry json;
     public NetworkTableEntry botpose;
+    public NetworkTableEntry botpose_wpiblue;
+    public NetworkTableEntry botpose_wpired;
+    public NetworkTableEntry botpose_orb_wpiblue;
+    public NetworkTableEntry botpose_orb_wpired;
+    public NetworkTableEntry botpose_orb;
     public NetworkTableEntry tclass;
     public NetworkTableEntry tc;
     public static NetworkTableEntry ledMode;
@@ -129,6 +134,12 @@ public class LimeLight {
         camtran = limelightTable.getEntry("camtran");
         tid = limelightTable.getEntry("tid");
         json = limelightTable.getEntry("json");
+        botpose = limelightTable.getEntry("botpose");
+        botpose_wpiblue = limelightTable.getEntry("botpose_wpiblue");
+        botpose_wpired = limelightTable.getEntry("botpose_wpired");
+        botpose_orb_wpiblue = limelightTable.getEntry("botpose_orb_wpiblue");
+        botpose_orb_wpired = limelightTable.getEntry("botpose_orb_wpired");
+        botpose_orb = limelightTable.getEntry("botpose_orb");
         botpose = limelightTable.getEntry("botpose");
         tclass = limelightTable.getEntry("tclass");
         tc = limelightTable.getEntry("tc");
@@ -260,35 +271,42 @@ public class LimeLight {
         return json.getString("");
     }
 
+
      /**
      * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z), total latency, tag count, average tag distance from camera, average tag area, 
      */
     public Double[] getBotPositionRaw(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0, };
+        Double[] dub = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         Double[] poseReal = botpose.getDoubleArray(dub);
+        return poseReal;
+    }
+
+    public Double[] getBotPositionRawRed(){
+        Double[] dub = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        Double[] poseReal = botpose_wpired.getDoubleArray(dub);
         return poseReal;
     }
 
     public Double[] getBotPositionRawBlue(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
-        Double[] poseReal = botpose.getDoubleArray(dub);
-        return poseReal;
-    }
-    public Double[] getBotPositionRawRed(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
-        Double[] poseReal = botpose.getDoubleArray(dub);
+        Double[] dub = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        Double[] poseReal = botpose_wpiblue.getDoubleArray(dub);
         return poseReal;
     }
 
-    /**
-     * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z)
-     */
-    public Pose3d getBot3DPosition(){
-        Number[] pose = getBotPositionRaw();
-        if(pose == null) return new Pose3d();
-        Translation3d translation3d = new Translation3d(pose[0].doubleValue(), pose[1].doubleValue(), pose[2].doubleValue());
-        Rotation3d rotation3d = new Rotation3d(pose[3].doubleValue(), pose[4].doubleValue(), pose[5].doubleValue());
-        return new Pose3d(translation3d, rotation3d);
+    public Double[] getBotPositionRawOrbBlue(){
+        Double[] dub = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        Double[] poseReal = botpose_orb_wpiblue.getDoubleArray(dub);
+        return poseReal;
+    }
+    public Double[] getBotPositionRawOrbRed(){
+        Double[] dub = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        Double[] poseReal = botpose_orb_wpired.getDoubleArray(dub);
+        return poseReal;
+    }
+    public Double[] getBotPositionRawOrb(){
+        Double[] dub = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        Double[] poseReal = botpose_orb.getDoubleArray(dub);
+        return poseReal;
     }
 
     public Pose2d getBot2DPosition(){
@@ -299,13 +317,90 @@ public class LimeLight {
         return new Pose2d(translation, rotation);
     }
 
-    public Pose2d getBot2DPositionM2(){
-        Double[] pose = getBotPositionRawM2();
+    public Pose2d getBot2DPositionOrb(){
+        Double[] pose = getBotPositionRawOrb();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
         Rotation2d rotation = new Rotation2d(pose[5]);
         return new Pose2d(translation, rotation);
     }
+
+    public Pose2d getBot2DPositionOrbRed(){
+        Double[] pose = getBotPositionRawOrbRed();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Pose2d getBot2DPositionOrbBlue(){
+        Double[] pose = getBotPositionRawOrbBlue();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Pose2d getBot2DPositionRed(){
+        Double[] pose = getBotPositionRawOrbRed();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Pose2d getBot2DPositionBlue(){
+        Double[] pose = getBotPositionRawOrbBlue();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public double getTagMarkers()
+    {
+        Double[] pose = getBotPositionRaw();
+        if(pose ==null) return 0.0;
+        double tagCount = pose[7];
+        return tagCount;
+    }
+    // public Double[] getBotPositionRawBlue(){
+    //     Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+    //     Double[] poseReal = botpose.getDoubleArray(dub);
+    //     return poseReal;
+    // }
+    // public Double[] getBotPositionRawRed(){
+    //     Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+    //     Double[] poseReal = botpose.getDoubleArray(dub);
+    //     return poseReal;
+    // }
+
+    // /**
+    //  * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z)
+    //  */
+    // public Pose3d getBot3DPosition(){
+    //     Number[] pose = getBotPositionRaw();
+    //     if(pose == null) return new Pose3d();
+    //     Translation3d translation3d = new Translation3d(pose[0].doubleValue(), pose[1].doubleValue(), pose[2].doubleValue());
+    //     Rotation3d rotation3d = new Rotation3d(pose[3].doubleValue(), pose[4].doubleValue(), pose[5].doubleValue());
+    //     return new Pose3d(translation3d, rotation3d);
+    // }
+
+    // public Pose2d getBot2DPosition(){
+    //     Double[] pose = getBotPositionRaw();
+    //     if(pose == null) return new Pose2d();
+    //     Translation2d translation = new Translation2d(pose[1], pose[0]);
+    //     Rotation2d rotation = new Rotation2d(pose[5]);
+    //     return new Pose2d(translation, rotation);
+    // }
+
+    // public Pose2d getBot2DPositionM2(){
+    //     Double[] pose = getBotPositionRawM2();
+    //     if(pose == null) return new Pose2d();
+    //     Translation2d translation = new Translation2d(pose[1], pose[0]);
+    //     Rotation2d rotation = new Rotation2d(pose[5]);
+    //     return new Pose2d(translation, rotation);
+    // }
 
     
 
