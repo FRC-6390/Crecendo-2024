@@ -41,6 +41,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
@@ -150,13 +151,13 @@ public class RobotContainer {
   controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
 
   //SUBWOOFER SHOT
-  controller.rightBumper.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30));
+  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.5, shooter, intake, 30)));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
   //AMP SHOT
-  controller.y.whileTrue(new ShooterRollers(-0.1, shooter, intake, 1));
+  controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1)));
   controller.y.onFalse(new Feed(-1, shooter, intake));
   //HALF COURT SHOT
-  controller.b.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30));
+  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.5, shooter, intake, 30)));
   controller.b.onFalse(new Feed(-1, shooter, intake)); 
 
     //HOME POS
