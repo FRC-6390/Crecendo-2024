@@ -153,14 +153,14 @@ public class RobotContainer {
   //AUTO AIM TO AMP
   if(!driveTrain.getSide())
   {
-    controller.a.onTrue(AutoBuilder.pathfindToPose(new Pose2d(1.88, 7.79, new Rotation2d(-90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
+    controller.top.onTrue(AutoBuilder.pathfindToPose(new Pose2d(1.88, 7.79, new Rotation2d(-90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
   }
   else
   {
-    controller.a.onTrue(AutoBuilder.pathfindToPose(new Pose2d(14.71, 7.79, new Rotation2d(90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
+    controller.top.onTrue(AutoBuilder.pathfindToPose(new Pose2d(14.71, 7.79, new Rotation2d(90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
   }
 
-  //TUNING SHOT
+  //TUNING SHOT (SOON TO BE TRUSS SHOT)
   controller.x.whileTrue(new SequentialCommandGroup(new ArmTest(arm, armPos),new ShooterRollers(speed, shooter, intake, threshold)));
   controller.x.onFalse(new Feed(-1, shooter, intake));
 
