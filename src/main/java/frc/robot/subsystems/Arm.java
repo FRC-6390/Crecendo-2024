@@ -27,6 +27,7 @@ import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.sensors.Button;
 // import frc.robot.utilities.telemetry.PivotTelemetry;
+import frc.robot.utilities.sensors.DistanceSensor;
 
 public class Arm extends SubsystemBase {
   /** Creates a new Test. */

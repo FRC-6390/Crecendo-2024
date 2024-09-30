@@ -131,7 +131,6 @@ public class RobotContainer {
   //TUNING SHOT (SOON TO BE TRUSS SHOT)
   controller.x.whileTrue(new SequentialCommandGroup(new ArmTest(arm, armPos),new ShooterRollers(speed, shooter, intake, threshold)));
   controller.x.onFalse(new Feed(-1, shooter, intake));
-
   //SUBWOOFER SHOT
   controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.3, shooter, intake, 10)));
   controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
@@ -141,7 +140,7 @@ public class RobotContainer {
   //HALF COURT SHOT
   controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.4),new ShooterRollers(-0.3, shooter, intake, 15)));
   controller.b.onFalse(new Feed(-1, shooter, intake)); 
-
+  
     //HOME POS
     joystick.seven.onTrue(new ArmTest(arm, 0));
     //SUBWOOFER POS

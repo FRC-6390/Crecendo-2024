@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
  
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utilities.controller.DebouncedJoystick;
+import frc.robot.utilities.sensors.DistanceSensor;
 import frc.robot.utilities.sensors.IRBBSensor;
  
 public class Intake extends SubsystemBase {
@@ -19,6 +22,7 @@ public class Intake extends SubsystemBase {
   public static TalonFX feedingRollers;
   // public static IRBBSensor lowerIntakeBeamBreak;
   public static IRBBSensor upperIntakeBeamBreak;
+  public static DistanceSensor distanceSensor;
 
  
  
@@ -35,7 +39,7 @@ public class Intake extends SubsystemBase {
   // lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK);
   upperIntakeBeamBreak = new IRBBSensor(4);
   feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
-  
+ 
   TalonFXConfiguration con2 =  new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
   curr.SupplyCurrentLimitEnable = true;
@@ -45,7 +49,10 @@ public class Intake extends SubsystemBase {
   feedingRollers.getConfigurator().apply(con2);
   fullWidthIntakeRoller.getConfigurator().apply(con2);
   centerIntakeRoller.getConfigurator().apply(con2);
-
+  distanceSensor = new DistanceSensor(Port.kOnboard);
+  distanceSensor.setEnabled(true);
+  distanceSensor.setDistanceUnits(Unit.kMillimeters);
+  distanceSensor.setAutomaticMode(true);
 }
  
   // //Get value of the intake lift limit switch
@@ -109,12 +116,17 @@ public class Intake extends SubsystemBase {
   {
     return centerIntakeRoller.getSupplyCurrent();
   }
+  public double getRange()
+  {
+    return distanceSensor.getRange();
+  }
  
 
   @Override
   public void periodic()
   {
    SmartDashboard.putBoolean("Game Piece", getUpperBeamBreak());
+   SmartDashboard.putNumber("Distance", distanceSensor.getRange());
   //  SmartDashboard.putNumber("Full Width", fullWidthIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
   //  SmartDashboard.putNumber("Center", centerIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
   //  SmartDashboard.putNumber("Feeder", feedingRollers.getSupplyCurrent().refresh().getValueAsDouble());
