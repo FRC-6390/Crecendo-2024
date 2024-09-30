@@ -44,8 +44,7 @@ public class Robot extends TimedRobot {
     Pathfinding.setPathfinder(new LocalADStar());
 
 
-    RobotVision vision = new RobotVision("l1", "l2");
-
+  
     // Pathfinding.setPathfinder(new RemoteADStar());
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.

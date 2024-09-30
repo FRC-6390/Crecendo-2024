@@ -34,6 +34,15 @@ public class LimeLight {
     public NetworkTableEntry botpose_orb_wpiblue;
     public NetworkTableEntry botpose_orb_wpired;
     public NetworkTableEntry botpose_orb;
+    public NetworkTableEntry camerapose_targetspace;
+    public NetworkTableEntry targetpose_cameraspace;
+    public NetworkTableEntry targetpose_robotspace;	
+    public NetworkTableEntry botpose_targetspace;	
+    public NetworkTableEntry camerapose_robotspace;
+    public NetworkTableEntry camerapose_robotspace_set;
+    public NetworkTableEntry robot_orientation_set;
+    public NetworkTableEntry fiducial_id_filters_set;
+    public NetworkTableEntry fiducial_offset_set;
     public NetworkTableEntry tclass;
     public NetworkTableEntry priorityid;
     public NetworkTableEntry tc;
@@ -148,6 +157,17 @@ public class LimeLight {
         botpose = limelightTable.getEntry("botpose");
         tclass = limelightTable.getEntry("tclass");
         priorityid = limelightTable.getEntry("priorityid");
+
+        camerapose_targetspace = limelightTable.getEntry("camerapose_targetspace");
+        targetpose_cameraspace = limelightTable.getEntry("targetpose_cameraspace");
+        targetpose_robotspace = limelightTable.getEntry("targetpose_robotspace");
+        botpose_targetspace = limelightTable.getEntry("botpose_targetspace");
+        camerapose_robotspace = limelightTable.getEntry("camerapose_robotspace");
+        camerapose_robotspace_set = limelightTable.getEntry("camerapose_robotspace_set");
+        robot_orientation_set = limelightTable.getEntry("robot_orientation_set");
+        fiducial_id_filters_set = limelightTable.getEntry("fiducial_id_filters_set");
+        fiducial_offset_set = limelightTable.getEntry("fiducial_offset_set");
+        
         tc = limelightTable.getEntry("tc");
         ledMode = limelightTable.getEntry("ledMode");
         camMode = limelightTable.getEntry("camMode");
@@ -280,6 +300,7 @@ public class LimeLight {
      /**
      * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z), total latency, tag count, average tag distance from camera, average tag area, 
      */
+    //LOCALIZATION METHODS
     public Double[] getBotPositionRaw(){
         Double[] dub = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         Double[] poseReal = botpose.getDoubleArray(dub);
@@ -314,7 +335,8 @@ public class LimeLight {
         return poseReal;
     }
 
-    public Pose2d getBot2DPosition(){
+    public Pose2d getBot2DPosition()
+    {
         Double[] pose = getBotPositionRaw();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
@@ -322,7 +344,8 @@ public class LimeLight {
         return new Pose2d(translation, rotation);
     }
 
-    public Pose2d getBot2DPositionOrb(){
+    public Pose2d getBot2DPositionOrb()
+    {
         Double[] pose = getBotPositionRawOrb();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
@@ -330,7 +353,8 @@ public class LimeLight {
         return new Pose2d(translation, rotation);
     }
 
-    public Pose2d getBot2DPositionOrbRed(){
+    public Pose2d getBot2DPositionOrbRed()
+    {
         Double[] pose = getBotPositionRawOrbRed();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
@@ -338,7 +362,8 @@ public class LimeLight {
         return new Pose2d(translation, rotation);
     }
 
-    public Pose2d getBot2DPositionOrbBlue(){
+    public Pose2d getBot2DPositionOrbBlue()
+    {
         Double[] pose = getBotPositionRawOrbBlue();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
@@ -346,7 +371,8 @@ public class LimeLight {
         return new Pose2d(translation, rotation);
     }
 
-    public Pose2d getBot2DPositionRed(){
+    public Pose2d getBot2DPositionRed()
+    {
         Double[] pose = getBotPositionRawOrbRed();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
@@ -354,7 +380,8 @@ public class LimeLight {
         return new Pose2d(translation, rotation);
     }
 
-    public Pose2d getBot2DPositionBlue(){
+    public Pose2d getBot2DPositionBlue()
+    {
         Double[] pose = getBotPositionRawOrbBlue();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
@@ -373,11 +400,86 @@ public class LimeLight {
     public int getPriorityID(){
         return (int) priorityid.getInteger(-1);
     }
-    // public Double[] getBotPositionRawBlue(){
-    //     Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
-    //     Double[] poseReal = botpose.getDoubleArray(dub);
-    //     return poseReal;
-    // }
+
+    //NONESSENTIAL LOCALIZATION METHODS
+    public Pose2d getCameraPoseTargetSpace()
+    {
+        Double[] pose = getCameraPoseTargetSpaceRaw();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Double[] getCameraPoseTargetSpaceRaw(){
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = camerapose_targetspace.getDoubleArray(dub);
+        return poseReal;
+    }
+
+    public Pose2d getTargetPoseCameraSpace()
+    {
+        Double[] pose = getTargetPoseCameraSpaceRaw();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Double[] getTargetPoseCameraSpaceRaw()
+    {
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = targetpose_cameraspace.getDoubleArray(dub);
+        return poseReal;
+    }
+
+    public Pose2d getTargetPoseRobotSpace()
+    {
+        Double[] pose = getTargetPoseRobotSpaceRaw();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Double[] getTargetPoseRobotSpaceRaw()
+    {
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = targetpose_cameraspace.getDoubleArray(dub);
+        return poseReal;
+    }
+
+    public Pose2d getBotPoseTargetSpace()
+    {
+        Double[] pose = getBotPoseTargetSpaceRaw();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Double[] getBotPoseTargetSpaceRaw()
+    {
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = targetpose_cameraspace.getDoubleArray(dub);
+        return poseReal;
+    }
+
+    public Pose2d getCameraPoseRobotSpace()
+    {
+        Double[] pose = getTargetPoseRobotSpaceRaw();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Double[] getCameraPoseRobotSpaceRaw()
+    {
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = targetpose_cameraspace.getDoubleArray(dub);
+        return poseReal;
+    }
     // public Double[] getBotPositionRawRed(){
     //     Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
     //     Double[] poseReal = botpose.getDoubleArray(dub);
@@ -476,6 +578,15 @@ public class LimeLight {
 
     public void setPriorityID(int tag_id){
         priorityid.setInteger(tag_id);
+    }
+
+    public void setCameraPoseRobotSpace(Double[] pose)
+    {
+        camerapose_robotspace_set.setDoubleArray(pose);
+    }
+    public void setCameraPoseRobotSpace(Double[] pose)
+    {
+        camerapose_robotspace_set.setDoubleArray(pose);
     }
 
 }
