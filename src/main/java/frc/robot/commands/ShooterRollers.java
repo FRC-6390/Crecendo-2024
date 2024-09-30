@@ -54,24 +54,21 @@ isDone = false;
   {
   double curTime =Timer.getFPGATimestamp();
   shooter.setRollers(speed);
-  
+
   // orchestra.loadMusic("output.chrp");
   // orchestra.addInstrument(shooter.sh)
-
-
-// if(shooter.atSetpoint() || )
-
-  if((curTime - startTime) > 3)
-      {
-        isDone = true;  
-        intake.feed(-0.75);
-        intake.centerIntake(-0.6);
-        intake.fullWidth(-0.6);
-        //shooter.stopShooter();
-      }
+  // if(shooter.atSetpoint() || )
+  if((curTime - startTime) > 3 || shooter.atSetpoint())
+  {
+      isDone = true;  
+      intake.feed(-0.75);
+      intake.centerIntake(-0.6);
+      intake.fullWidth(-0.6);
+      //shooter.stopShooter();
+  }
     System.out.println("SetpointAt: " + shooter.atSetpoint());
     System.out.println("Velocity: " + shooter.getRotorVelocity());
-  System.out.println("Beam" + Intake.getUpperBeamBreak());
+    System.out.println("Beam" + Intake.getUpperBeamBreak());
   }
 
   @Override
@@ -80,7 +77,7 @@ isDone = false;
 //intake.feed(0);
   //shooter.stopShooter();
   System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-      }
+  }
 
   @Override
   public boolean isFinished() {
