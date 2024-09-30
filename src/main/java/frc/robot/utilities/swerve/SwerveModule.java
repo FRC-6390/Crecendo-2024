@@ -1,7 +1,5 @@
 package frc.robot.utilities.swerve;
 
-import java.util.Map;
-
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -16,197 +14,207 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.GenericEntry;
-
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-
-import frc.robot.Constants.SWERVEMODULE;
-import frc.robot.utilities.controlloop.PID;
-import frc.robot.utilities.controlloop.PIDConfig;
-
 
 public class SwerveModule {
+
+    private SwerveModuleConfig config;
+
     public TalonFX driveMotor;
     public TalonFX rotationMotor;
-
     private CANcoder encoder;
-    public SwerveMotor driveMotorRecord;
-    public SwerveMotor rotationMotorRecord;
-    public double encoderGearRatio;
-    public Translation2d module_location;
+    public static PIDController rotationPidController;
 
-    //SWERVE MOTOR RECORD
-    public record SwerveMotor(int motor, boolean motorReversed, double gearRatio, double maxSpeedMetersPerSecond, String canbus)
-    {
-        public SwerveMotor(int motor, boolean motorReversed, double gearRatio, double maxSpeedMetersPerSecond)
-        {
+    private StatusSignal<Double> drivePos, driveVel, rotationPos, encoderPos;
+
+    // SWERVE MOTOR RECORD
+    public record SwerveMotor(int motor, boolean motorReversed, double gearRatio, double maxSpeedMetersPerSecond,
+            String canbus) {
+        public SwerveMotor(int motor, boolean motorReversed, double maxSpeedMetersPerSecond, double gearRatio) {
             this(motor, motorReversed, gearRatio, maxSpeedMetersPerSecond, "can");
+        }
+
+        public SwerveMotor(int motor, boolean motorReversed, double maxSpeedMetersPerSecond) {
+            this(motor, motorReversed, 1, maxSpeedMetersPerSecond, "can");
+        }
+
+        public SwerveMotor(int motor, boolean motorReversed, double maxSpeedMetersPerSecond, String canbus) {
+            this(motor, motorReversed, 1, maxSpeedMetersPerSecond, canbus);
+        }
+
+        public SwerveMotor(int motor, boolean motorReversed) {
+            this(motor, motorReversed, 1, 0, "can");
+        }
+
+        public SwerveMotor(int motor, boolean motorReversed, String canbus) {
+            this(motor, motorReversed, 1, 0, canbus);
         }
     }
 
-    public record SwerveModuleConfig(SwerveMotor driveMotor,SwerveMotor rotationMotor,int encoder, double encoderOffset,PIDController rotationPID, double encoderGearRatio, Translation2d module_location) 
-    {
-
+    public record SwerveModuleConfig(Translation2d module_location, double wheelDiameter, SwerveMotor driveMotor, SwerveMotor rotationMotor, PIDController rotationPID, double offsetRadians, int encoder, double encoderGearRatio) {
+        public SwerveModuleConfig(Translation2d module_location, double wheelDiameter, SwerveMotor driveMotor, SwerveMotor rotationMotor, PIDController rotationPID, double offsetRadian) {
+            this(module_location, wheelDiameter, driveMotor, rotationMotor, rotationPID, offsetRadian, -1, -1);
+        }
     }
 
-    private double encoderOffset;
-
-    private StatusSignal<Double> drivePos,driveVel, encoderPos;
-
-    //CHANGING
-    public static PIDController rotationPidController;
-
-    public SwerveModule(SwerveModuleConfig config){
-        //INITIALIZING RECORD
-        driveMotorRecord = config.driveMotor();
-        rotationMotorRecord = config.rotationMotor();
-
-        //ROTATION PID ENABLING -180 TO 180
+    public SwerveModule(SwerveModuleConfig config) {
+        this.config = config;
+        // ROTATION PID ENABLING -180 TO 180
         rotationPidController.enableContinuousInput(-Math.PI, Math.PI);
-        
-        //MOTOR INITIALIZATION
-        driveMotor = new TalonFX(driveMotorRecord.motor(), driveMotorRecord.canbus());
-        rotationMotor = new TalonFX(rotationMotorRecord.motor(), rotationMotorRecord.canbus());
-        encoder = new CANcoder(config.encoder(), config.rotationMotor().canbus());
 
-        //ENCODER OFFSETS INITIALIZED HERE
-        encoderOffset = config.encoderOffset();
+        // MOTOR INITIALIZATION
+        driveMotor = new TalonFX(config.driveMotor().motor(), config.driveMotor().canbus());
+        rotationMotor = new TalonFX(config.rotationMotor().motor(), config.rotationMotor().canbus());
 
-        //INVERTING MOTORS
-        driveMotor.setInverted(driveMotorRecord.motorReversed());
-        rotationMotor.setInverted(rotationMotorRecord.motorReversed());
+        // INVERTING MOTORS
+        driveMotor.setInverted(config.driveMotor().motorReversed());
+        rotationMotor.setInverted(config.rotationMotor().motorReversed());
 
-        //CURRENT LIMITING
-        TalonFXConfiguration con2 =  new TalonFXConfiguration();
-        CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
-        curr.SupplyCurrentLimitEnable = true;
-        curr.SupplyCurrentLimit = 50; //used to be 60
-        con2.withCurrentLimits(curr);
-        driveMotor.getConfigurator().apply(con2);
+        // CURRENT LIMITING
+        TalonFXConfiguration driveConfig = new TalonFXConfiguration();
+        CurrentLimitsConfigs driveCurrentLimit = new CurrentLimitsConfigs();
+        driveCurrentLimit.SupplyCurrentLimitEnable = true;
+        driveCurrentLimit.SupplyCurrentLimit = 60;
+        driveConfig.withCurrentLimits(driveCurrentLimit);
+        driveMotor.getConfigurator().apply(driveConfig);
 
-        //ENCODER POSITION
-        encoderPos=encoder.getPosition();
-        
-        //ENCODER CONFIGURATION
-        CANcoderConfiguration  con = new CANcoderConfiguration();
-        con.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        con.MagnetSensor.MagnetOffset = encoderOffset;
-        encoderGearRatio = config.encoderGearRatio();
-        encoder.getConfigurator().apply(con);
+        if (config.encoder() > -1) {
+            encoder = new CANcoder(config.encoder(), config.rotationMotor().canbus());
+            encoderPos = encoder.getPosition();
 
-        //MODULE ROTATION PID
+            CANcoderConfiguration encoderConfig = new CANcoderConfiguration();
+            encoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+            encoderConfig.MagnetSensor.MagnetOffset = config.offsetRadians();
+            encoder.getConfigurator().apply(encoderConfig);
+        }
+
+        // MODULE ROTATION PID
         rotationPidController = config.rotationPID();
 
-        //DRIVE MOTOR POSITION AND VELOCITY
-        drivePos=driveMotor.getRotorPosition();
-        driveVel=driveMotor.getRotorVelocity();
+        // DRIVE MOTOR POSITION AND VELOCITY
+        drivePos = driveMotor.getRotorPosition();
+        driveVel = driveMotor.getRotorVelocity();
+        rotationPos = rotationMotor.getRotorPosition();
 
-        //MODULE LOCATION
-        module_location = config.module_location();
-
-        //RESET ENCODERS AND BRAKE MODE MODULES
+        // RESET ENCODERS AND BRAKE MODE MODULES
         resetEncoders();
         lock();
     }
 
-    public double getDriveMotorVelocity(){
+    public double getDriveMotorVelocity() {
 
-        return driveVel.getValueAsDouble()  * driveMotorRecord.gearRatio();
-        
-    }
-    
-    public Translation2d getModuleLocation()
-    {
-        return module_location;
+        return driveVel.getValueAsDouble() * config.driveMotor().gearRatio() * Math.PI * config.wheelDiameter();
+
     }
 
-    public double getDriveMotorPosition(){
-
-       return drivePos.getValueAsDouble()* driveMotorRecord.gearRatio();
+    public Translation2d getModuleLocation() {
+        return config.module_location();
     }
 
-    public double getRotationMotorPosition(){
-        return getEncoderRadians() * encoderGearRatio;
+    public double getDriveMotorPosition() {
+
+        return drivePos.getValueAsDouble() * config.driveMotor().gearRatio() * Math.PI * config.wheelDiameter();
     }
 
-    public double getAbsolutePositionRadians(){
-        return encoderPos.getValueAsDouble() * Math.PI/180d * encoderGearRatio;
+    public double getModuleRotationRadians() {
+        if (encoder != null) {
+            return getEncoderRadians();
+        }
+
+        return getRotationMotorRadians();
     }
 
-    public double getEncoderOffset(){
-        return encoderOffset;
+    public double getModuleRotationRadiansAbsolute(){
+
+        if(encoder != null) {
+            return getEncoderRadiansAbsolute();
+        }
+
+        return getEncoderRadiansAbsolute();
     }
 
-    public void setEncoderOffset(double encoderOffset) {
-        this.encoderOffset = encoderOffset;
+    public double getEncoderRadians() {
+        return (encoderPos.getValueAsDouble() * 360 * Math.PI / 180d);
     }
 
-    public double getEncoderRadians(){
-        return (encoderPos.getValueAsDouble()*360 * Math.PI/180d);
+    public double getEncoderRadiansAbsolute() {
+        return getEncoderRadians() * config.encoderGearRatio();
     }
 
-    public void resetEncoders(){
+    public double getOffsetRadians() {
+        return config.offsetRadians();
+    }
+
+    public double getRotationMotorRadiansAbsolute() {
+        return getRotationMotorRadians() * config.rotationMotor().gearRatio();
+    }
+  
+
+    public double getRotationMotorRadians() {
+        return (rotationPos.getValueAsDouble() * 360 * Math.PI / 180d);
+    }
+
+    public void resetEncoders() {
         driveMotor.setPosition(0);
         rotationMotor.setPosition(encoderPos.getValueAsDouble());
     }
-    public SwerveModuleState getState(){
-        return new SwerveModuleState(getDriveMotorVelocity(), new Rotation2d(getEncoderRadians()));
+
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getDriveMotorVelocity(), new Rotation2d(getModuleRotationRadians()));
     }
 
-    public SwerveModulePosition getPostion(){
-        return new SwerveModulePosition(getDriveMotorPosition(), new Rotation2d(getEncoderRadians()));
+    public SwerveModulePosition getPostion() {
+        return new SwerveModulePosition(getDriveMotorPosition(), new Rotation2d(getModuleRotationRadians()));
     }
 
-    public void setDriveMotor(double speed){
+    public void setDriveMotor(double speed) {
         driveMotor.set(speed);
     }
 
-    public void setRotationMotor(double speed){
+    public void setRotationMotor(double speed) {
         rotationMotor.set(speed);
     }
 
-    public void setDesiredState(SwerveModuleState state){
+    public void setDesiredState(SwerveModuleState state) {
         refresh();
-        
-    
 
-        if(Math.abs(state.speedMetersPerSecond) < 0.001){
+        if (Math.abs(state.speedMetersPerSecond) < 0.001) {
             stop();
 
             return;
         }
 
-      state = SwerveModuleState.optimize(state, getState().angle);
-        driveMotor.set(state.speedMetersPerSecond / driveMotorRecord.maxSpeedMetersPerSecond());
+        state = SwerveModuleState.optimize(state, getState().angle);
+        driveMotor.set(state.speedMetersPerSecond / config.driveMotor().maxSpeedMetersPerSecond());
 
         rotationMotor.set(rotationPidController.calculate(-getEncoderRadians(), -state.angle.getRadians()));
     }
 
-    public void stop(){
+    public void stop() {
         driveMotor.set(0);
         rotationMotor.set(0);
     }
 
-    public void setToAngle(double angle){
+    public void setToAngle(double angle) {
         SwerveModuleState state = new SwerveModuleState(0, new Rotation2d(angle));
 
         rotationMotor.set(rotationPidController.calculate(-getEncoderRadians(), -state.angle.getRadians()));
     }
 
-    public void lock(){
+    public void lock() {
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
         rotationMotor.setNeutralMode(NeutralModeValue.Brake);
     }
 
-    public void unlock(){
+    public void unlock() {
         driveMotor.setNeutralMode(NeutralModeValue.Coast);
         rotationMotor.setNeutralMode(NeutralModeValue.Coast);
     }
 
-    public void refresh(){
+    public void refresh() {
         drivePos.refresh();
         driveVel.refresh();
         encoderPos.refresh();
+        rotationPos.refresh();
     }
 
 }

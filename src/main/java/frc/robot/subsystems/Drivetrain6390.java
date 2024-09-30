@@ -33,7 +33,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DRIVETRAIN;
-import frc.robot.Constants.SWERVEMODULE;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
 import frc.robot.utilities.sensors.Button;
@@ -90,8 +89,8 @@ public class Drivetrain6390 extends SubsystemBase{
       this::getSpeeds,
       this::drive,
       //0.85 translation 3.125 rotation
-      new HolonomicPathFollowerConfig(new PIDConstants(0.9), new PIDConstants(3.125), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
-      this::isRed,
+      new HolonomicPathFollowerConfig(new PIDConstants(0.9), new PIDConstants(3.125), Constants.DRIVETRAIN.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
+      this::getSide,
       this
     );
     
@@ -124,7 +123,7 @@ public class Drivetrain6390 extends SubsystemBase{
     {swerveModules[0].getPostion(), swerveModules[1].getPostion(),
     swerveModules[2].getPostion(), swerveModules[3].getPostion()};
 
-    Translation2d[] swerve_module_positions = {swerveModules[0].module_location, swerveModules[1].module_location,swerveModules[2].module_location,swerveModules[3].module_location};
+    Translation2d[] swerve_module_positions = {swerveModules[0].getModuleLocation(), swerveModules[1].getModuleLocation(),swerveModules[2].getModuleLocation(),swerveModules[3].getModuleLocation()};
     swerve_module_poses = swerve_module_positions;
     kinematics = new SwerveDriveKinematics(swerve_module_poses);
     odometry = new SwerveDriveOdometry(kinematics,Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble()), SwervePositions);
@@ -213,8 +212,7 @@ pose.getRotation().getDegrees();
   }
 
   public void setModuleStates(SwerveModuleState[] states){
-    SwerveDriveKinematics.desaturateWheelSpeeds(states,
-SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND);
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.DRIVETRAIN.MAX_SPEED_METERS_PER_SECOND);
     for (int i = 0; i < swerveModules.length; i++) {
       swerveModules[i].setDesiredState(states[i]);
       //SmartDashboard.putNumber("Module " + i+"",swerveModules[i].getEncoderRadians());

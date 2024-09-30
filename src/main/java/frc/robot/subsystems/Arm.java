@@ -27,7 +27,6 @@ import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.sensors.Button;
 // import frc.robot.utilities.telemetry.PivotTelemetry;
-import frc.robot.utilities.sensors.DistanceSensor;
 
 public class Arm extends SubsystemBase {
   /** Creates a new Test. */
@@ -128,7 +127,7 @@ public boolean override(){
 public void motorCoast(){
   ArmMotorLeft.setNeutralMode(NeutralModeValue.Coast);
   ArmMotorRight.setNeutralMode(NeutralModeValue.Coast);
-  // System.out.println("///////////////////////////////Couast////////////////////////////");
+  System.out.println("///////////////////////////////Couast////////////////////////////");
 }
     // }
   @Override
@@ -144,7 +143,7 @@ public void motorCoast(){
   //System.out.println(ArmMotorLeft.getRotorPosition());
   convertedValue = (maxPos)*setpoint;
   double speed = PID.calculate(-convertedValue);
-  // SmartDashboard.putNumber("Arm Pos", rotorPos.getValueAsDouble());
+  SmartDashboard.putNumber("Arm Pos", rotorPos.getValueAsDouble());
   // SmartDashboard.putNumber("PID Arm", speed);
   // SmartDashboard.putNumber("Setpoint Arm", -convertedValue);
   setSpeed(-speed);
