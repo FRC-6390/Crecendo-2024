@@ -43,8 +43,9 @@ public class Feed extends Command{
   public void execute() 
   {
     double curTime = System.currentTimeMillis();
-    System.out.println(startTime);
-    System.out.println(startTime - curTime);
+    // System.out.println(startTime);
+    // System.out.println(startTime - curTime);
+    
     intake.feed(-1);
     intake.centerIntake(-0.6);
     intake.fullWidth(-0.6);

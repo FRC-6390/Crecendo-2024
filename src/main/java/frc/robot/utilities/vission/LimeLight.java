@@ -20,6 +20,7 @@ public class LimeLight {
     public NetworkTableEntry ts;
     public NetworkTableEntry tl;
     public NetworkTableEntry tshort;
+    public NetworkTableEntry priorityid;
     public NetworkTableEntry tlong;
     public NetworkTableEntry thor;
     public NetworkTableEntry getpipe;
@@ -30,6 +31,7 @@ public class LimeLight {
     public NetworkTableEntry tclass;
     public NetworkTableEntry tc;
     public static NetworkTableEntry ledMode;
+    public static NetworkTableEntry targetPoseRobotSpace;
     public NetworkTableEntry camMode;
     public NetworkTableEntry pipeline;
     public NetworkTableEntry stream;
@@ -128,6 +130,8 @@ public class LimeLight {
         tid = limelightTable.getEntry("tid");
         json = limelightTable.getEntry("json");
         botpose = limelightTable.getEntry("botpose_orb_wpiblue");
+        targetPoseRobotSpace = limelightTable.getEntry("targetpose_robotspace");
+        priorityid = limelightTable.getEntry("priorityid");
         tclass = limelightTable.getEntry("tclass");
         tc = limelightTable.getEntry("tc");
         ledMode = limelightTable.getEntry("ledMode");
@@ -173,6 +177,8 @@ public class LimeLight {
     public double getTargetHorizontalOffset(){
         return tx.getDouble(0);
     }
+
+    
 
     /**
      * Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2: -24.85 to 24.85 degrees)
@@ -244,6 +250,11 @@ public class LimeLight {
         return camtran.getNumberArray(null);
     }
 
+    public void setPriorityId(int tag_id)
+    {
+        priorityid.setNumber(tag_id);
+    }
+
     /**
      * ID of primary AprilTag
      */
@@ -267,6 +278,11 @@ public class LimeLight {
         return poseReal;
     }
 
+    public Double[] getTargetPoseRobotSpace(){
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = botpose.getDoubleArray(dub);
+        return poseReal;
+    }
     public Double[] getBotPositionRawM2(){
         Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
         Double[] poseReal = botpose.getDoubleArray(dub);

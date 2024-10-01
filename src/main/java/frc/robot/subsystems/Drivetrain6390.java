@@ -37,6 +37,7 @@ import frc.robot.utilities.swerve.SwerveModule;
 // import frc.robot.utilities.telemetry.SwerveTelemetry;
 import frc.robot.utilities.vission.LimeLight;
 import frc.robot.utilities.vission.LimelightHelpers;
+import frc.robot.utilities.vission.LimelightHelpers.PoseEstimate;
  
 public class Drivetrain6390 extends SubsystemBase{
 
@@ -70,7 +71,7 @@ public class Drivetrain6390 extends SubsystemBase{
     getModulePostions(), 
     new Pose2d(), 
     VecBuilder.fill(0.1,0.1,Units.degreesToRadians(3)), 
-    VecBuilder.fill(0.1,0.1,99999));
+    VecBuilder.fill(0.5,0.5,99999));
 
   public Drivetrain6390(LimeLight limelight)
   {
@@ -245,38 +246,30 @@ SwerveModulePosition[swerveModules.length];
       odometry.update(getRotation2d(), getModulePostions());
       pose = odometry.getPoseMeters();
 
-      boolean doRejectUpdate = false;
       estimator.update(getRotation2d(), getModulePostions());
+      LimelightHelpers.SetRobotOrientation("limelight", estimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      if(Math.abs(gyro.getRate()) < 720 && mt2.tagCount > 0) 
+      {
+        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        estimator.addVisionMeasurement(mt2.pose,mt2.timestampSeconds);
+        // estimator.setVisionMeasurementStdDevs(VecBuilder.fill
+        // (
+        // 0.1 * limeLight.getDistanceFromTarget(0,0,0),
+        // 0.1 * limeLight.getDistanceFromTarget(0,0,0),
+        // 999999999
+        // ));
+      }
+      visionPose = estimator.getEstimatedPosition();
       
-      //MY VERSION
-      Pose2d roboPos = LimelightHelpers.getBotPose2d_wpiBlue("limelight");
-      int tagCount = LimelightHelpers.getTargetCount("limelight");
-      SmartDashboard.putNumber("Tag Count", tagCount);
-      SmartDashboard.putNumber("Xpos", roboPos.getX());
-      Pose2d roboPos2 = limeLight.getBot2DPositionM2();
+      System.out.println(mt2.pose);
+      gameField.setRobotPose(pose);
+      gameFieldVision2.setRobotPose(mt2.pose);
+      gameFieldVision.setRobotPose(visionPose);
+    }
+ 
 
-      // System.out.println(roboPos);
-      // System.out.println(roboPos2);
-      if(Math.abs(gyro.getRate()) > 720) 
-      {
-        doRejectUpdate = true;
-      }
-      if(tagCount == 0)
-      {
-        doRejectUpdate = true;
-      }
-      if(!doRejectUpdate)
-      {
-      System.out.println("Update");
-      estimator.addVisionMeasurement(roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
-      }
-      //
-    gameField.setRobotPose(pose);
-    gameFieldVision2.setRobotPose(roboPos);
-    visionPose = estimator.getEstimatedPosition();
-    gameFieldVision.setRobotPose(visionPose);
-
-  }
+    
 
   public ChassisSpeeds getSpeeds()
   {
@@ -294,7 +287,6 @@ feedbackSpeeds.vyMetersPerSecond;
     double thetaSpeed = chassisSpeeds.omegaRadiansPerSecond +
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
-    
 
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
 
@@ -306,24 +298,13 @@ feedbackSpeeds.omegaRadiansPerSecond;
     {
     driftCorrection(speed);
     }
+    SmartDashboard.putData("Vision Pose", gameFieldVision);
+    SmartDashboard.putData("Vision Pose Raw", gameFieldVision2);
 
-    // SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
-    // SmartDashboard.putNumber("Odometry X", visionPose.getX());
-    // SmartDashboard.putNumber("Odometry Y", visionPose.getY());
-    // SmartDashboard.putNumber("Odometry Heading REALL", getHeading());
-    
-
-   SmartDashboard.putData("Vision Pose", gameFieldVision);
-  //  SmartDashboard.putData("Vision Pose Raw", gameFieldVision2);
-
-  //  SmartDashboard.putData("Pose", gameField);
-    
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
-    
-    // tele.updateShuffleboard();
   }
 
   @Override

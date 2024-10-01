@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -35,7 +36,9 @@ public Intake intake;
 
   @Override
   public void initialize() {
-    
+
+  
+    intake.setOverride(false);
   // orchestra = new Orchestra();
    
 isDone = false;
@@ -54,39 +57,36 @@ isDone = false;
   {
   double curTime =Timer.getFPGATimestamp();
   shooter.setRollers(speed);
-
-  // orchestra.loadMusic("output.chrp");
-  // orchestra.addInstrument(shooter.sh)
-  // if(shooter.atSetpoint() || )
-  if((curTime - startTime) > 3 || shooter.atSetpoint())
-  {
+    if(shooter.atSetpoint(threshold))
+    {
+      if(!intake.hasNote())
+      {
       isDone = true;  
-      intake.feed(-0.75);
-      intake.centerIntake(-0.6);
-      intake.fullWidth(-0.6);
-      //shooter.stopShooter();
+      }
+    
+        intake.setOverride(true);
+      }
   }
-    System.out.println("SetpointAt: " + shooter.atSetpoint());
-    System.out.println("Velocity: " + shooter.getRotorVelocity());
-    System.out.println("Beam" + Intake.getUpperBeamBreak());
-  }
+
+  
 
   @Override
   public void end(boolean interrupted) 
   {
 //intake.feed(0);
-  //shooter.stopShooter();
-  System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+// intake.setReversed(false);
+  shooter.stopShooter();
+  intake.setOverride(false);
   }
 
   @Override
   public boolean isFinished() {
-    if(DriverStation.isAutonomous())
-    {
-      return isDone;
-    }
-    else{
-    return false;
-    }
+    // if(DriverStation.isAutonomous())
+    // {
+    //   return isDone;
+    // }
+    // else{
+    return isDone;
+    // }
   }
 }

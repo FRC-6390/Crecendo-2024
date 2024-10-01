@@ -13,6 +13,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimelightConfig;
 import frc.robot.commands.auto.TurnAlign;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -31,7 +32,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.AutoFeed;
-import frc.robot.commands.auto.IntakeDrive;
 import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
@@ -81,28 +81,25 @@ public class RobotContainer {
     autoChooser.addOption("testauto", "testauto");
 
     SmartDashboard.putData("AutoChoose", autoChooser);
-    SmartDashboard.putNumber("Shooter Speed", speed);
-    SmartDashboard.putNumber("Shooter Speed Setpoint", threshold);
-    SmartDashboard.putNumber("Arm Position Changer", armPos);
-    
+   
     NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
     NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
-    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
-    NamedCommands.registerCommand("IntakeStop", new IntakeOverride(0, intake));
-    NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
+    // NamedCommands.registerCommand("IntakeRollers", new IntakeRollers(-0.6, intake));
+    // NamedCommands.registerCommand("IntakeStop", new IntakeOverride(0, intake));
+    // NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
     NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 25));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
-    NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
+    // NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
     NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, arm));
     
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers(-0.4, intake));
+    intake.setDefaultCommand(new IntakeRollers2(intake,-0.4, true));
 
     configureBindings();
 
@@ -119,27 +116,28 @@ public class RobotContainer {
   controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
 
   //AUTO AIM TO AMP
-  if(!driveTrain.getSide())
-  {
-    controller.top.onTrue(AutoBuilder.pathfindToPose(new Pose2d(1.88, 7.79, new Rotation2d(-90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
-  }
-  else
-  {
-    controller.top.onTrue(AutoBuilder.pathfindToPose(new Pose2d(14.71, 7.79, new Rotation2d(90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
-  }
+  // if(!driveTrain.getSide())
+  // {
+  //   controller.leftBumper.onTrue(AutoBuilder.pathfindToPose(new Pose2d(1.88, 7.79, new Rotation2d(-90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
+  // }
+  // else
+  // {
+  //   controller.leftBumper.onTrue(AutoBuilder.pathfindToPose(new Pose2d(14.71, 7.79, new Rotation2d(90)), new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))));
+  // }
 
+  controller.a.whileTrue(new AmpAlign(driveTrain, limelight));
   //TUNING SHOT (SOON TO BE TRUSS SHOT)
-  controller.x.whileTrue(new SequentialCommandGroup(new ArmTest(arm, armPos),new ShooterRollers(speed, shooter, intake, threshold)));
-  controller.x.onFalse(new Feed(-1, shooter, intake));
+  controller.x.whileTrue(new SequentialCommandGroup(new ShooterRollers(-0.5, shooter, intake, 30), new ArmTest(arm, 0)));
+  // controller.x.onFalse(new Feed(-1, shooter, intake));
   //SUBWOOFER SHOT
-  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.3, shooter, intake, 10)));
-  controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
+  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.19),new ShooterRollers(-0.5, shooter, intake, 25),new ArmTest(arm, 0)));
+  // controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
   //AMP SHOT
-  controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1)));
-  controller.y.onFalse(new Feed(-1, shooter, intake));
+  controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1),new ArmTest(arm, 0)));
+  // controller.y.onFalse(new Feed(-1, shooter, intake));
   //HALF COURT SHOT
-  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.4),new ShooterRollers(-0.3, shooter, intake, 15)));
-  controller.b.onFalse(new Feed(-1, shooter, intake)); 
+  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.275),new ShooterRollers(-0.5, shooter, intake, 20),new ArmTest(arm, 0)));
+  // controller.b.onFalse(new Feed(-1, shooter, intake)); 
   
     //HOME POS
     joystick.seven.onTrue(new ArmTest(arm, 0));
@@ -149,14 +147,9 @@ public class RobotContainer {
     joystick.nine.onTrue(new ArmTest(arm, -0.469006));
     //AMP POS
     joystick.eight.onTrue(new ArmTest(arm, -1));
-    //INTAKE
-    joystick.ten.whileTrue(new IntakeOverride(-0.6, intake));
-    //INTAKE STOP
-    joystick.three.whileTrue(new IntakeOverride(0, intake));
     //BACKFEED
-    joystick.four.whileTrue(new Reverse(0.6, intake));
-    //SHOOTER STOP
-    joystick.six.whileTrue(new StopShooter(shooter));
+    joystick.six.whileTrue(new FixNote(shooter,intake, false));
+    joystick.four.whileTrue(new FixNote(shooter,intake, true));
 
   }
 

@@ -20,12 +20,38 @@ public class Intake extends SubsystemBase {
   public static TalonFX centerIntakeRoller;
   public static TalonFX fullWidthIntakeRoller;
   public static TalonFX feedingRollers;
+  public static double feedingRollersSpeed, fullWidthIntakeRollerSpeed, centerIntakeRollerSpeed;
+
   // public static IRBBSensor lowerIntakeBeamBreak;
   public static IRBBSensor upperIntakeBeamBreak;
   public static DistanceSensor distanceSensor;
+  public static boolean rollersEnabled, override, reversed;
+ 
+ 
+  public static boolean isReversed() {
+    return reversed;
+  }
 
- 
- 
+  public static void setReversed(boolean reversed) {
+    Intake.reversed = reversed;
+  }
+
+  public boolean isOverride() {
+    return override;
+  }
+
+  public void setOverride(boolean override) {
+    this.override = override;
+  }
+
+  public boolean isRollersEnabled() {
+    return rollersEnabled;
+  }
+
+  public void setRollersEnabled(boolean rollersEnabled) {
+    this.rollersEnabled = rollersEnabled;
+  }
+
   public Intake()
   {
 
@@ -45,6 +71,7 @@ public class Intake extends SubsystemBase {
   curr.SupplyCurrentLimitEnable = true;
   curr.SupplyCurrentLimit = 40;
   con2.withCurrentLimits(curr);
+  override = false;
 
   feedingRollers.getConfigurator().apply(con2);
   fullWidthIntakeRoller.getConfigurator().apply(con2);
@@ -62,55 +89,54 @@ public class Intake extends SubsystemBase {
   // return lowerIntakeBeamBreak.isBroken();
   // }
  
-   public static boolean getUpperBeamBreak(){
+   public boolean hasNote(){
  
     return upperIntakeBeamBreak.isBroken();
    }
 
+  public void setHome()
+  {
+    centerIntakeRoller.setPosition(0);
+  }
+  public double getRotations()
+  {
+    return Math.abs(centerIntakeRoller.getRotorPosition().refresh().getValueAsDouble());
+  }
   public void feed(double speed)
   {
-    feedingRollers.set(speed);
+    // feedingRollers.set(speed);
+    feedingRollersSpeed = speed;
   }
   public void centerIntake(double speed)
   {
-    centerIntakeRoller.set(speed);
+    // centerIntakeRoller.set(speed);
+    centerIntakeRollerSpeed = speed;
   }
  
   public void fullWidth(double speed)
   {
-    fullWidthIntakeRoller.set(0);
-  }
-  public void fullWidthMove(double speed)
-  {
-    fullWidthIntakeRoller.set(speed);
+    // fullWidthIntakeRoller.set(0);
+    fullWidthIntakeRollerSpeed = speed;
   }
   //Sets the intake rollers
-  public void setRollers(double speed, int num)
-  {
-    if(num == 1)
-    {
-    centerIntakeRoller.set(0);
-    fullWidthIntakeRoller.set(0);
-    feedingRollers.set(0);
-   //Beam is BROKEN
-    }
-    else if(num == 2)
-    {
-    centerIntakeRoller.set(speed - 0.2);
-    fullWidthIntakeRoller.set(speed);
-    feedingRollers.set(speed + 0.4);
-   // System.out.println("_____________________________-Beam is INTACT -___________________________________");
-    }
+  // public void setRollers(double speed)
+  // {
+  //   if(num == 1)
+  //   {
+  //   centerIntakeRoller.set(0);
+  //   fullWidthIntakeRoller.set(0);
+  //   feedingRollers.set(0);
+  //  //Beam is BROKEN
+  //   }
+  //   else if(num == 2)
+  //   {
+  //   centerIntakeRoller.set(speed - 0.2);
+  //   fullWidthIntakeRoller.set(speed);
+  //   feedingRollers.set(speed + 0.4);
+  //  // System.out.println("_____________________________-Beam is INTACT -___________________________________");
+  //   }
  
-  }
- 
-
-  public void setRollersRPS(double speed)
-  {
-    VelocityDutyCycle vel = new VelocityDutyCycle(speed);
-    centerIntakeRoller.setControl(vel);
-  }
-
+  // }
  
   public static StatusSignal<Double> getRollerCurrent()
   {
@@ -120,15 +146,44 @@ public class Intake extends SubsystemBase {
   {
     return distanceSensor.getRange();
   }
+  public void stopAll()
+  {
+    fullWidthIntakeRollerSpeed = 0;
+    centerIntakeRollerSpeed = 0;
+    feedingRollersSpeed = 0;
+  }
+  public void update()
+  {
+    if(isRollersEnabled() || isOverride())
+    {
+  
+      if(reversed)
+      {
+        feedingRollers.set(-feedingRollersSpeed);
+        centerIntakeRoller.set(-centerIntakeRollerSpeed);
+        fullWidthIntakeRoller.set(-fullWidthIntakeRollerSpeed);
+      } 
+      else
+      {
+        feedingRollers.set(feedingRollersSpeed);
+        centerIntakeRoller.set(centerIntakeRollerSpeed);
+        fullWidthIntakeRoller.set(fullWidthIntakeRollerSpeed);
+      }
+    }
+    else
+    {
+      feedingRollers.set(0);
+      centerIntakeRoller.set(0);
+      fullWidthIntakeRoller.set(0); 
+    }
+  }
  
 
   @Override
   public void periodic()
   {
-   SmartDashboard.putBoolean("Game Piece", getUpperBeamBreak());
+   update();
+   SmartDashboard.putBoolean("Game Piece", hasNote());
    SmartDashboard.putNumber("Distance", distanceSensor.getRange());
-  //  SmartDashboard.putNumber("Full Width", fullWidthIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
-  //  SmartDashboard.putNumber("Center", centerIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
-  //  SmartDashboard.putNumber("Feeder", feedingRollers.getSupplyCurrent().refresh().getValueAsDouble());
   }
 }
