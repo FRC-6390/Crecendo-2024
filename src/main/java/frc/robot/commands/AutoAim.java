@@ -39,7 +39,7 @@ public class AutoAim extends Command {
   // public double[] distances = new double[]{2.616,4.796137311277181};
   // public double[] armAngles = new double[]{-0.3970532722, -0.4485960754};
   public double[] distances = new double[]{2.616};
-  public double[] armAngles = new double[]{-0.3970532722};
+  public double[] armAngles = new double[]{-0.39770532722};
 
   public double[] distanceToCircles = new double[]{};
   public int index = 0;

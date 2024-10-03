@@ -18,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
@@ -33,6 +34,7 @@ import frc.robot.Constants.DRIVETRAIN;
 import frc.robot.Constants.SWERVEMODULE;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
+import frc.robot.utilities.sensors.Button;
 import frc.robot.utilities.swerve.SwerveModule;
 // import frc.robot.utilities.telemetry.SwerveTelemetry;
 import frc.robot.utilities.vission.LimeLight;
@@ -56,6 +58,8 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Field2d gameFieldVision2;
   private static double desiredHeading;
   public static ReplanningConfig c;
+  public static Button button;
+
   //0.1
   private static PIDConfig driftCorrectionPID = new PIDConfig(5, 0,0).setContinuous(-Math.PI, Math.PI);
   private static Pose2d visionPose;
@@ -93,6 +97,7 @@ public class Drivetrain6390 extends SubsystemBase{
 
   static {
   
+    button = new Button(new DigitalInput(9));  
     gameField = new Field2d();
     gameFieldVision = new Field2d();
     gameFieldVision2 = new Field2d();
@@ -249,8 +254,9 @@ SwerveModulePosition[swerveModules.length];
       estimator.update(getRotation2d(), getModulePostions());
       LimelightHelpers.SetRobotOrientation("limelight", estimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-      if(Math.abs(gyro.getRate()) < 720 && mt2.tagCount > 0) 
+      if(Math.abs(gyro.getRate()) < 720 && mt2.tagCount > 0 && DriverStation.isTeleop()) 
       {
+        System.out.println("UPDATE");
         estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
         estimator.addVisionMeasurement(mt2.pose,mt2.timestampSeconds);
         // estimator.setVisionMeasurementStdDevs(VecBuilder.fill
@@ -262,7 +268,6 @@ SwerveModulePosition[swerveModules.length];
       }
       visionPose = estimator.getEstimatedPosition();
       
-      System.out.println(mt2.pose);
       gameField.setRobotPose(pose);
       gameFieldVision2.setRobotPose(mt2.pose);
       gameFieldVision.setRobotPose(visionPose);
@@ -280,6 +285,16 @@ SwerveModulePosition[swerveModules.length];
   
   @Override
   public void periodic() {
+    if(DriverStation.isDisabled()){
+      if (button.isPressed()){
+        unlockWheels();
+      }
+    else {
+      lockWheels();
+    }
+    }
+
+   
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
     double ySpeed = chassisSpeeds.vyMetersPerSecond +

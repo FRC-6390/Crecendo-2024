@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.36,
+        "x": 3.7030302876582923,
         "y": 5.58606903233778
       },
       "prevControl": {
-        "x": 2.36751203784861,
+        "x": 3.7105423255069026,
         "y": 5.558595670686349
       },
       "nextControl": null,
@@ -30,10 +30,34 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "PivotMoveLow"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeRollers"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 540.0
   },

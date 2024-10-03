@@ -52,7 +52,6 @@ public class ArmTest extends Command {
   @Override
   public void end(boolean interrupted) {
     test.stopAll();
-   System.out.println("/////////////////////////////////////////////////");
   }
 
   // Returns true when the command should end.

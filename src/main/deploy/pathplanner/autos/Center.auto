@@ -24,21 +24,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "AutoFeed"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "Center1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeDrive"
           }
         },
         {
@@ -50,7 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoFeed"
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PivotMoveLow"
           }
         }
       ]

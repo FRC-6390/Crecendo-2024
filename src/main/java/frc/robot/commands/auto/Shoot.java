@@ -28,7 +28,6 @@ public class Shoot extends Command {
   public void execute() 
   {
     shooter.setRollers(1);
-    System.out.println(shooter.getRotorVelocity());
   }
 
   // Called once the command ends or is interrupted.

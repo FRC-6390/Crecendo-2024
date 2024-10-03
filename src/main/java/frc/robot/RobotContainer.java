@@ -90,12 +90,13 @@ public class RobotContainer {
     // NamedCommands.registerCommand("IntakeDrive", new IntakeDrive(driveTrain, 0, -0.5, 0, intake));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
-    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
-    NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 25));
+    NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.19));
+    NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 20));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
     // NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
     NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, arm));
+    NamedCommands.registerCommand("IntakeRollers", new IntakeRollers2(intake, -0.38, true));
     
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
@@ -130,7 +131,7 @@ public class RobotContainer {
   controller.x.whileTrue(new SequentialCommandGroup(new ShooterRollers(-0.5, shooter, intake, 30), new ArmTest(arm, 0)));
   // controller.x.onFalse(new Feed(-1, shooter, intake));
   //SUBWOOFER SHOT
-  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.19),new ShooterRollers(-0.5, shooter, intake, 25),new ArmTest(arm, 0)));
+  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.19),new ShooterRollers(-0.5, shooter, intake, 5),new ArmTest(arm, 0)));
   // controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
   //AMP SHOT
   controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1),new ArmTest(arm, 0)));

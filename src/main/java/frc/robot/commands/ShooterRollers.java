@@ -57,7 +57,8 @@ isDone = false;
   {
   double curTime =Timer.getFPGATimestamp();
   shooter.setRollers(speed);
-    if(shooter.atSetpoint(threshold))
+  SmartDashboard.putNumber("Timer", curTime-startTime);
+    if(shooter.atSetpoint(threshold) || (curTime - startTime) > 2)
     {
       if(!intake.hasNote())
       {
@@ -65,6 +66,12 @@ isDone = false;
       }
     
         intake.setOverride(true);
+        if(DriverStation.isAutonomous())
+        {
+          intake.centerIntake(-0.6);
+          intake.feed(-0.6);
+          intake.fullWidth(-0.6);
+        }
       }
   }
 
@@ -80,13 +87,8 @@ isDone = false;
   }
 
   @Override
-  public boolean isFinished() {
-    // if(DriverStation.isAutonomous())
-    // {
-    //   return isDone;
-    // }
-    // else{
-    return isDone;
-    // }
+  public boolean isFinished() 
+  {
+    return isDone; 
   }
 }

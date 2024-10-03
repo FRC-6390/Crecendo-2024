@@ -168,6 +168,7 @@ public class Intake extends SubsystemBase {
         feedingRollers.set(feedingRollersSpeed);
         centerIntakeRoller.set(centerIntakeRollerSpeed);
         fullWidthIntakeRoller.set(fullWidthIntakeRollerSpeed);
+        System.out.println("INTAKING");
       }
     }
     else
@@ -184,6 +185,6 @@ public class Intake extends SubsystemBase {
   {
    update();
    SmartDashboard.putBoolean("Game Piece", hasNote());
-   SmartDashboard.putNumber("Distance", distanceSensor.getRange());
-  }
+
+   }
 }

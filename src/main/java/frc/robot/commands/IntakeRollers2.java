@@ -4,8 +4,12 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimeLight.LedMode;
+import frc.robot.utilities.vission.LimelightHelpers;
 
 public class IntakeRollers2 extends Command {
   /** Creates a new Intake. */
@@ -35,24 +39,35 @@ public class IntakeRollers2 extends Command {
   @Override
   public void execute() 
   {
-    System.out.println(intake.getRotations());
+    double rotations = 0;
+    if(DriverStation.isAutonomous())
+    {
+      rotations = 80;
+    }
+    else
+    {
+      rotations = 50;
+    }
     if(intake.hasNote())
     {
+      LimelightHelpers.setLEDMode_ForceOn("limelight");
       if(!isHomeSet)
       {
         intake.setHome();
         isHomeSet = true;
       }
-      if(intake.getRotations() < 75)
+      if(intake.getRotations() < rotations)
       {
         intake.setRollersEnabled(false);
         intake.setReversed(false);
-      }
+     }
     }
     else
     {
       intake.setRollersEnabled(true);
       isHomeSet = false;
+      LimelightHelpers.setLEDMode_ForceOff("limelight");
+
     }
   }
 

@@ -3,43 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.53,
-        "y": 4.1
+        "x": 3.5,
+        "y": 6.98
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5202357965343594,
-        "y": 4.122214464115091
+        "x": 1.6379769892207399,
+        "y": 6.933156653816873
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.91,
-        "y": 5.597779868883561
+        "x": 0.6582127857550991,
+        "y": 6.206743369264199
       },
       "prevControl": {
-        "x": 1.8748674903626559,
-        "y": 5.58606903233778
+        "x": 0.6699236223008801,
+        "y": 6.171610859626855
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 179.95510965911043,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.35,
       "command": {
         "type": "parallel",
         "data": {
@@ -47,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "AutoAim"
+                "name": "PivotMoveHigh"
               }
             }
           ]
@@ -63,13 +57,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 179.53853174698813,
+    "rotation": -118.23744553816728,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "FinalAutoPaths",
+  "folder": "NonStageSide",
   "previewStartingState": {
-    "rotation": 178.62663211185367,
+    "rotation": 179.2779075033363,
     "velocity": 0
   },
   "useDefaultConstraints": true

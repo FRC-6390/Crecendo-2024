@@ -335,7 +335,7 @@ public class LimeLight {
     /**
      *  Sets limelight’s LED state
      */
-    public static void setLedMode(LedMode mode){
+    public void setLedMode(LedMode mode){
         ledMode.setNumber(mode.get());
     }
 

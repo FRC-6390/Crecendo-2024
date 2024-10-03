@@ -49,10 +49,8 @@ public class Feed extends Command{
     intake.feed(-1);
     intake.centerIntake(-0.6);
     intake.fullWidth(-0.6);
-    System.out.println("COMMAND RUN");
     if((curTime - startTime) > 1500)
     {
-      System.out.println("COMMAND SHOULD END");
       //shooter.setPID(0);
       shooter.stopShooter();
       isDone = true;
@@ -64,7 +62,6 @@ public class Feed extends Command{
   {  
   //intake.feed(0);
   shooter.stopShooter();
-  System.out.println("COMMAND ENDED");
   intake.feed(0);
   intake.centerIntake(0);
   intake.fullWidth(0);
