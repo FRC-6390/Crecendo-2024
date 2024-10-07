@@ -261,7 +261,7 @@ SwerveModulePosition[swerveModules.length];
       LimelightHelpers.SetRobotOrientation("limelight", estimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
       if(mt2 != null){
-      if(Math.abs(gyro.getRate()) < 720 && mt2.tagCount > 0 && DriverStation.isTeleop()) 
+      if(Math.abs(gyro.getRate()) < 720 && mt2.tagCount > 0) 
       {
         // System.out.println("UPDATE");
         estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
