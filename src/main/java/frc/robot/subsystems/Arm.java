@@ -128,7 +128,7 @@ public boolean override(){
 public void motorCoast(){
   ArmMotorLeft.setNeutralMode(NeutralModeValue.Coast);
   ArmMotorRight.setNeutralMode(NeutralModeValue.Coast);
-  System.out.println("///////////////////////////////Couast////////////////////////////");
+  // System.out.println("///////////////////////////////Couast////////////////////////////");
 }
     // }
   @Override

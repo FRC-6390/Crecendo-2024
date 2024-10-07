@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.83,
-        "y": 4.5
+        "x": 8.84,
+        "y": 2.85
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.5411044202972841,
-        "y": 3.841154387016335
+        "x": 6.076242575195564,
+        "y": 0.9879769892207397
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.539605781066056,
-        "y": 0.7377827023842345
+        "x": 0.8924295166707293,
+        "y": 4.19247948338978
       },
       "prevControl": {
-        "x": 6.466787712462729,
-        "y": 0.7729152120215813
+        "x": 3.913825345482359,
+        "y": -0.7143610292926716
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.2,
+      "name": "PivotMoveDown",
+      "waypointRelativePos": 0.85,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "PivotMoveLow"
+                "name": "PivotMoveHigh"
               }
             }
           ]
@@ -49,19 +49,12 @@
       }
     },
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.4,
+      "name": "Intake",
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "parallel",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeRollers"
-              }
-            }
-          ]
+          "commands": []
         }
       }
     }
@@ -74,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.77588356260384,
+    "rotation": 122.00538320808357,
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "StageSide",
+  "folder": "BordiAuto",
   "previewStartingState": {
-    "rotation": 120.12904264414195,
+    "rotation": -143.97262661489648,
     "velocity": 0
   },
   "useDefaultConstraints": true

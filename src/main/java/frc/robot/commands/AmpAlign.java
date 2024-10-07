@@ -29,7 +29,7 @@ public class AmpAlign extends Command {
   @Override
   public void initialize() 
   {
-  if(drivetrain.getSide())
+  if(drivetrain.isRed())
   {
     limelight.setPriorityId(5);
   }

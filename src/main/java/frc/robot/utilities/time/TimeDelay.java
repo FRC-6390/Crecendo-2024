@@ -7,6 +7,7 @@ public class TimeDelay {
 
     public void init(){
         startTime = Timer.getFPGATimestamp();
+    
     }
 
     /**

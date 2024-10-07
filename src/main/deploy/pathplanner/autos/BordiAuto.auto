@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.83,
-      "y": 4.5
+      "x": 0.8221644973960404,
+      "y": 4.590647925946351
     },
-    "rotation": 120.85778606115218
+    "rotation": 120.96375653207352
   },
   "command": {
     "type": "sequential",
@@ -26,42 +26,30 @@
         {
           "type": "path",
           "data": {
-            "pathName": "StageSideExtra3Red"
+            "pathName": "BordieAuto1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "StageSideExtra4Red"
+            "pathName": "BordieAuto2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "StageSideExtra1Red"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "StageSideExtra2Red"
+            "name": "SShoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "PivotMoveLow"
           }
         }
       ]
     }
   },
-  "folder": "Extras",
+  "folder": null,
   "choreoAuto": false
 }

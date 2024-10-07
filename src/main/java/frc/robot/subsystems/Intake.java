@@ -24,7 +24,6 @@ public class Intake extends SubsystemBase {
 
   // public static IRBBSensor lowerIntakeBeamBreak;
   public static IRBBSensor upperIntakeBeamBreak;
-  public static DistanceSensor distanceSensor;
   public static boolean rollersEnabled, override, reversed;
  
  
@@ -76,10 +75,6 @@ public class Intake extends SubsystemBase {
   feedingRollers.getConfigurator().apply(con2);
   fullWidthIntakeRoller.getConfigurator().apply(con2);
   centerIntakeRoller.getConfigurator().apply(con2);
-  distanceSensor = new DistanceSensor(Port.kOnboard);
-  distanceSensor.setEnabled(true);
-  distanceSensor.setDistanceUnits(Unit.kMillimeters);
-  distanceSensor.setAutomaticMode(true);
 }
  
   // //Get value of the intake lift limit switch
@@ -142,10 +137,7 @@ public class Intake extends SubsystemBase {
   {
     return centerIntakeRoller.getSupplyCurrent();
   }
-  public double getRange()
-  {
-    return distanceSensor.getRange();
-  }
+
   public void stopAll()
   {
     fullWidthIntakeRollerSpeed = 0;
@@ -168,7 +160,7 @@ public class Intake extends SubsystemBase {
         feedingRollers.set(feedingRollersSpeed);
         centerIntakeRoller.set(centerIntakeRollerSpeed);
         fullWidthIntakeRoller.set(fullWidthIntakeRollerSpeed);
-        System.out.println("INTAKING");
+        // System.out.println("INTAKING");
       }
     }
     else

@@ -27,6 +27,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 // import frc.robot.commands.Auto;
@@ -79,6 +80,8 @@ public class RobotContainer {
     autoChooser.addOption("StageSideExtraFastV2Red", "StageSideExtraFastV2Red");
     autoChooser.addOption("Sweeper", "Sweeper");    
     autoChooser.addOption("testauto", "testauto");
+    autoChooser.addOption("BordiAuto", "BordiAuto");
+    autoChooser.addOption("BordiAutoRed", "BordiAutoRed");
 
     SmartDashboard.putData("AutoChoose", autoChooser);
    
@@ -91,7 +94,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.19));
-    NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 20));
+    NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 20, false));
+    NamedCommands.registerCommand("SShoot", new ShooterRollers(-0.5, shooter, intake, 30, false));
     NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
     // NamedCommands.registerCommand("FastIntake", new IntakeDrive(driveTrain, 0, -0.8, 0, intake));
@@ -110,11 +114,11 @@ public class RobotContainer {
   {
 
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-
+    joystick.two.whileTrue(new ArmForce(arm));
   //---------------------------COMP CONTROLS---------------------------------//
     
   //AUTO AIM TO TRUSS
-  controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
+  controller.leftBumper.whileTrue(new AutoAim(driveTrain, arm));
 
   //AUTO AIM TO AMP
   // if(!driveTrain.getSide())
@@ -128,16 +132,16 @@ public class RobotContainer {
 
   controller.a.whileTrue(new AmpAlign(driveTrain, limelight));
   //TUNING SHOT (SOON TO BE TRUSS SHOT)
-  controller.x.whileTrue(new SequentialCommandGroup(new ShooterRollers(-0.5, shooter, intake, 30), new ArmTest(arm, 0)));
+  controller.x.whileTrue(new SequentialCommandGroup(new ShooterRollers(-0.5, shooter, intake, 30, false), new ArmTest(arm, 0)));
   // controller.x.onFalse(new Feed(-1, shooter, intake));
   //SUBWOOFER SHOT
-  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.19),new ShooterRollers(-0.5, shooter, intake, 5),new ArmTest(arm, 0)));
+  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.19),new ShooterRollers(-0.5, shooter, intake, 5, false),new ArmTest(arm, 0)));
   // controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
   //AMP SHOT
-  controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1),new ArmTest(arm, 0)));
+  controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1,false),new ArmTest(arm, 0)));
   // controller.y.onFalse(new Feed(-1, shooter, intake));
   //HALF COURT SHOT
-  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.275),new ShooterRollers(-0.5, shooter, intake, 20),new ArmTest(arm, 0)));
+  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.275),new ShooterRollers(-0.5, shooter, intake, 20, false),new ArmTest(arm, 0)));
   // controller.b.onFalse(new Feed(-1, shooter, intake)); 
   
     //HOME POS
@@ -148,6 +152,8 @@ public class RobotContainer {
     joystick.nine.onTrue(new ArmTest(arm, -0.469006));
     //AMP POS
     joystick.eight.onTrue(new ArmTest(arm, -1));
+    //INTAKE STOP
+    joystick.nine.whileTrue(new IntakeRollers2(intake, 0, false));
     //BACKFEED
     joystick.six.whileTrue(new FixNote(shooter,intake, false));
     joystick.four.whileTrue(new FixNote(shooter,intake, true));

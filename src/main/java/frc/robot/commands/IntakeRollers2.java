@@ -5,8 +5,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
+import frc.robot.utilities.time.TimeDelay;
 import frc.robot.utilities.vission.LimeLight;
 import frc.robot.utilities.vission.LimeLight.LedMode;
 import frc.robot.utilities.vission.LimelightHelpers;
@@ -17,6 +19,8 @@ public class IntakeRollers2 extends Command {
   public double speed;
   public boolean useBeamBreak;
   public boolean isHomeSet;
+  public double startTime;
+  public boolean didInit = false;
   public IntakeRollers2(Intake intake, double speed, boolean useBeamBreak) {
     addRequirements(intake);
     this.intake = intake;
@@ -39,6 +43,7 @@ public class IntakeRollers2 extends Command {
   @Override
   public void execute() 
   {
+    double curtime = Timer.getFPGATimestamp();
     double rotations = 0;
     if(DriverStation.isAutonomous())
     {
@@ -50,7 +55,17 @@ public class IntakeRollers2 extends Command {
     }
     if(intake.hasNote())
     {
-      LimelightHelpers.setLEDMode_ForceOn("limelight");
+     
+      if(!didInit)
+      {
+        LimelightHelpers.setLEDMode_ForceOn("limelight");
+        startTime = Timer.getFPGATimestamp();
+        didInit = true;
+      }
+      if((curtime - startTime) > 1)
+      {
+        LimelightHelpers.setLEDMode_ForceOff("limelight");
+      }
       if(!isHomeSet)
       {
         intake.setHome();
@@ -64,6 +79,7 @@ public class IntakeRollers2 extends Command {
     }
     else
     {
+      didInit = false;
       intake.setRollersEnabled(true);
       isHomeSet = false;
       LimelightHelpers.setLEDMode_ForceOff("limelight");

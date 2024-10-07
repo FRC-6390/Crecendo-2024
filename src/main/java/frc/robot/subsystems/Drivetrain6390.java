@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -44,7 +45,7 @@ import frc.robot.utilities.vission.LimelightHelpers.PoseEstimate;
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed = true;
+  private static Boolean isRed;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -88,7 +89,7 @@ public class Drivetrain6390 extends SubsystemBase{
       this::drive,
       //0.85 translation 3.125 rotation
       new HolonomicPathFollowerConfig(new PIDConstants(0.9), new PIDConstants(3.125), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND, Constants.DRIVETRAIN.SWERVE_MODULE_LOCATIONS[0].getNorm(), new ReplanningConfig()),
-      this::getSide,
+      this::isRed,
       this
     );
     
@@ -96,7 +97,6 @@ public class Drivetrain6390 extends SubsystemBase{
   }
 
   static {
-  
     button = new Button(new DigitalInput(9));  
     gameField = new Field2d();
     gameFieldVision = new Field2d();
@@ -137,7 +137,13 @@ public class Drivetrain6390 extends SubsystemBase{
     pdh.clearStickyFaults();
     zeroHeading();
     resetOdometry(new Pose2d(0,0,getRotation2d()));
+    isRed = DriverStation.getAlliance().get().equals(Alliance.Red);
+
     //shuffleboard();
+  }
+
+  public static void updateSide(){
+    isRed = DriverStation.getAlliance().get().equals(Alliance.Red);
   }
 
   public void zeroHeading(){
@@ -177,7 +183,7 @@ pose.getRotation().getDegrees();
     else speeds.omegaRadiansPerSecond += pid.calculate(desiredHeading);
   }
 
-  public Boolean getSide()
+  public Boolean isRed()
   {
     return isRed; 
   }
@@ -254,9 +260,10 @@ SwerveModulePosition[swerveModules.length];
       estimator.update(getRotation2d(), getModulePostions());
       LimelightHelpers.SetRobotOrientation("limelight", estimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
       LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      if(mt2 != null){
       if(Math.abs(gyro.getRate()) < 720 && mt2.tagCount > 0 && DriverStation.isTeleop()) 
       {
-        System.out.println("UPDATE");
+        // System.out.println("UPDATE");
         estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
         estimator.addVisionMeasurement(mt2.pose,mt2.timestampSeconds);
         // estimator.setVisionMeasurementStdDevs(VecBuilder.fill
@@ -272,6 +279,7 @@ SwerveModulePosition[swerveModules.length];
       gameFieldVision2.setRobotPose(mt2.pose);
       gameFieldVision.setRobotPose(visionPose);
     }
+  }
  
 
     

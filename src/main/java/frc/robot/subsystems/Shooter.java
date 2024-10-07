@@ -71,7 +71,7 @@ public class Shooter extends SubsystemBase {
   public void stopShooter()
   {
     shooterSpeed = 0;
-    System.out.println("//------------------SHOOTER IS STOPPED ------------------///");
+    // System.out.println("//------------------SHOOTER IS STOPPED ------------------///");
   }
 
  

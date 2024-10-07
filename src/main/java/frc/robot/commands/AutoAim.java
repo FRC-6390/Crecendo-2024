@@ -63,7 +63,7 @@ public class AutoAim extends Command {
   public void execute() 
   {
   
-  if(drivetrain.getSide())
+  if(drivetrain.isRed())
   {
     // if(drivetrain.getVisionPose().getX() > 14.5)
     // {
@@ -128,7 +128,7 @@ public class AutoAim extends Command {
       AutoBuilder.pathfindToPose
       (
         new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
-        new PathConstraints(1, 1,Units.degreesToRadians(180), Units.degreesToRadians(540))
+        new PathConstraints(3, 3,Units.degreesToRadians(180), Units.degreesToRadians(540))
       )
     );
     // double clampedDegrees = Math.max(-, Math.min(0, 0));
@@ -137,49 +137,49 @@ public class AutoAim extends Command {
   }
   else
   {
-    double xdiff = scoringPosC.getX() - drivetrain.getVisionPose().getX();
-    double ydiff = scoringPosC.getY() - drivetrain.getVisionPose().getY();
+    // double xdiff = scoringPosC.getX() - drivetrain.getVisionPose().getX();
+    // double ydiff = scoringPosC.getY() - drivetrain.getVisionPose().getY();
 
-    double csqrd = Math.pow(xdiff, 2) + Math.pow(ydiff, 2);
-    double c = Math.sqrt(csqrd);
-
-    
-    for(int i =0; i< distances.length; i++)
-    {
-      double dis = Math.abs(c - distances[i]);
-      if(closestDistance > dis)
-      {
-        closestDistance = dis;
-        index = i;
-      }
-    }
-
-    CommandScheduler.getInstance().schedule(new ArmTest(arm, armAngles[index]));
+    // double csqrd = Math.pow(xdiff, 2) + Math.pow(ydiff, 2);
+    // double c = Math.sqrt(csqrd);
 
     
-    double radians = Math.atan2(ydiff, xdiff);
-    
-    double degrees = Units.radiansToDegrees(radians);
-    double[] coords = ShooterHelper.coordinates(radians, distances[index]);
-    double desXCoord = (scoringPosC.getX() + coords[0]);
-    double desYCoord = (scoringPosC.getY() - coords[1]);
-    // SmartDashboard.putNumber("xdiff", xdiff);
-    // SmartDashboard.putNumber("ydiff", ydiff);
-    // SmartDashboard.putNumber("Coords X", coords[0]);
-    // SmartDashboard.putNumber("Coords Y", coords[1]);
-    // SmartDashboard.putNumber("combined X", desXCoord);
-    // SmartDashboard.putNumber("combined Y", desYCoord);
-    // SmartDashboard.putNumber("Distance", c);
-    // SmartDashboard.putNumber("Degrees", degrees);
-    // SmartDashboard.putNumber("Radians", radians);
+    // for(int i =0; i< distances.length; i++)
+    // {
+    //   double dis = Math.abs(c - distances[i]);
+    //   if(closestDistance > dis)
+    //   {
+    //     closestDistance = dis;
+    //     index = i;
+    //   }
+    // }
 
-    CommandScheduler.getInstance().schedule(
-      AutoBuilder.pathfindToPose
-      (
-        new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
-        new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))
-      )
-    );
+    // CommandScheduler.getInstance().schedule(new ArmTest(arm, armAngles[index]));
+
+    
+    // double radians = Math.atan2(ydiff, xdiff);
+    
+    // double degrees = Units.radiansToDegrees(radians);
+    // double[] coords = ShooterHelper.coordinates(radians, distances[index]);
+    // double desXCoord = (scoringPosC.getX() + coords[0]);
+    // double desYCoord = (scoringPosC.getY() - coords[1]);
+    // // SmartDashboard.putNumber("xdiff", xdiff);
+    // // SmartDashboard.putNumber("ydiff", ydiff);
+    // // SmartDashboard.putNumber("Coords X", coords[0]);
+    // // SmartDashboard.putNumber("Coords Y", coords[1]);
+    // // SmartDashboard.putNumber("combined X", desXCoord);
+    // // SmartDashboard.putNumber("combined Y", desYCoord);
+    // // SmartDashboard.putNumber("Distance", c);
+    // // SmartDashboard.putNumber("Degrees", degrees);
+    // // SmartDashboard.putNumber("Radians", radians);
+
+    // CommandScheduler.getInstance().schedule(
+    //   AutoBuilder.pathfindToPose
+    //   (
+    //     new Pose2d(desXCoord, desYCoord, Rotation2d.fromRadians(radians)), 
+    //     new PathConstraints(4, 4,Units.degreesToRadians(180), Units.degreesToRadians(540))
+    //   )
+    // );
 
     // CommandScheduler.getInstance().schedule(new TurnCommand(drivetrain, degrees));
 

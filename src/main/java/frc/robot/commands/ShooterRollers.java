@@ -22,15 +22,17 @@ public class ShooterRollers extends Command{
 public Intake intake;
   public double startTime;
   public double threshold;
+  public boolean stop =false;
     // public static Orchestra orchestra;
   
 
   
-  public ShooterRollers(double speed, Shooter shooter, Intake intake, double threshold) {
+  public ShooterRollers(double speed, Shooter shooter, Intake intake, double threshold, boolean stop) {
     this.speed = speed;
     this.shooter = shooter;
     this.intake = intake;
     this.threshold = threshold;
+    this.stop = stop;
     addRequirements(shooter, intake);
   }
 
@@ -57,6 +59,10 @@ isDone = false;
   {
   double curTime =Timer.getFPGATimestamp();
   shooter.setRollers(speed);
+  if(stop = true)
+  {
+   shooter.setIdle(false);
+  }
   SmartDashboard.putNumber("Timer", curTime-startTime);
     if(shooter.atSetpoint(threshold) || (curTime - startTime) > 2)
     {
@@ -83,6 +89,7 @@ isDone = false;
 //intake.feed(0);
 // intake.setReversed(false);
   shooter.stopShooter();
+  shooter.setIdle(true);
   intake.setOverride(false);
   }
 
