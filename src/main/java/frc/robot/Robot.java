@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.utilities.vission.LimeLight;
-import frc.robot.utilities.vission.LimelightConfig;
-import frc.robot.utilities.vission.RobotVision;
+import frc.robot.utilities.vision.LimeLight;
+import frc.robot.utilities.vision.LimelightConfig;
+import frc.robot.utilities.vision.RobotVision;
 
 
 

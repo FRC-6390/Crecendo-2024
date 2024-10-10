@@ -8,7 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
-import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vision.LimeLight;
 
 
 public class AutoAlign extends Command {

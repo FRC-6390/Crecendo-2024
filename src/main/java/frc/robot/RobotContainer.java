@@ -13,8 +13,8 @@ import frc.robot.subsystems.Shooter;
 //import frc.robot.subsystems.Test;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.controller.DebouncedJoystick;
-import frc.robot.utilities.vission.LimeLight;
-import frc.robot.utilities.vission.LimelightHelpers;
+import frc.robot.utilities.vision.LimeLight;
+import frc.robot.utilities.vision.LimelightHelpers;
 import frc.robot.commands.auto.TurnAlign;
 
 import java.util.List;
