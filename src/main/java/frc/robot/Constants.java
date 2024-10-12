@@ -74,6 +74,11 @@ public interface Constants {
 
         double WHEEL_DIAMETER_METERS = Units.inchesToMeters(4);
         double MAX_SPEED_METERS_PER_SECOND = Units.feetToMeters(17.1);
+        double MAX_ACCELERATION_METERS_PER_SECOND = 3.85;
+        double MAX_ANGULAR_SPEED_METERS_PER_SECOND = Units.feetToMeters(17.1);
+        double MAX_ANGULAR_ACCELERATION_METERS_PER_SECOND = 3.85;
+
+
         double DRIVE_GEAR_RATIO = 1d/(6.12);
         double ROTATION_GEAR_RATIO = 1d; 
 

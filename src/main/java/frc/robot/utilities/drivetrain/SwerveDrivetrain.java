@@ -19,14 +19,16 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.proto.Kinematics;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.swerve.SwerveModule;
 
 /** Add your docs here. */
-public class SwerveDrivetrain {
+public class SwerveDrivetrain extends SubsystemBase{
 
-    private static SwerveModule[] swerveModules;
+    public static SwerveModule[] swerveModules;
     private static Pigeon2 gyro;
     private static SwerveDriveKinematics kinematics;
     private static PIDConfig driftCorrectionConfig;
