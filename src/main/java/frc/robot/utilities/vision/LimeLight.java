@@ -151,44 +151,50 @@ public class LimeLight {
         
         public PoseEstimateWithLatency(PoseEstimateWithLatencyType type)
         {
-            super(type.get(), new Double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+            super(type.get());
         }
 
         public double getLatency()
         {
-            return poseReal[7];
+            return getRaw(table)[7];
         }
         public double getTagCount()
         {
-            return poseReal[8];
+            return getRaw(table)[8];
         }
         public double getDistToTag()
         {
-            return poseReal[9];
+            return getRaw(table)[9];
         }
         public double getAvgTagArea()
         {
-            return poseReal[10];
+            return getRaw(table)[10];
         }
         
     }
 
     public class PoseEstimate
     {
-        Double[] dub;
-        Double[] poseReal;
+        Double[] dub = new Double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        String table;
 
         public PoseEstimate(PoseEstimateType type)
         {
-           this(type.get(), new Double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0});
+           this(type.get());
         }
 
-        public PoseEstimate(String table, Double[] defualt_values){
-            poseReal = limelightTable.getEntry(table).getDoubleArray(dub);
+        public PoseEstimate(String table)
+        {
+            this.table = table;
+        }
+        public Double[] getRaw(String table)
+        {
+            return limelightTable.getEntry(table).getDoubleArray(dub);
         }
 
         public Pose2d getPose()
         {
+            Double[] poseReal = getRaw(table);
             if (poseReal == null) return new Pose2d();
             Translation2d translation = new Translation2d(poseReal[0], poseReal[1]);
             Rotation2d rotation2d = new Rotation2d(poseReal[5]);
