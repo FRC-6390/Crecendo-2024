@@ -184,7 +184,7 @@ pose.getRotation().getDegrees();
     else speeds.omegaRadiansPerSecond += pid.calculate(desiredHeading);
   }
 
-  public Boolean isRed()
+  public Boolean getSide()
   {
     return isRed; 
   }

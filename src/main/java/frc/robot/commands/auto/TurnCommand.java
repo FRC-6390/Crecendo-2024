@@ -9,6 +9,7 @@ import java.util.Stack;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Drivetrain6390;
 
 
@@ -16,7 +17,7 @@ public class TurnCommand extends Command {
   
   public PIDController thetaController;
   //Declare the drivetrain object
-  public Drivetrain6390 drivetrain;
+  public DriveTrain drivetrain;
  
   //PID constants
   // double kP = 0.02;
@@ -37,7 +38,7 @@ public class TurnCommand extends Command {
   public static boolean isDone;
   Stack<Double> over_time = new Stack<>();
 
-  public TurnCommand(Drivetrain6390 drivetrain, double rot)
+  public TurnCommand(DriveTrain drivetrain, double rot)
   {
     this.drivetrain = drivetrain;
     this.rot = rot;
@@ -58,7 +59,7 @@ public class TurnCommand extends Command {
   {
     double currentHeading = drivetrain.getHeading();
     double speed = thetaController.calculate(currentHeading, rot);
-      drivetrain.feedbackDrive(
+      drivetrain.addSpeed(
         new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond,drivetrain.getSpeeds().vyMetersPerSecond,
         speed)
       );
@@ -70,7 +71,7 @@ public class TurnCommand extends Command {
   @Override
   public void end(boolean interrupted) 
   {
-    drivetrain.feedbackDrive(new ChassisSpeeds(0,0,0));
+    drivetrain.addSpeed(new ChassisSpeeds(0,0,0));
     //System.out.println("Command Ended");
   }
 

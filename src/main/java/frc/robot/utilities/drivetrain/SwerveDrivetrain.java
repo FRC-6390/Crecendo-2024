@@ -78,6 +78,18 @@ public class SwerveDrivetrain extends SubsystemBase{
   public double getHeading(){
     return Math.IEEEremainder(gyro.getYaw().refresh().getValueAsDouble(), 360);
   }
+  public ChassisSpeeds getSpeeds()
+  {
+    return speeds;
+  }
+  public void zeroHeading()
+  {
+    gyro.setYaw(0);
+  }
+  public void setHeading(double heading)
+  {
+    gyro.setYaw(heading);
+  }
 
   public Rotation2d getRotation2d(){
     return Rotation2d.fromDegrees(getHeading());
