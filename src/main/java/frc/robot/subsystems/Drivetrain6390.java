@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -62,7 +64,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static PID pid;
   public LimeLight limeLight;
 
-  public RobotConfig config;
+  public RobotConfig config = new RobotConfig(1, 1, new ModuleConfig(1, 1, 1, new DCMotor(1, 1, 1, 1, 1, 0), 1, 0), 1);
     
   // public static Orchestra orchestra = new Orchestra();
   
@@ -75,15 +77,15 @@ public class Drivetrain6390 extends SubsystemBase{
     VecBuilder.fill(0.1,0.1,Units.degreesToRadians(3)), 
     VecBuilder.fill(.475,.475,99999));
 
-  public Drivetrain6390(frc.robot.utilities.vission.LimeLight limelight)
+  public Drivetrain6390(LimeLight limelight)
   {
     this.limeLight = limelight;
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
+    // try{
+    //   config = RobotConfig.fromGUISettings();
+    // } catch (Exception e) {
+    //   // Handle exception as needed
+    //   e.printStackTrace();
+    // }
 
     AutoBuilder.configure
     (
