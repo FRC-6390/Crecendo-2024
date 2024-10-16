@@ -63,7 +63,7 @@ public class AutoAim extends Command {
   public void execute() 
   {
   
-  if(drivetrain.isRed())
+  if(drivetrain.getSide())
   {
     // if(drivetrain.getVisionPose().getX() > 14.5)
     // {
