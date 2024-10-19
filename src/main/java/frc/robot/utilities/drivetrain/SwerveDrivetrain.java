@@ -63,6 +63,13 @@ public class SwerveDrivetrain extends SubsystemBase{
     return gyro.getRate();
   }
 
+  public void initModules(SwerveModule[] modules)
+  {
+     for (int i = 0; i < modules.length; i++) {
+      swerveModules[i] = modules[i];
+     }
+  }
+
   public void resetHeading(){
     gyro.setYaw(0);
   }

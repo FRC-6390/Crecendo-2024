@@ -40,21 +40,7 @@ import frc.robot.utilities.vission.LimeLight;
 import frc.robot.utilities.vission.LimelightHelpers;
  
 public class DriveTrain extends SwerveDrivetrain {
-  private static SwerveModule[] swerveModules = new SwerveModule[4];
-  public static SwerveDrivetrain drivetrain = new SwerveDrivetrain(swerveModules, DRIVETRAIN.PIGEON);
-
-  static
-  {
-    swerveModules[0] = new
-    SwerveModule(DRIVETRAIN.FRONT_LEFT_MODULE_CONFIG);
-    swerveModules[1] = new
-    SwerveModule(DRIVETRAIN.FRONT_RIGHT_MODULE_CONFIG);
-    swerveModules[2] = new
-    SwerveModule(DRIVETRAIN.BACK_LEFT_MODULE_CONFIG);
-    swerveModules[3] = new
-    SwerveModule(DRIVETRAIN.BACK_RIGHT_MODULE_CONFIG);
-    drivetrain = new SwerveDrivetrain(swerveModules, DRIVETRAIN.PIGEON);
-  }
+  private static SwerveModule[] swerveModules = Constants.DRIVETRAIN.SWERVE_MODULES;
   public DriveTrain()
   {
     super(swerveModules, DRIVETRAIN.PIGEON);
@@ -63,7 +49,7 @@ public class DriveTrain extends SwerveDrivetrain {
 @Override
 public void periodic() 
 {
-drivetrain.update();
+ update();
 }
 
   @Override

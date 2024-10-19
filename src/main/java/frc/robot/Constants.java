@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -13,6 +14,8 @@ import frc.robot.utilities.auto.JanusRouteFactory;
 import frc.robot.utilities.controlloop.PIDConfig;
 import frc.robot.utilities.swerve.SwerveModule.SwerveModuleConfig;
 import frc.robot.utilities.swerve.SwerveModule.SwerveMotor;
+import frc.robot.utilities.swerve.SwerveModule;
+
 
 public interface Constants {
     public interface AUTO{
@@ -99,6 +102,13 @@ public interface Constants {
         SwerveModuleConfig BACK_LEFT_MODULE_CONFIG = new SwerveModuleConfig(SWERVE_MODULE_LOCATIONS[2], WHEEL_DIAMETER_METERS, BACK_LEFT_DRIVE_RECORD, BACK_LEFT_ROTATION_RECORD, ROTATION_PID,  BACK_LEFT_OFFSET, REAR_LEFT_ENCODER, ROTATION_GEAR_RATIO);
         SwerveModuleConfig BACK_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(SWERVE_MODULE_LOCATIONS[3], WHEEL_DIAMETER_METERS, BACK_RIGHT_DRIVE_RECORD, BACK_RIGHT_ROTATION_RECORD, ROTATION_PID, BACK_RIGHT_OFFSET, REAR_RIGHT_ENCODER, ROTATION_GEAR_RATIO);
         
+        SwerveModule[] SWERVE_MODULES = 
+        {
+            new SwerveModule(FRONT_LEFT_MODULE_CONFIG),
+            new SwerveModule(FRONT_RIGHT_MODULE_CONFIG),
+            new SwerveModule(BACK_RIGHT_MODULE_CONFIG), 
+            new SwerveModule(BACK_RIGHT_MODULE_CONFIG)
+        };
     }
 
     // public interface SWERVEMODULE {
