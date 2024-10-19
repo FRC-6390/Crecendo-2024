@@ -46,11 +46,11 @@ public class Arm extends SubsystemBase {
     PID.setMeasurement(()->rotorPos.getValueAsDouble());
     ArmMotorLeft.setNeutralMode(NeutralModeValue.Brake);
     ArmMotorRight.setNeutralMode(NeutralModeValue.Brake);
-    TalonFXConfiguration con = new TalonFXConfiguration();
     CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
     curr.SupplyCurrentLimitEnable = true;
-    curr.SupplyCurrentLimit = 80; //USed to be 80
-    con.withCurrentLimits(curr);
+    curr.SupplyCurrentLimit = 80;
+    ArmMotorLeft.getConfigurator().apply(curr);
+    ArmMotorRight.getConfigurator().apply(curr);
     motorBrake();
   }
 
