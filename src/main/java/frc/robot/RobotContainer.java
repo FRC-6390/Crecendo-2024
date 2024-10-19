@@ -13,7 +13,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
-import frc.robot.commands.auto.TurnAlign;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -24,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.*;
-import frc.robot.commands.auto.AutoFeed;
+import frc.robot.commands.auto.AutoAim;
 import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
@@ -74,16 +73,12 @@ public class RobotContainer {
 
     SmartDashboard.putData("AutoChoose", autoChooser);
     
-    NamedCommands.registerCommand("TurnAlign", new TurnAlign(driveTrain, limelight, 0));
     NamedCommands.registerCommand("TurnCommand", new TurnCommand(driveTrain, 0));
-    NamedCommands.registerCommand("Turn25", new TurnAlign(driveTrain,limelight, -0.5));
     NamedCommands.registerCommand("IntakeRollers", new IntakeRollers2(intake, -0.6, true));
     NamedCommands.registerCommand("PivotMoveHalf", new ArmTest(arm, -0.3970532722));
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
     NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 25, false));
-    NamedCommands.registerCommand("Feed", new Feed(-1, shooter, intake));
-    NamedCommands.registerCommand("AutoFeed", new AutoFeed(-1, shooter, intake));
     NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, arm));
     
 
@@ -104,16 +99,16 @@ public class RobotContainer {
     
   //AUTO AIM
   controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
-
+  
   //SUBWOOFER SHOT
   controller.rightBumper.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30, false));
-  controller.rightBumper.onFalse(new Feed(-1, shooter, intake));
+
   //AMP SHOT
   controller.y.whileTrue(new ShooterRollers(-0.1, shooter, intake, 1, false));
-  controller.y.onFalse(new Feed(-1, shooter, intake));
+
   //HALF COURT SHOT
   controller.b.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30, false));
-  controller.b.onFalse(new Feed(-1, shooter, intake)); 
+ 
 
     //HOME POS
     joystick.seven.onTrue(new ArmTest(arm, 0));

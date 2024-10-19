@@ -1,11 +1,6 @@
 package frc.robot.commands;
-
-
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
-
-import com.ctre.phoenix.music.Orchestra;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -23,7 +18,6 @@ public Intake intake;
   public double startTime;
   public double threshold;
   public boolean stop =false;
-    // public static Orchestra orchestra;
   
 
   
@@ -39,17 +33,9 @@ public Intake intake;
   @Override
   public void initialize() {
 
-  
-    intake.setOverride(false);
-  // orchestra = new Orchestra();
-   
-isDone = false;
-    startTime = Timer.getFPGATimestamp();
-    // numPresses++;
-    // if(numPresses > 2)
-    // {
-    //   numPresses = 1;
-    // }
+  intake.setOverride(false); 
+  isDone = false;
+  startTime = Timer.getFPGATimestamp();
 
   }
 
@@ -63,7 +49,6 @@ isDone = false;
   {
    shooter.setIdle(false);
   }
-  SmartDashboard.putNumber("Timer", curTime-startTime);
     if(shooter.atSetpoint(threshold) || (curTime - startTime) > 2)
     {
       if(!intake.hasNote())
