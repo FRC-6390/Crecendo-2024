@@ -58,6 +58,12 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Field2d gameFieldVision;
   private static Field2d gameFieldVision2;
   private static double desiredHeading;
+  private static boolean isRobotRelative;
+
+  public static void setRobotRelative(boolean bool) {
+    isRobotRelative = bool;
+  }
+
   //0.1
   private static PIDConfig driftCorrectionPID = new PIDConfig(5, 0,0).setContinuous(-Math.PI, Math.PI);
   private static Pose2d visionPose;
@@ -125,7 +131,6 @@ public class Drivetrain6390 extends SubsystemBase{
     pdh = new PowerDistribution(DRIVETRAIN.REV_PDH, ModuleType.kRev);
     chassisSpeeds = new ChassisSpeeds();
     feedbackSpeeds = new ChassisSpeeds();
-
     SwerveModulePosition[] SwervePositions =
     {swerveModules[0].getPostion(), swerveModules[1].getPostion(),
     swerveModules[2].getPostion(), swerveModules[3].getPostion()};
@@ -321,9 +326,15 @@ feedbackSpeeds.vyMetersPerSecond;
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
     
-
-    SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
-
+    SwerveModuleState[] states;
+    if(!isRobotRelative)
+    {
+    states = kinematics.toSwerveModuleStates(speed);
+    }
+    else
+    {
+    states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromRobotRelativeSpeeds(speed, getRotation2d()));
+    }
     setModuleStates(states);
 
     updateOdometry();

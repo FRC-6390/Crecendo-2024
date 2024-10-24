@@ -26,7 +26,7 @@ public class Shooter extends SubsystemBase {
   public static VelocityVoltage vel;
   public static Slot0Configs configs;
   public double idleSpeed = -0.2;
-  public static boolean isIdle = true;
+  public static boolean isIdle = false;
  
   
 
@@ -95,7 +95,7 @@ public class Shooter extends SubsystemBase {
  
   @Override
   public void periodic(){
-    update();
+    // update();
   
     SmartDashboard.putNumber("Shooter Velocity", getRotorVelocity());
   }

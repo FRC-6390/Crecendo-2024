@@ -13,6 +13,8 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.controller.DebouncedJoystick;
 import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimelightConfig;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -24,19 +26,23 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.AutoAim;
+import frc.robot.commands.auto.AutoIntake;
+import frc.robot.commands.auto.SeekMode;
+import frc.robot.commands.auto.LinedUpSignal;
 import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
   
   public static Arm arm;
   public static LimeLight limelight = new LimeLight();
+  public static LimeLight limeLight2 = new LimeLight(new LimelightConfig("limelight-driver", 0, 0));
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
   public static Intake intake = new Intake();
   public static Shooter shooter = new Shooter();
   public static Pose2d scoringPos = new Pose2d(1.24, 5.52, new Rotation2d());
   public static Pose2d scoringPosR = new Pose2d(15.26, 5.52, new Rotation2d());
-    
+  
   public static DebouncedController controller = new DebouncedController(0);
   private DebouncedJoystick joystick = new DebouncedJoystick(1);
 
@@ -83,8 +89,8 @@ public class RobotContainer {
     
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    intake.setDefaultCommand(new IntakeRollers2(intake, -0.4, true));
-
+    // intake.setDefaultCommand(new IntakeRollers2(intake, -0.4, true));
+    intake.setDefaultCommand(new LinedUpSignal(limeLight2, intake));
     configureBindings();
 
   }
@@ -93,8 +99,7 @@ public class RobotContainer {
   {
 
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-
-
+    controller.a.whileTrue(new SeekMode(limeLight2, driveTrain));
   //---------------------------COMP CONTROLS---------------------------------//
     
   //AUTO AIM

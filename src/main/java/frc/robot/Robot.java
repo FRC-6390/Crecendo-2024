@@ -6,12 +6,16 @@ package frc.robot;
 import com.pathplanner.lib.pathfinding.LocalADStar;
 import com.pathplanner.lib.pathfinding.Pathfinder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
+// import com.pathplanner.lib.pathfinding.RemoteADStar;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Drivetrain6390;
+import frc.robot.Constants.DRIVETRAIN;
+// import frc.robot.subsystems.Drivetrain6390;
+// import frc.robot.subsystems.DriveTrain;
+import frc.robot.utilities.swerve.SwerveModule;
 
 
 
@@ -36,6 +40,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    
     m_robotContainer = new RobotContainer();
     RobotContainer.arm.setHome();
     Pathfinding.setPathfinder(new LocalADStar());
@@ -79,7 +84,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
   //  RobotContainer.shooter.setPID(100);
-  Drivetrain6390.updateSide();
+  // Drivetrain6390.updateSide();
    m_robotContainer.getAutonomousCommand().schedule();
   }
 
@@ -97,7 +102,7 @@ public class Robot extends TimedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
-    Drivetrain6390.updateSide();
+    // Drivetrain6390.updateSide();
   }
 
   /** This function is called periodically during operator control. */
