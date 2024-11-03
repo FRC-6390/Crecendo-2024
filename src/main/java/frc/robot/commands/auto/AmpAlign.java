@@ -6,55 +6,58 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimelightHelpers;
+import frc.robot.utilities.vission.LimeLight.LedMode;
 
 public class AmpAlign extends Command {
-  public Drivetrain6390 drivetrain;
-  public LimeLight limelight;
-  public double tx;
-  public PIDController alignPID = new PIDController(0.1, 0, 0);
-  
-  /** Creates a new AmpAlign. */
-  public AmpAlign(Drivetrain6390 drivetrain ,LimeLight limelight) {
-    this.drivetrain = drivetrain;
-    this.limelight = limelight;
-    // Use addRequirements() here to declare subsystem dependencies.
+  public String limelight; 
+  public Drivetrain6390 drivetrain; 
+  public PIDController controller = new PIDController(0.025, 0, 0);
+  public PIDController xController = new PIDController(1.225, 0, 0);
+  public double thetaSpeed =0;
+
+  public AmpAlign(String limeLight, Drivetrain6390 drivetrain) {
+    this.drivetrain = drivetrain; this.limelight = limeLight;
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
-  if(drivetrain.getSide())
-  {
-    limelight.setPriorityId(5);
-  }
-  else
-  {
-    limelight.setPriorityId(6);
-  }
+    drivetrain.setRobotRelative(true);
+    // controller.setTolerance(10);
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    CommandScheduler.getInstance().schedule(new TurnCommand(drivetrain, 90));
-    if(limelight.hasValidTarget())
-    {
-      double xspeed = alignPID.calculate(limelight.getTargetHorizontalOffset(), 0);
-      drivetrain.feedbackDrive(new ChassisSpeeds(0,xspeed,0));
-    }
+    // if(LimelightHelpers.getTV(limelight)){
+    //   drivetrain.setRobotRelative(true);
+
+    //   //X AND THETA
+    //   // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, xController.calculate(LimelightHelpers.getTX(limelight)), controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
+      
+    //   //X
+    //   drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, -xController.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[0]), -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
+      
+    //   //THETA
+    //   // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vyMetersPerSecond ,drivetrain.getSpeeds().vyMetersPerSecond , -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
+    // }
+    // else
+    // {
+    //   drivetrain.setRobotRelative(false);
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    drivetrain.feedbackDrive(new ChassisSpeeds());
+    drivetrain.setRobotRelative(false);
+    drivetrain.drive(new ChassisSpeeds(0,0,0));
   }
 
   // Returns true when the command should end.

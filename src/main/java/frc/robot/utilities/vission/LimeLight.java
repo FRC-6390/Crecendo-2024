@@ -32,6 +32,7 @@ public class LimeLight {
     public NetworkTableEntry tc;
     public static NetworkTableEntry ledMode;
     public static NetworkTableEntry targetPoseRobotSpace;
+    public static NetworkTableEntry robotPoseTargetSpace;
     public NetworkTableEntry camMode;
     public NetworkTableEntry pipeline;
     public NetworkTableEntry stream;
@@ -131,6 +132,7 @@ public class LimeLight {
         json = limelightTable.getEntry("json");
         botpose = limelightTable.getEntry("botpose_orb_wpiblue");
         targetPoseRobotSpace = limelightTable.getEntry("targetpose_robotspace");
+        robotPoseTargetSpace = limelightTable.getEntry("robotpose_targetspace");
         priorityid = limelightTable.getEntry("priorityid");
         tclass = limelightTable.getEntry("tclass");
         tc = limelightTable.getEntry("tc");
@@ -283,6 +285,12 @@ public class LimeLight {
         Double[] poseReal = botpose.getDoubleArray(dub);
         return poseReal;
     }
+
+    public Double[] getRobotPoseTargetSpaceRaw(){
+        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
+        Double[] poseReal = robotPoseTargetSpace.getDoubleArray(dub);
+        return poseReal;
+    }
     public Double[] getBotPositionRawM2(){
         Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
         Double[] poseReal = botpose.getDoubleArray(dub);
@@ -302,6 +310,14 @@ public class LimeLight {
 
     public Pose2d getBot2DPosition(){
         Double[] pose = getBotPositionRaw();
+        if(pose == null) return new Pose2d();
+        Translation2d translation = new Translation2d(pose[1], pose[0]);
+        Rotation2d rotation = new Rotation2d(pose[5]);
+        return new Pose2d(translation, rotation);
+    }
+
+    public Pose2d getRobotPoseTargetSpace(){
+        Double[] pose = getRobotPoseTargetSpaceRaw();
         if(pose == null) return new Pose2d();
         Translation2d translation = new Translation2d(pose[1], pose[0]);
         Rotation2d rotation = new Rotation2d(pose[5]);

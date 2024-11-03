@@ -4,43 +4,44 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimelightHelpers;
 import frc.robot.utilities.vission.LimeLight.LedMode;
 
 public class LinedUpSignal extends Command {
-  public LimeLight limelight;
-  public Intake intake; 
-
-  /** Creates a new LinedUpSignal. */
-  public LinedUpSignal(LimeLight limeLight, Intake intake) {
-    this.limelight = limeLight;// Use addRequirements() here to declare subsystem dependencies.
-    this.intake = intake;
-    addRequirements(intake);
+  // public LimeLight limelight; 
+  public String limelight;
+  public LinedUpSignal(String limeLight) { this.limelight = limeLight;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {  
-  } 
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {  
-  if(!limelight.hasValidTarget())
+  public void execute() 
   {
-    limelight.setLedMode(LedMode.OFF);
+    if(LimelightHelpers.getTV(limelight))
+    {
+      LimelightHelpers.setLEDMode_ForceOn(limelight);
+    }
+    else
+    {
+      LimelightHelpers.setLEDMode_ForceOff(limelight);
+    }
   }
-  else
-  {
-    limelight.setLedMode(LedMode.ON);
-  }
-}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) 
+  {
+  }
 
   // Returns true when the command should end.
   @Override

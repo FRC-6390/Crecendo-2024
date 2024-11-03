@@ -95,8 +95,8 @@ public class Shooter extends SubsystemBase {
  
   @Override
   public void periodic(){
-    // update();
+    update();
   
-    SmartDashboard.putNumber("Shooter Velocity", getRotorVelocity());
+    // SmartDashboard.putNumber("Shooter Velocity", getRotorVelocity());
   }
 }

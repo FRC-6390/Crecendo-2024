@@ -22,19 +22,21 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.*;
-import frc.robot.commands.auto.AutoAim;
+import frc.robot.commands.auto.AmpAlign;
 import frc.robot.commands.auto.AutoIntake;
+// import frc.robot.commands.auto.AutoIntake;
 import frc.robot.commands.auto.SeekMode;
-import frc.robot.commands.auto.LinedUpSignal;
 import frc.robot.commands.auto.TurnCommand;
 
 public class RobotContainer {
   
   public static Arm arm;
-  public static LimeLight limelight = new LimeLight();
+  public static LimeLight limelight = new LimeLight(new LimelightConfig("limelight", 0, 0));
   public static LimeLight limeLight2 = new LimeLight(new LimelightConfig("limelight-driver", 0, 0));
   public static Drivetrain6390 driveTrain = new Drivetrain6390(limelight);
   public static Climber climber = new Climber();
@@ -85,34 +87,35 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
     NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 25, false));
-    NamedCommands.registerCommand("AutoAim", new AutoAim(driveTrain, arm));
     
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
-    // intake.setDefaultCommand(new IntakeRollers2(intake, -0.4, true));
-    intake.setDefaultCommand(new LinedUpSignal(limeLight2, intake));
+    intake.setDefaultCommand(new IntakeRollers2(intake, -0.4, true));
     configureBindings();
 
   }
 
   private void configureBindings() 
   {
-
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
-    controller.a.whileTrue(new SeekMode(limeLight2, driveTrain));
-  //---------------------------COMP CONTROLS---------------------------------//
+    controller.a.toggleOnTrue(new SeekMode("limelight-driver", driveTrain));
+    // controller.a.toggleOnFalse(new AutoIntake(intake, driveTrain, "limelight-driver"));
+    controller.x.toggleOnTrue(new AmpAlign("limelight-tag", driveTrain));
+    
+
+      //---------------------------COMP CONTROLS---------------------------------//
     
   //AUTO AIM
-  controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
+  // controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
   
   //SUBWOOFER SHOT
-  controller.rightBumper.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30, false));
+  controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.5, shooter, intake, 30, false),new ArmTest(arm, 0)));
 
   //AMP SHOT
-  controller.y.whileTrue(new ShooterRollers(-0.1, shooter, intake, 1, false));
+  controller.y.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -1),new ShooterRollers(-0.1, shooter, intake, 1, false),new ArmTest(arm, 0)));
 
   //HALF COURT SHOT
-  controller.b.whileTrue(new ShooterRollers(-0.5, shooter, intake, 30, false));
+  controller.b.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.469006),new ShooterRollers(-0.5, shooter, intake, 30, false),new ArmTest(arm, 0)));
  
 
     //HOME POS

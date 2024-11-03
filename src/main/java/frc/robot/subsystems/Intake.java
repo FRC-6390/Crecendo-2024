@@ -176,7 +176,7 @@ public class Intake extends SubsystemBase {
   public void periodic()
   {
    update();
-   SmartDashboard.putBoolean("Game Piece", hasNote());
+  //  SmartDashboard.putBoolean("Game Piece", hasNote());
 
    }
 }

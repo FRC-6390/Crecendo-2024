@@ -45,7 +45,10 @@ import frc.robot.utilities.vission.LimeLight;
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
+  private static boolean hasHeadingBeenSet = false;
+  private static double offset = 0;
   private static Boolean isRed = false;
+  private static double absoluteHeading = 0;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
@@ -58,9 +61,9 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Field2d gameFieldVision;
   private static Field2d gameFieldVision2;
   private static double desiredHeading;
-  private static boolean isRobotRelative;
+  private boolean isRobotRelative;
 
-  public static void setRobotRelative(boolean bool) {
+  public void setRobotRelative(boolean bool) {
     isRobotRelative = bool;
   }
 
@@ -143,6 +146,8 @@ public class Drivetrain6390 extends SubsystemBase{
 
     pid = new PID(driftCorrectionPID).setMeasurement(() ->
     pose.getRotation().getDegrees());
+   gyro.getAngle();
+   absoluteHeading = Math.IEEEremainder(gyro.getYaw().refresh().getValueAsDouble(), 360);
     // tele = new SwerveTelemetry(swerveModules[0], swerveModules[1], swerveModules[2], swerveModules[3], pid, odometry, gameField, tab);
 }
 
@@ -150,11 +155,20 @@ public class Drivetrain6390 extends SubsystemBase{
     pdh.clearStickyFaults();
     zeroHeading();
     resetOdometry(new Pose2d(0,0,getRotation2d()));
-    //shuffleboard();
+    
+    // shuffleboard();
   }
 
   public void zeroHeading(){
+    if(!hasHeadingBeenSet)
+    {
+      absoluteHeading = getAbsoluteHeading();
+    }
     gyro.setYaw(0);
+    if(!hasHeadingBeenSet)
+    {
+      offset = absoluteHeading -  getHeading();
+    }
     resetOdometry(pose);
   }
   public void setOdometryVision(){
@@ -164,8 +178,23 @@ public class Drivetrain6390 extends SubsystemBase{
     return gyro.getRate();
   }
 
-  public  void resetHeading(){
+  public double getAbsoluteHeading()
+  {
+    absoluteHeading = Math.IEEEremainder(gyro.getYaw().refresh().getValueAsDouble(), 360);
+    return absoluteHeading - offset;
+  }
+
+  public  void resetHeading()
+  {
+    if(!hasHeadingBeenSet)
+    {
+      absoluteHeading = getAbsoluteHeading();
+    }
     gyro.setYaw(0);
+    if(!hasHeadingBeenSet)
+    {
+      offset = absoluteHeading -  getHeading();
+    }
   }
 
   public double getRoll(){
@@ -337,30 +366,25 @@ feedbackSpeeds.omegaRadiansPerSecond;
     }
     setModuleStates(states);
 
+    SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
+    SmartDashboard.putNumber("Absolute Heading", getAbsoluteHeading());
+    SmartDashboard.putNumber("Offset", offset);
+    SmartDashboard.putBoolean("Has set", hasHeadingBeenSet);
+
+
+
     updateOdometry();
 
     if(DriverStation.isTeleop())
     {
     driftCorrection(speed);
     }
-
-    // SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
-    // SmartDashboard.putNumber("Odometry X", visionPose.getX());
-    // SmartDashboard.putNumber("Odometry Y", visionPose.getY());
-    // SmartDashboard.putNumber("Odometry Heading REALL", getHeading());
-    
-
-   SmartDashboard.putData("Vision Pose", gameFieldVision);
-  //  SmartDashboard.putData("Vision Pose Raw", gameFieldVision2);
-
-  //  SmartDashboard.putData("Pose", gameField);
     
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
     
-    // tele.updateShuffleboard();
   }
 
   @Override

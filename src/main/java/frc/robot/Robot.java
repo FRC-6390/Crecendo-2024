@@ -11,8 +11,10 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants.DRIVETRAIN;
+import frc.robot.commands.auto.LinedUpSignal;
 // import frc.robot.subsystems.Drivetrain6390;
 // import frc.robot.subsystems.DriveTrain;
 import frc.robot.utilities.swerve.SwerveModule;
@@ -96,6 +98,8 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("PosY", RobotContainer.driveTrain.getPose().getY());
       
   }
+Command cmd = new LinedUpSignal("limelight-tag");
+Command cmd2 = new LinedUpSignal("limelight-driver");
 
   @Override
   public void teleopInit() {
@@ -103,6 +107,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // Drivetrain6390.updateSide();
+    CommandScheduler.getInstance().schedule(cmd);
+    CommandScheduler.getInstance().schedule(cmd2);
   }
 
   /** This function is called periodically during operator control. */

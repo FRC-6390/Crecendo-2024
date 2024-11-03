@@ -4,22 +4,22 @@
 
 package frc.robot.commands.auto;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.subsystems.Intake;
-import frc.robot.utilities.vission.LimeLight;
+import frc.robot.utilities.vission.LimelightHelpers;
 
 public class AutoIntake extends Command {
-  public LimeLight limelight; public Drivetrain6390 drivetrain; public PIDController controller = new PIDController(0.1, 0, 0);
   public Intake intake;
-  public boolean isDone = false;
-  public boolean isIntakeMode = false;
-  public AutoIntake(LimeLight limeLight, Drivetrain6390 drivetrain, Intake intake) {
-    this.drivetrain = drivetrain; this.limelight = limeLight;
+  public Drivetrain6390 drivetrain; 
+  public String limelight;
+  public boolean isDone;
+  /** Creates a new AutoIntake. */
+  public AutoIntake(Intake intake, Drivetrain6390 drivetrain, String limelight) {
     this.intake = intake;
+    this.drivetrain = drivetrain;
+    this.limelight = limelight;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,6 +27,7 @@ public class AutoIntake extends Command {
   @Override
   public void initialize() 
   {
+    drivetrain.setRobotRelative(true);
     isDone = false;
   }
 
@@ -34,23 +35,13 @@ public class AutoIntake extends Command {
   @Override
   public void execute() 
   {
-    if(limelight.hasValidTarget() || !isIntakeMode)
+    if(LimelightHelpers.getTV(limelight) && !intake.hasNote())
     {
-      drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, drivetrain.getSpeeds().vyMetersPerSecond, controller.calculate(limelight.getTargetHorizontalOffset())));
+      drivetrain.drive(new ChassisSpeeds(0,0.2,0));
     }
-    if(controller.atSetpoint())
+    else if(intake.hasNote())
     {
-      isIntakeMode = true;
-      System.out.println("reached");
-    }
-    if(isIntakeMode)
-    {
-      Drivetrain6390.setRobotRelative(true);
-      drivetrain.drive(new ChassisSpeeds(0,0.1,0));
-      if(intake.hasNote())
-      {
-        isDone = true;
-      }
+      isDone = true;
     }
   }
 
@@ -58,14 +49,13 @@ public class AutoIntake extends Command {
   @Override
   public void end(boolean interrupted) 
   {
-    isIntakeMode =false;
-    Drivetrain6390.setRobotRelative(false);
+    drivetrain.setRobotRelative(false);
     drivetrain.drive(new ChassisSpeeds(0,0,0));
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isDone;
   }
 }
