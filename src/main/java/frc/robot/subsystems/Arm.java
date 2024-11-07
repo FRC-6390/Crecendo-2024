@@ -22,7 +22,7 @@ import frc.robot.utilities.sensors.Button;
 public class Arm extends SubsystemBase {
   private TalonFX ArmMotorLeft;
   private TalonFX ArmMotorRight;
-  private PID PID;
+  public PID PID;
   public double setpoint = 0;
   public double convertedValue = 0;
   public Button coastButton;
@@ -98,6 +98,11 @@ public boolean override(){
 public double percentToRotations(double percent, double rangeInRotations)
 {
   return percent * rangeInRotations;
+}
+
+public double getPostionAsPercent()
+{
+  return ArmMotorLeft.getPosition().refresh().getValueAsDouble() / Constants.ARM.ARM_MAX;
 }
 
 public void motorCoast()

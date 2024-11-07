@@ -11,9 +11,9 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
-import frc.robot.utilities.vission.LimeLight;
-import frc.robot.utilities.vission.LimelightHelpers;
-import frc.robot.utilities.vission.LimeLight.LedMode;
+import frc.robot.utilities.vision.LimeLight;
+import frc.robot.utilities.vision.LimelightHelpers;
+import frc.robot.utilities.vision.LimeLight.LedMode;
 
 public class SeekMode extends Command {
   public String limelight; public Drivetrain6390 drivetrain; public PIDController controller = new PIDController(0.07, 0, 0);

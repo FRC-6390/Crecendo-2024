@@ -1,4 +1,4 @@
-package frc.robot.utilities.vission;
+package frc.robot.utilities.vision;
 
 import java.lang.reflect.Array;
 

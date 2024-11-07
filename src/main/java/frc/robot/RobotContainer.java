@@ -10,10 +10,11 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.TelemetryManager;
 import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.controller.DebouncedJoystick;
-import frc.robot.utilities.vission.LimeLight;
-import frc.robot.utilities.vission.LimelightConfig;
+import frc.robot.utilities.vision.LimeLight;
+import frc.robot.utilities.vision.LimelightConfig;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -43,6 +44,8 @@ public class RobotContainer {
   public static Shooter shooter = new Shooter();
   public static Pose2d scoringPos = new Pose2d(1.24, 5.52, new Rotation2d());
   public static Pose2d scoringPosR = new Pose2d(15.26, 5.52, new Rotation2d());
+
+  public static TelemetryManager manager = new TelemetryManager(driveTrain, limeLight2, limeLight2, arm, intake, shooter);
   
   public static DebouncedController controller = new DebouncedController(0);
   private DebouncedJoystick joystick = new DebouncedJoystick(1);

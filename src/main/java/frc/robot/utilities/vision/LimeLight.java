@@ -1,11 +1,8 @@
-package frc.robot.utilities.vission;
+package frc.robot.utilities.vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -13,26 +10,30 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 public class LimeLight {
     public LimelightConfig config;
     private NetworkTable limelightTable;
-    public static NetworkTableEntry tv;
-    public static NetworkTableEntry tx;
+    public NetworkTableEntry tv;
+    public NetworkTableEntry tx;
     public NetworkTableEntry ty;
+    public NetworkTableEntry txnc;
+    public NetworkTableEntry tync;
+    public NetworkTableEntry botpose_targetspace_set;
     public NetworkTableEntry ta;
     public NetworkTableEntry ts;
     public NetworkTableEntry tl;
     public NetworkTableEntry tshort;
-    public NetworkTableEntry priorityid;
     public NetworkTableEntry tlong;
     public NetworkTableEntry thor;
     public NetworkTableEntry getpipe;
     public NetworkTableEntry camtran;
     public NetworkTableEntry tid;
     public NetworkTableEntry json;
-    public NetworkTableEntry botpose;
+    public NetworkTableEntry camerapose_robotspace_set;
+    public NetworkTableEntry robot_orientation_set;
+    public NetworkTableEntry fiducial_id_filters_set;
+    public NetworkTableEntry fiducial_offset_set;
     public NetworkTableEntry tclass;
+    public NetworkTableEntry priorityid;
     public NetworkTableEntry tc;
-    public static NetworkTableEntry ledMode;
-    public static NetworkTableEntry targetPoseRobotSpace;
-    public static NetworkTableEntry robotPoseTargetSpace;
+    public NetworkTableEntry ledMode;
     public NetworkTableEntry camMode;
     public NetworkTableEntry pipeline;
     public NetworkTableEntry stream;
@@ -69,6 +70,41 @@ public class LimeLight {
             return id;
         }
     }
+
+    public enum PoseEstimateWithLatencyType{
+        BOT_POSE("botpose"), 
+        BOT_POSE_RED("botpose_wpired"),
+        BOT_POSE_BLUE("botpose_wpiblue"),
+        BOT_POSE_MT2_BLUE("botpose_orb_wpiblue"),
+        BOT_POSE_MT2_RED("botpose_orb_wpired"),
+        BOT_POSE_MT2("botpose_orb");
+        private String id;
+        private PoseEstimateWithLatencyType(String id){
+            this.id = id;
+        }
+
+        public String get(){
+            return id;
+        }
+    }
+
+    public enum PoseEstimateType{
+        CAMERA_POSE_TARGET_SPACE("camerapose_targetspace"),
+        TARGET_POSE_CAMERA_SPACE("targetpose_cameraspace"),
+        TARGET_POSE_ROBOT_SPACE("targetpose_robotspace"),
+        BOT_POSE_TARGET_SPACE("botpose_targetspace"),
+        CAMERA_POSE_ROBOT_SPACE("camerapose_robotspace");
+        private String id;
+        private PoseEstimateType(String id){
+            this.id = id;
+        }
+
+        public String get(){
+            return id;
+        }
+    }
+    
+
 
     public enum CameraMode{
         VISION_PROCESSOR(0),
@@ -110,7 +146,68 @@ public class LimeLight {
         }
     }
 
+    public class PoseEstimateWithLatency extends PoseEstimate
+    {
+        
+        public PoseEstimateWithLatency(PoseEstimateWithLatencyType type)
+        {
+            super(type.get());
+        }
+
+        public double getLatency()
+        {
+            return getRaw(table)[7];
+        }
+        public double getTagCount()
+        {
+            return getRaw(table)[8];
+        }
+        public double getDistToTag()
+        {
+            return getRaw(table)[9];
+        }
+        public double getAvgTagArea()
+        {
+            return getRaw(table)[10];
+        }
+        
+    }
+
+    public class PoseEstimate
+    {
+        Double[] dub = new Double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        String table;
+
+        public PoseEstimate(PoseEstimateType type)
+        {
+           this(type.get());
+        }
+
+        public PoseEstimate(String table)
+        {
+            this.table = table;
+        }
+        public Double[] getRaw(String table)
+        {
+            return limelightTable.getEntry(table).getDoubleArray(dub);
+        }
+
+        public Pose2d getPose()
+        {
+            Double[] poseReal = getRaw(table);
+            if (poseReal == null) return new Pose2d();
+            Translation2d translation = new Translation2d(poseReal[0], poseReal[1]);
+            Rotation2d rotation2d = new Rotation2d(poseReal[5]);
+            return new Pose2d(translation, rotation2d);
+        }
+    }
+
+    
     public LimeLight(){
+        this(LimelightConfig.defualt());
+    }
+
+    public LimeLight(String table){
         this(LimelightConfig.defualt());
     }
 
@@ -130,11 +227,16 @@ public class LimeLight {
         camtran = limelightTable.getEntry("camtran");
         tid = limelightTable.getEntry("tid");
         json = limelightTable.getEntry("json");
-        botpose = limelightTable.getEntry("botpose_orb_wpiblue");
-        targetPoseRobotSpace = limelightTable.getEntry("targetpose_robotspace");
-        robotPoseTargetSpace = limelightTable.getEntry("robotpose_targetspace");
-        priorityid = limelightTable.getEntry("priorityid");
+       
         tclass = limelightTable.getEntry("tclass");
+        priorityid = limelightTable.getEntry("priorityid");
+      
+        botpose_targetspace_set = limelightTable.getEntry("botpose_targetspace_set");
+        camerapose_robotspace_set = limelightTable.getEntry("camerapose_robotspace_set");
+        robot_orientation_set = limelightTable.getEntry("robot_orientation_set");
+        fiducial_id_filters_set = limelightTable.getEntry("fiducial_id_filters_set");
+        fiducial_offset_set = limelightTable.getEntry("fiducial_offset_set");
+        
         tc = limelightTable.getEntry("tc");
         ledMode = limelightTable.getEntry("ledMode");
         camMode = limelightTable.getEntry("camMode");
@@ -179,8 +281,6 @@ public class LimeLight {
     public double getTargetHorizontalOffset(){
         return tx.getDouble(0);
     }
-
-    
 
     /**
      * Vertical Offset From Crosshair To Target (LL1: -20.5 degrees to 20.5 degrees | LL2: -24.85 to 24.85 degrees)
@@ -252,11 +352,6 @@ public class LimeLight {
         return camtran.getNumberArray(null);
     }
 
-    public void setPriorityId(int tag_id)
-    {
-        priorityid.setNumber(tag_id);
-    }
-
     /**
      * ID of primary AprilTag
      */
@@ -272,67 +367,23 @@ public class LimeLight {
     }
 
      /**
-     * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z)
+     * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z), total latency, tag count, average tag distance from camera, average tag area, 
      */
-    public Double[] getBotPositionRaw(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
-        Double[] poseReal = botpose.getDoubleArray(dub);
-        return poseReal;
+    public PoseEstimate getPoseEstimate(PoseEstimateType type)
+    {
+        PoseEstimate estimate = new PoseEstimate(type);
+        return estimate;
     }
 
-    public Double[] getTargetPoseRobotSpace(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
-        Double[] poseReal = botpose.getDoubleArray(dub);
-        return poseReal;
+    public PoseEstimateWithLatency getPoseEstimate(PoseEstimateWithLatencyType type)
+    {
+        PoseEstimateWithLatency estimate = new PoseEstimateWithLatency(type);
+        return estimate;
     }
-
-    public Double[] getRobotPoseTargetSpaceRaw(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
-        Double[] poseReal = robotPoseTargetSpace.getDoubleArray(dub);
-        return poseReal;
-    }
-    public Double[] getBotPositionRawM2(){
-        Double[] dub = {0.0,0.0,0.0,0.0,0.0,0.0};
-        Double[] poseReal = botpose.getDoubleArray(dub);
-        return poseReal;
-    }
-
-    /**
-     * Robot transform in field-space. Translation (X,Y,Z) Rotation(X,Y,Z)
-     */
-    public Pose3d getBot3DPosition(){
-        Number[] pose = getBotPositionRaw();
-        if(pose == null) return new Pose3d();
-        Translation3d translation3d = new Translation3d(pose[0].doubleValue(), pose[1].doubleValue(), pose[2].doubleValue());
-        Rotation3d rotation3d = new Rotation3d(pose[3].doubleValue(), pose[4].doubleValue(), pose[5].doubleValue());
-        return new Pose3d(translation3d, rotation3d);
-    }
-
-    public Pose2d getBot2DPosition(){
-        Double[] pose = getBotPositionRaw();
-        if(pose == null) return new Pose2d();
-        Translation2d translation = new Translation2d(pose[1], pose[0]);
-        Rotation2d rotation = new Rotation2d(pose[5]);
-        return new Pose2d(translation, rotation);
-    }
-
-    public Pose2d getRobotPoseTargetSpace(){
-        Double[] pose = getRobotPoseTargetSpaceRaw();
-        if(pose == null) return new Pose2d();
-        Translation2d translation = new Translation2d(pose[1], pose[0]);
-        Rotation2d rotation = new Rotation2d(pose[5]);
-        return new Pose2d(translation, rotation);
-    }
-
-    public Pose2d getBot2DPositionM2(){
-        Double[] pose = getBotPositionRawM2();
-        if(pose == null) return new Pose2d();
-        Translation2d translation = new Translation2d(pose[1], pose[0]);
-        Rotation2d rotation = new Rotation2d(pose[5]);
-        return new Pose2d(translation, rotation);
-    }
-
     
+    public int getPriorityID(){
+        return (int) priorityid.getInteger(-1);
+    }    
 
     /**
      * Class ID of primary neural detector result or neural classifier result
@@ -393,6 +444,19 @@ public class LimeLight {
         double heightDiff = targetHeightMeters - mountingHeightMeters;
         
         return heightDiff == 0 ? Math.tan(angleToTargetRadains) : (heightDiff)/Math.tan(angleToTargetRadains);
+    }
+
+    public void setPriorityID(int tag_id){
+        priorityid.setInteger(tag_id);
+    }
+
+    public void setBotPoseTargetSpace(Double[] pose)
+    {
+        botpose_targetspace_set.setDoubleArray(pose);
+    }
+    public void setCameraPoseRobotSpace(Double[] pose)
+    {
+        camerapose_robotspace_set.setDoubleArray(pose);
     }
 
 }

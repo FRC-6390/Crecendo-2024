@@ -1,4 +1,4 @@
-package frc.robot.utilities.vission;
+package frc.robot.utilities.vision;
 
 public class LimelightConfig {
     private static String DEFUALT_TABLE = "limelight"; 
