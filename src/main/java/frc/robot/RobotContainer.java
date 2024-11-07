@@ -28,7 +28,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.AmpAlign;
-import frc.robot.commands.auto.AutoIntake;
 // import frc.robot.commands.auto.AutoIntake;
 import frc.robot.commands.auto.SeekMode;
 import frc.robot.commands.auto.TurnCommand;

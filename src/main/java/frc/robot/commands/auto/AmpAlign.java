@@ -28,28 +28,27 @@ public class AmpAlign extends Command {
   public void initialize() 
   {
     drivetrain.setRobotRelative(true);
-    // controller.setTolerance(10);
   }
 
   @Override
   public void execute() 
   {
-    // if(LimelightHelpers.getTV(limelight)){
-    //   drivetrain.setRobotRelative(true);
+    if(LimelightHelpers.getTV(limelight)){
+      drivetrain.setRobotRelative(true);
 
-    //   //X AND THETA
-    //   // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, xController.calculate(LimelightHelpers.getTX(limelight)), controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
+      //X AND THETA
+      // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, xController.calculate(LimelightHelpers.getTX(limelight)), controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
       
-    //   //X
-    //   drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, -xController.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[0]), -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
+      //X
+      // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, -xController.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[0]), -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
       
-    //   //THETA
-    //   // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vyMetersPerSecond ,drivetrain.getSpeeds().vyMetersPerSecond , -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
-    // }
-    // else
-    // {
-    //   drivetrain.setRobotRelative(false);
-    // }
+      //THETA
+      drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vyMetersPerSecond ,drivetrain.getSpeeds().vyMetersPerSecond , -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
+    }
+    else
+    {
+      drivetrain.setRobotRelative(false);
+    }
   }
 
   // Called once the command ends or is interrupted.
