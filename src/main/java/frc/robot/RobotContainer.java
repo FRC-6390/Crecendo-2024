@@ -54,30 +54,7 @@ public class RobotContainer {
   public RobotContainer() {
     arm = new Arm(joystick);
     driveTrain.init();
-    autoChooser.addOption("Baseline", "Baseline");
-    autoChooser.addOption("AutoNonStageBonus", "AutoNonStageBonus");
-    autoChooser.addOption("AutoNonStageWithMid", "AutoNonStageWithMid");
-    autoChooser.addOption("AutoStageBonus", "AutoStageBonus");
-    autoChooser.addOption("AutoStageWithMid", "AutoStageWithMid");
-    autoChooser.addOption("AutoNonStageBasic", "AutoNonStageBasic");
-    autoChooser.addOption("AutoCenterBasic", "AutoCenterBasic");
-    autoChooser.addOption("Nothing", "Nothing");
-    autoChooser.addOption("AllThreeNonStage", "AllThreeNonStage");
-    autoChooser.addOption("AllThreeStage", "AllThreeStage");
-    autoChooser.addOption("AutoStageBasic", "AutoStageBasic");
-    autoChooser.addOption("StageSide", "StageSide");
     autoChooser.addOption("Center", "Center");
-    autoChooser.addOption("NonStageSide", "NonStageSide");
-    autoChooser.addOption("StageSideExtra", "StageSideExtra");
-    autoChooser.addOption("NonStageSideExtra", "NonStageSideExtra");
-    autoChooser.addOption("StageSideRed", "StageSideRed");
-
-    //GOOOD
-    autoChooser.addOption("StageSideExtraFast", "StageSideExtraFast");
-    autoChooser.addOption("StageSideExtraFastV2", "StageSideExtraFastV2");
-    autoChooser.addOption("StageSideExtraFastRed", "StageSideExtraFastRed");
-    autoChooser.addOption("StageSideExtraFastV2Red", "StageSideExtraFastV2Red");
-    autoChooser.addOption("Sweeper", "Sweeper");    
 
     SmartDashboard.putData("AutoChoose", autoChooser);
     
@@ -87,7 +64,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("PivotMoveLow", new ArmTest(arm, 0));
     NamedCommands.registerCommand("PivotMoveHigh", new ArmTest(arm, -0.211));
     NamedCommands.registerCommand("Shoot", new ShooterRollers(-0.5, shooter, intake, 25, false));
-    
+    NamedCommands.registerCommand("Seek", new SeekMode("limelight-driver", driveTrain));
 
     driveTrain.setDefaultCommand(new Drive(driveTrain, controller.leftX, controller.leftY, controller.rightX));
     intake.setDefaultCommand(new IntakeRollers2(intake, -0.4, true));
@@ -99,7 +76,6 @@ public class RobotContainer {
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     controller.a.toggleOnTrue(new SeekMode("limelight-driver", driveTrain));
-    // controller.a.toggleOnFalse(new AutoIntake(intake, driveTrain, "limelight-driver"));
     controller.x.toggleOnTrue(new AmpAlign("limelight-tag", driveTrain));
     
 

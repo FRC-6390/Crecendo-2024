@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.net.ContentHandler;
+
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -52,7 +54,6 @@ public class Drivetrain6390 extends SubsystemBase{
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static ChassisSpeeds chassisSpeeds, feedbackSpeeds;
-  // private static SwerveTelemetry tele;
   public static SwerveDriveKinematics kinematics;
   private static SwerveDriveOdometry odometry;
   private static Pose2d pose;
@@ -67,16 +68,29 @@ public class Drivetrain6390 extends SubsystemBase{
     isRobotRelative = bool;
   }
 
-  //0.1
   private static PIDConfig driftCorrectionPID = new PIDConfig(5, 0,0).setContinuous(-Math.PI, Math.PI);
   private static Pose2d visionPose;
   private static PID pid;
   public LimeLight limeLight;
 
-  public RobotConfig config = new RobotConfig(1, 1, new ModuleConfig(1, 1, 1, new DCMotor(1, 1, 1, 1, 1, 0), 1, 0), 1);
-    
-  // public static Orchestra orchestra = new Orchestra();
-  
+  public RobotConfig config = 
+  new RobotConfig(
+    74.088, 
+    6.883, 
+    new ModuleConfig(
+      0.048, 
+      5.143, 
+      1.2, 
+      new DCMotor(12, 
+                  7, 
+                  366, 
+                  2, 
+                  628.31853, 
+                  2), 
+      80, 
+      1), 
+      Constants.ROBOT.TRACKWIDTH_METERS
+  );
   public SwerveDrivePoseEstimator estimator = 
   new SwerveDrivePoseEstimator(
     kinematics, 
@@ -89,20 +103,13 @@ public class Drivetrain6390 extends SubsystemBase{
   public Drivetrain6390(LimeLight limelight)
   {
     this.limeLight = limelight;
-    // try{
-    //   config = RobotConfig.fromGUISettings();
-    // } catch (Exception e) {
-    //   // Handle exception as needed
-    //   e.printStackTrace();
-    // }
 
     AutoBuilder.configure
     (
       this::getVisionPose,
       this::resetOdometryVision,
-      this::getSpeeds,
-      (speeds, feedforwards) -> drive(speeds),
-      //0.85 translation 3.125 rotation
+      this::getRelativeSpeeds,
+      (speeds, feedforwards) -> relativeDrive(speeds),
       new PPHolonomicDriveController(new PIDConstants(0.9), new PIDConstants(3.125), Constants.SWERVEMODULE.MAX_SPEED_METERS_PER_SECOND),
       config,
       this::getSide,
@@ -146,7 +153,7 @@ public class Drivetrain6390 extends SubsystemBase{
 
     pid = new PID(driftCorrectionPID).setMeasurement(() ->
     pose.getRotation().getDegrees());
-   gyro.getAngle();
+    gyro.getAngle();
    absoluteHeading = Math.IEEEremainder(gyro.getYaw().refresh().getValueAsDouble(), 360);
     // tele = new SwerveTelemetry(swerveModules[0], swerveModules[1], swerveModules[2], swerveModules[3], pid, odometry, gameField, tab);
 }
@@ -162,7 +169,7 @@ public class Drivetrain6390 extends SubsystemBase{
   public void zeroHeading(){
     if(!hasHeadingBeenSet)
     {
-      absoluteHeading = getAbsoluteHeading();
+      absoluteHeading = getAbsoluteHeading().getDegrees();
     }
     gyro.setYaw(0);
     if(!hasHeadingBeenSet)
@@ -178,22 +185,22 @@ public class Drivetrain6390 extends SubsystemBase{
     return gyro.getRate();
   }
 
-  public double getAbsoluteHeading()
+  public Rotation2d getAbsoluteHeading()
   {
-    absoluteHeading = Math.IEEEremainder(gyro.getYaw().refresh().getValueAsDouble(), 360);
-    return absoluteHeading - offset;
+    absoluteHeading = getRotation2d().getDegrees();
+    return new Rotation2d(absoluteHeading - offset);
   }
 
   public  void resetHeading()
   {
     if(!hasHeadingBeenSet)
     {
-      absoluteHeading = getAbsoluteHeading();
+      absoluteHeading = getRotation2d().getDegrees();
     }
     gyro.setYaw(0);
     if(!hasHeadingBeenSet)
     {
-      offset = absoluteHeading -  getHeading();
+      offset = absoluteHeading -  getRotation2d().getDegrees();
     }
   }
 
@@ -231,7 +238,10 @@ pose.getRotation().getDegrees();
 
   public void drive(ChassisSpeeds speeds){
     chassisSpeeds = speeds;
-    //System.out.println(speeds);
+  }
+
+  public void relativeDrive(ChassisSpeeds speeds){
+    chassisSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(speeds, getRotation2d());
   }
 
   public Pose2d getPose(){
@@ -304,11 +314,6 @@ SwerveModulePosition[swerveModules.length];
       //MY VERSION
       Pose2d roboPos = LimelightHelpers.getBotPose2d_wpiBlue("limelight");
       int tagCount = LimelightHelpers.getTargetCount("limelight");
-
-      // Pose2d roboPos2 = limeLight.getBot2DPositionOrbBlue();
-
-      // System.out.println(roboPos);
-      // System.out.println(roboPos2);
       if(Math.abs(gyro.getRate()) > 720) 
       {
         doRejectUpdate = true;
@@ -319,16 +324,7 @@ SwerveModulePosition[swerveModules.length];
       }
       if(!doRejectUpdate)
       {
-      if(DriverStation.isTeleop())
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.1,.1,9999999));
-      }
-      else
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.475,.475,9999999));
-      }
-        estimator.addVisionMeasurement(
-            roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
+        estimator.addVisionMeasurement(roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
       }
     
     gameField.setRobotPose(pose);
@@ -341,6 +337,11 @@ SwerveModulePosition[swerveModules.length];
   public ChassisSpeeds getSpeeds()
   {
     return chassisSpeeds;
+  }
+
+  public ChassisSpeeds getRelativeSpeeds()
+  {
+    return ChassisSpeeds.fromFieldRelativeSpeeds(chassisSpeeds, getRotation2d());
   }
 
   public double maxAccel = 0;
@@ -362,23 +363,12 @@ feedbackSpeeds.omegaRadiansPerSecond;
     }
     else
     {
-    states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromRobotRelativeSpeeds(speed, getRotation2d()));
+    states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(speed, getRotation2d()));
     }
     setModuleStates(states);
 
-    SmartDashboard.putNumber("Heading", getRotation2d().getDegrees());
-    SmartDashboard.putNumber("Absolute Heading", getAbsoluteHeading());
-    SmartDashboard.putNumber("Offset", offset);
-    SmartDashboard.putBoolean("Has set", hasHeadingBeenSet);
-
-
-
     updateOdometry();
-
-    if(DriverStation.isTeleop())
-    {
     driftCorrection(speed);
-    }
     
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {

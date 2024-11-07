@@ -1,4 +1,5 @@
 {
+<<<<<<< Updated upstream
   "robotWidth": 0.8,
   "robotLength": 0.8,
   "holonomicMode": true,
@@ -24,7 +25,16 @@
   ],
   "defaultMaxVel": 4.0,
   "defaultMaxAccel": 4.0,
+=======
+  "robotWidth": 0.83,
+  "robotLength": 0.83,
+  "holonomicMode": true,
+  "pathFolders": [],
+  "autoFolders": [],
+  "defaultMaxVel": 1.0,
+  "defaultMaxAccel": 1.0,
+>>>>>>> Stashed changes
   "defaultMaxAngVel": 360.0,
   "defaultMaxAngAccel": 540.0,
-  "maxModuleSpeed": 5.21
+  "maxModuleSpeed": 5.25
 }

@@ -5,39 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveHigh"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Center1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Center2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveLow"
+            "pathName": "Center"
           }
         }
       ]

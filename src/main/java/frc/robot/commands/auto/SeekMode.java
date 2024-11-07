@@ -4,6 +4,8 @@
 
 package frc.robot.commands.auto;
 
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,25 +21,27 @@ public class SeekMode extends Command {
     this.drivetrain = drivetrain; this.limelight = limeLight;
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() 
   {
     drivetrain.setRobotRelative(true);
   }
-
-  // Called every time the scheduler runs while the command is scheduled.
+  
   @Override
   public void execute() 
   {
     if(LimelightHelpers.getTV(limelight))
     {
-      drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, 0, controller.calculate(LimelightHelpers.getTX(limelight))));
-      drivetrain.setRobotRelative(false);
+      drivetrain.setRobotRelative(true);
+      PPHolonomicDriveController.overrideXFeedback(() -> {return -3.0;});
+      PPHolonomicDriveController.overrideYFeedback(() -> {return 0;});
+      PPHolonomicDriveController.overrideRotationFeedback(() -> {return controller.calculate(LimelightHelpers.getTX(limelight));});
+      // drivetrain.drive(new ChassisSpeeds(-3, 0, controller.calculate(LimelightHelpers.getTX(limelight))));
     }
     else
     {
       drivetrain.setRobotRelative(false);
+      PPHolonomicDriveController.clearFeedbackOverrides();
     }
   }
 
@@ -46,6 +50,7 @@ public class SeekMode extends Command {
   public void end(boolean interrupted) 
   {
     drivetrain.setRobotRelative(false);
+    PPHolonomicDriveController.clearFeedbackOverrides();
     drivetrain.drive(new ChassisSpeeds(0,0,0));
   }
 
