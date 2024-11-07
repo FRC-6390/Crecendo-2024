@@ -73,7 +73,7 @@ public class Drivetrain6390 extends SubsystemBase{
   private static PID pid;
   public LimeLight limeLight;
 
-  public RobotConfig config = 
+  public RobotConfig config = //RobotConfig.fromGUISettings();
   new RobotConfig(
     74.088, 
     6.883, 
