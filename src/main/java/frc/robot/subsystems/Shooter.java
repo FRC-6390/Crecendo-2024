@@ -81,16 +81,16 @@ public class Shooter extends SubsystemBase {
   }
   public void update()
   {
-    if(shooterSpeed == 0 && isIdle)
-    {
-      rightShooterMotor.set(idleSpeed);
-      leftShooterMotor.set(idleSpeed);
-    }
-    else
-    {
-      rightShooterMotor.set(shooterSpeed);
-      leftShooterMotor.set(shooterSpeed);
-    }
+    // if(shooterSpeed == 0 && isIdle)
+    // {
+    //   rightShooterMotor.set(idleSpeed);
+    //   leftShooterMotor.set(idleSpeed);
+    // }
+    // else
+    // {
+    //   rightShooterMotor.set(shooterSpeed);
+    //   leftShooterMotor.set(shooterSpeed);
+    // }
   }
  
   @Override

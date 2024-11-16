@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.AmpAlign;
-// import frc.robot.commands.auto.AutoIntake;
 import frc.robot.commands.auto.SeekMode;
 import frc.robot.commands.auto.TurnCommand;
 
@@ -78,13 +77,10 @@ public class RobotContainer {
   {
     controller.start.whileTrue(new InstantCommand(driveTrain::zeroHeading));
     controller.a.toggleOnTrue(new SeekMode("limelight-driver", driveTrain));
-    controller.x.toggleOnTrue(new AmpAlign("limelight-tag", driveTrain));
+    controller.x.toggleOnTrue(new AmpAlign("limelight-tag",driveTrain, controller));
     
 
       //---------------------------COMP CONTROLS---------------------------------//
-    
-  //AUTO AIM
-  // controller.leftBumper.onTrue(new AutoAim(driveTrain, arm));
   
   //SUBWOOFER SHOT
   controller.rightBumper.whileTrue(new SequentialCommandGroup(new ArmTest(arm, -0.211),new ShooterRollers(-0.5, shooter, intake, 30, false),new ArmTest(arm, 0)));

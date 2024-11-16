@@ -202,6 +202,11 @@ public class Drivetrain6390 extends SubsystemBase{
     }
   }
 
+  public void setHeading(double heading)
+  {
+    gyro.setYaw(heading);
+  }
+
   public double getRoll(){
     return Math.IEEEremainder(gyro.getRoll().refresh().getValueAsDouble(), 360);
   }
@@ -361,7 +366,7 @@ feedbackSpeeds.omegaRadiansPerSecond;
     }
     else
     {
-    states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(speed, getRotation2d()));
+    states = kinematics.toSwerveModuleStates(ChassisSpeeds.fromRobotRelativeSpeeds(speed, getRotation2d()));
     }
     setModuleStates(states);
 

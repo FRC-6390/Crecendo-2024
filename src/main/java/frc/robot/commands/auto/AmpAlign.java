@@ -9,53 +9,68 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Drivetrain6390;
+import frc.robot.utilities.controller.DebouncedController;
 import frc.robot.utilities.vision.LimeLight;
 import frc.robot.utilities.vision.LimelightHelpers;
 import frc.robot.utilities.vision.LimeLight.LedMode;
 
 public class AmpAlign extends Command {
   public String limelight; 
-  public Drivetrain6390 drivetrain; 
+  public Drivetrain6390 drivetrain;
+  public DebouncedController cont; 
   public PIDController controller = new PIDController(0.025, 0, 0);
   public PIDController xController = new PIDController(1.225, 0, 0);
-  public double thetaSpeed =0;
+  public double thetaSpeed = 0;
 
-  public AmpAlign(String limeLight, Drivetrain6390 drivetrain) {
-    this.drivetrain = drivetrain; this.limelight = limeLight;
+  public AmpAlign(String limeLight, Drivetrain6390 drivetrain, DebouncedController cont) {
+    this.drivetrain = drivetrain; this.limelight = limeLight; this.cont = cont;
   }
 
   @Override
   public void initialize() 
   {
-    drivetrain.setRobotRelative(true);
   }
 
   @Override
   public void execute() 
   {
     if(LimelightHelpers.getTV(limelight)){
-      drivetrain.setRobotRelative(true);
 
       //X AND THETA
-      // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, xController.calculate(LimelightHelpers.getTX(limelight)), controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
-      
-      //X
-      // drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vxMetersPerSecond, -xController.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[0]), -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
-      
-      //THETA
-      drivetrain.drive(new ChassisSpeeds(drivetrain.getSpeeds().vyMetersPerSecond ,drivetrain.getSpeeds().vyMetersPerSecond , -controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])));
-    }
-    else
-    {
-      drivetrain.setRobotRelative(false);
-    }
+      drivetrain.drive(
+        new ChassisSpeeds(
+          cont.leftY.getAsDouble(), 
+          -xController.calculate(LimelightHelpers.getTX(limelight)), 
+          controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])
+          )
+      );
+
+      //LOCK X WHEN LINED UP
+      // drivetrain.drive(
+      //   new ChassisSpeeds(
+      //     cont.leftY.getAsDouble(), 
+      //     cont.leftX.getAsDouble(), 
+      //     controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])
+      //     )
+      // );
+      // if(Math.abs(LimelightHelpers.getTX(limelight)) < 15)
+      // {
+      //   drivetrain.drive(
+      //     new ChassisSpeeds(
+      //       cont.leftY.getAsDouble(), 
+      //       -xController.calculate(LimelightHelpers.getTX(limelight)), 
+      //       controller.calculate(LimelightHelpers.getBotPose_TargetSpace(limelight)[4])
+      //       )
+      //   );
+      // }
+
+       }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) 
   {
-    drivetrain.setRobotRelative(false);
     drivetrain.drive(new ChassisSpeeds(0,0,0));
   }
 

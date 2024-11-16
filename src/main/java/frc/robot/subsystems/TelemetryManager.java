@@ -40,7 +40,7 @@ public class TelemetryManager extends SubsystemBase {
   {
     //DRIVETRAIN
     // swerve.add("Vision Pose", drivetrain.getVisionPose());
-    // swerve.add("Drivetrain", drivetrain);
+    // swerve.add("Drivetrain", drivetrain.getHeading());
     
     // //LIMELIGHTS
     // limelights.add("LimelightDriver Sees Note?", limelightDriver.hasValidTarget());
