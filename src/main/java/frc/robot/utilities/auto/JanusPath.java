@@ -176,7 +176,7 @@ public class JanusPath {
             yStates.add(JanusComponent.empty(y, ty));
 
             thetaStates.add(JanusComponent.empty(theta, tt));
-            System.out.println(theta);
+            // System.out.println(theta);
             Collections.reverse(xStates);
             Collections.reverse(yStates);
             Collections.reverse(thetaStates);

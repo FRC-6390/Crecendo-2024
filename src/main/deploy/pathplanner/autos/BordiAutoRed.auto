@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.87,
-      "y": 6.5463576290918635
+      "x": 0.8221644973960404,
+      "y": 4.590647925946351
     },
-    "rotation": -120.50795362006203
+    "rotation": 120.96375653207352
   },
   "command": {
     "type": "sequential",
@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NonStageSide1"
+            "pathName": "BordieAuto1Red"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "NonStageSide2"
+            "pathName": "BordieAuto2Red"
           }
         },
         {
@@ -50,6 +50,6 @@
       ]
     }
   },
-  "folder": "Basics",
+  "folder": null,
   "choreoAuto": false
 }

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Drivetrain6390;
 
 
 
@@ -79,6 +80,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
   //  RobotContainer.shooter.setPID(100);
+  Drivetrain6390.updateSide();
    m_robotContainer.getAutonomousCommand().schedule();
   }
 
@@ -96,7 +98,7 @@ public class Robot extends TimedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
-    
+    Drivetrain6390.updateSide();
   }
 
   /** This function is called periodically during operator control. */

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.281967377058862,
-        "y": 0.47
+        "x": 0.82,
+        "y": 4.590647925946351
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.705191951553659,
-        "y": 2.4471790978959986
+        "x": 0.82,
+        "y": 4.532093743217444
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.83,
-        "y": 4.4
+        "x": 8.84,
+        "y": 2.283613126427394
       },
       "prevControl": {
-        "x": 0.8562840848934181,
-        "y": 4.3648674903626565
+        "x": 4.910071921292306,
+        "y": -0.8076107891414614
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.05,
+      "name": "PivotMoveDown",
+      "waypointRelativePos": 0.25,
       "command": {
         "type": "parallel",
         "data": {
@@ -41,7 +41,7 @@
             {
               "type": "named",
               "data": {
-                "name": "IntakeStop"
+                "name": "PivotMoveLow"
               }
             }
           ]
@@ -49,8 +49,8 @@
       }
     },
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.4,
+      "name": "Intake",
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "parallel",
         "data": {
@@ -58,7 +58,7 @@
             {
               "type": "named",
               "data": {
-                "name": "PivotMoveHigh"
+                "name": "IntakeRollers"
               }
             }
           ]
@@ -74,13 +74,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 121.00962606309686,
-    "rotateFast": false
+    "rotation": -150.94539590092276,
+    "rotateFast": true
   },
   "reversed": false,
-  "folder": "StageSide",
+  "folder": "BordiAuto",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 122.0925913287342,
     "velocity": 0
   },
   "useDefaultConstraints": true

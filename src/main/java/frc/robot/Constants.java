@@ -13,6 +13,8 @@ import frc.robot.utilities.auto.JanusRouteFactory;
 import frc.robot.utilities.controlloop.PIDConfig;
 import frc.robot.utilities.swerve.SwerveModule.SwerveModuleConfig;
 import frc.robot.utilities.swerve.SwerveModule.SwerveMotor;
+import frc.robot.utilities.swerve.SwerveModule;
+
 
 public interface Constants {
     public interface AUTO{
@@ -74,6 +76,11 @@ public interface Constants {
 
         double WHEEL_DIAMETER_METERS = Units.inchesToMeters(4);
         double MAX_SPEED_METERS_PER_SECOND = Units.feetToMeters(17.1);
+        double MAX_ACCELERATION_METERS_PER_SECOND = 3.85;
+        double MAX_ANGULAR_SPEED_METERS_PER_SECOND = Units.feetToMeters(17.1);
+        double MAX_ANGULAR_ACCELERATION_METERS_PER_SECOND = 3.85;
+
+
         double DRIVE_GEAR_RATIO = 1d/(6.12);
         double ROTATION_GEAR_RATIO = 1d; 
 
@@ -94,6 +101,13 @@ public interface Constants {
         SwerveModuleConfig BACK_LEFT_MODULE_CONFIG = new SwerveModuleConfig(SWERVE_MODULE_LOCATIONS[2], WHEEL_DIAMETER_METERS, BACK_LEFT_DRIVE_RECORD, BACK_LEFT_ROTATION_RECORD, ROTATION_PID,  BACK_LEFT_OFFSET, REAR_LEFT_ENCODER, ROTATION_GEAR_RATIO);
         SwerveModuleConfig BACK_RIGHT_MODULE_CONFIG = new SwerveModuleConfig(SWERVE_MODULE_LOCATIONS[3], WHEEL_DIAMETER_METERS, BACK_RIGHT_DRIVE_RECORD, BACK_RIGHT_ROTATION_RECORD, ROTATION_PID, BACK_RIGHT_OFFSET, REAR_RIGHT_ENCODER, ROTATION_GEAR_RATIO);
         
+        SwerveModule[] SWERVE_MODULES = 
+        {
+            new SwerveModule(FRONT_LEFT_MODULE_CONFIG),
+            new SwerveModule(FRONT_RIGHT_MODULE_CONFIG),
+            new SwerveModule(BACK_RIGHT_MODULE_CONFIG), 
+            new SwerveModule(BACK_RIGHT_MODULE_CONFIG)
+        };
     }
 
     // public interface SWERVEMODULE {

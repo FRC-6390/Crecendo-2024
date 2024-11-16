@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -21,21 +22,25 @@ public class ShooterRollers extends Command{
 public Intake intake;
   public double startTime;
   public double threshold;
+  public boolean stop =false;
     // public static Orchestra orchestra;
   
 
   
-  public ShooterRollers(double speed, Shooter shooter, Intake intake, double threshold) {
+  public ShooterRollers(double speed, Shooter shooter, Intake intake, double threshold, boolean stop) {
     this.speed = speed;
     this.shooter = shooter;
     this.intake = intake;
     this.threshold = threshold;
+    this.stop = stop;
     addRequirements(shooter, intake);
   }
 
   @Override
   public void initialize() {
-    
+
+  
+    intake.setOverride(false);
   // orchestra = new Orchestra();
    
 isDone = false;
@@ -54,42 +59,43 @@ isDone = false;
   {
   double curTime =Timer.getFPGATimestamp();
   shooter.setRollers(speed);
-  
-  // orchestra.loadMusic("output.chrp");
-  // orchestra.addInstrument(shooter.sh)
-
-
-// if(shooter.atSetpoint() || )
-
-  if((curTime - startTime) > 3)
-      {
-        isDone = true;  
-        intake.feed(-0.75);
-        intake.centerIntake(-0.6);
-        intake.fullWidth(-0.6);
-        //shooter.stopShooter();
-      }
-    System.out.println("SetpointAt: " + shooter.atSetpoint());
-    System.out.println("Velocity: " + shooter.getRotorVelocity());
-  System.out.println("Beam" + Intake.getUpperBeamBreak());
+  if(stop = true)
+  {
+   shooter.setIdle(false);
   }
+  SmartDashboard.putNumber("Timer", curTime-startTime);
+    if(shooter.atSetpoint(threshold) || (curTime - startTime) > 2)
+    {
+      if(!intake.hasNote())
+      {
+      isDone = true;  
+      }
+    
+        intake.setOverride(true);
+        if(DriverStation.isAutonomous())
+        {
+          intake.centerIntake(-0.6);
+          intake.feed(-0.6);
+          intake.fullWidth(-0.6);
+        }
+      }
+  }
+
+  
 
   @Override
   public void end(boolean interrupted) 
   {
 //intake.feed(0);
-  //shooter.stopShooter();
-  System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-      }
+// intake.setReversed(false);
+  shooter.stopShooter();
+  shooter.setIdle(true);
+  intake.setOverride(false);
+  }
 
   @Override
-  public boolean isFinished() {
-    if(DriverStation.isAutonomous())
-    {
-      return isDone;
-    }
-    else{
-    return false;
-    }
+  public boolean isFinished() 
+  {
+    return isDone; 
   }
 }

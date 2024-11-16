@@ -8,17 +8,21 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class StopShooter extends Command {
+public class FixNote extends Command {
 
   public Shooter shooter;
+  public Intake intake;
+  public boolean reversed;
   
-  public StopShooter(Shooter shooter) {
+  public FixNote(Shooter shooter, Intake intake, boolean reversed) {
  
     this.shooter = shooter;
-    addRequirements(shooter);
+    this.intake = intake;
+    this.reversed = reversed;
+    addRequirements(shooter, intake);
   }
   /** Creates a new StopShooter. */
-  public StopShooter() {
+  public FixNote() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,20 +30,36 @@ public class StopShooter extends Command {
   @Override
   public void initialize() 
   {
-  
+    intake.setReversed(reversed);
+    intake.setOverride(true);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
+    if(reversed)
+    {
+      shooter.setRollers(0.3);
+    }
+    else
+    {
+      shooter.setRollers(-0.3);
+    }
     //shooter.setPID(0);
-    shooter.stopShooter();
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) 
+  {
+    intake.setOverride(false);
+    intake.setReversed(false);
+    shooter.setRollers(0);
+  }
+
 
   // Returns true when the command should end.
   @Override

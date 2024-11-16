@@ -58,6 +58,9 @@ public class SwerveModule {
 
     public SwerveModule(SwerveModuleConfig config) {
         this.config = config;
+        // MODULE ROTATION PID
+        rotationPidController = config.rotationPID();
+
         // ROTATION PID ENABLING -180 TO 180
         rotationPidController.enableContinuousInput(-Math.PI, Math.PI);
 
@@ -86,9 +89,6 @@ public class SwerveModule {
             encoderConfig.MagnetSensor.MagnetOffset = config.offsetRadians();
             encoder.getConfigurator().apply(encoderConfig);
         }
-
-        // MODULE ROTATION PID
-        rotationPidController = config.rotationPID();
 
         // DRIVE MOTOR POSITION AND VELOCITY
         drivePos = driveMotor.getRotorPosition();

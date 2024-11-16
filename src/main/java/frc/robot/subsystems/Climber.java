@@ -20,7 +20,6 @@ public class Climber extends SubsystemBase {
  
   public static TalonFX climbMotorLeft;
   public static TalonFX climbMotorRight;
-  public static Button button;
   public static DigitalInput leftLimitSwitch;
   public static DigitalInput rightLimitSwitch;
 
@@ -35,7 +34,7 @@ public class Climber extends SubsystemBase {
  
   static
   {
-  button = new Button(new DigitalInput(9));  
+ 
   climbMotorLeft = new TalonFX(10, Constants.DRIVETRAIN.CANBUS);
   climbMotorRight = new TalonFX(16, Constants.DRIVETRAIN.CANBUS);
   TalonFXConfiguration config = new TalonFXConfiguration();
@@ -92,14 +91,7 @@ public static boolean rightLimit(){
   @Override
   public void periodic()
   {
-    if(DriverStation.isDisabled()){
-      if (button.isPressed()){
-        motorCoast();
-      }
-    else {
-      motorBrake();
-    }
-    }
+    
     
     // if (leftLimit()){
     //   climbMotorLeft.set(0);

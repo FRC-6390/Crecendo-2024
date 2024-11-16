@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.281967377058862,
-        "y": 0.47
+        "x": 8.84,
+        "y": 2.85
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.705191951553659,
-        "y": 2.4471790978959986
+        "x": 6.076242575195564,
+        "y": 0.9879769892207397
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.83,
-        "y": 4.4
+        "x": 0.8924295166707293,
+        "y": 4.19247948338978
       },
       "prevControl": {
-        "x": 0.8562840848934181,
-        "y": 4.3648674903626565
+        "x": 3.913825345482359,
+        "y": -0.7143610292926716
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,25 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.05,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeStop"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.4,
+      "name": "PivotMoveDown",
+      "waypointRelativePos": 0.85,
       "command": {
         "type": "parallel",
         "data": {
@@ -64,6 +47,16 @@
           ]
         }
       }
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.45,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": []
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -74,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 121.00962606309686,
-    "rotateFast": false
+    "rotation": 122.00538320808357,
+    "rotateFast": true
   },
   "reversed": false,
-  "folder": "StageSide",
+  "folder": "BordiAuto",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": -143.97262661489648,
     "velocity": 0
   },
   "useDefaultConstraints": true

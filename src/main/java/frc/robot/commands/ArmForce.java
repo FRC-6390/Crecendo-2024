@@ -2,37 +2,41 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.auto;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Arm;
 
-public class Shoot extends Command {
-  /** Creates a new Shoot. */
-  public Shooter shooter;
-  public Intake intake;
-  public Shoot(Shooter shooter, Intake intake) {
-    this.shooter = shooter;
-    this.intake = intake;
-    addRequirements(shooter, intake);
+public class ArmForce extends Command {
+  /** Creates a new ArmForce. */
+  public Arm arm;
+  public ArmForce(Arm arm) {
+    this.arm = arm;
+    addRequirements(arm);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() 
+  {
+    
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-    shooter.setRollers(1);
+    arm.setSpeed(-0.1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) 
+  {
+    arm.setHome();
+    arm.stopAll();
+  }
 
   // Returns true when the command should end.
   @Override

@@ -19,9 +19,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -33,15 +35,17 @@ import frc.robot.Constants;
 import frc.robot.Constants.DRIVETRAIN;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
+import frc.robot.utilities.sensors.Button;
 import frc.robot.utilities.swerve.SwerveModule;
 // import frc.robot.utilities.telemetry.SwerveTelemetry;
 import frc.robot.utilities.vission.LimeLight;
 import frc.robot.utilities.vission.LimelightHelpers;
+import frc.robot.utilities.vission.LimelightHelpers.PoseEstimate;
  
 public class Drivetrain6390 extends SubsystemBase{
 
   private static SwerveModule[] swerveModules;
-  private static Boolean isRed = false;
+  private static Boolean isRed;
   private static PowerDistribution pdh;
   private static Pigeon2 gyro;
   private static Translation2d[] swerve_module_poses;
@@ -56,6 +60,8 @@ public class Drivetrain6390 extends SubsystemBase{
   private static Field2d gameFieldVision2;
   private static double desiredHeading;
   public static ReplanningConfig c;
+  public static Button button;
+
   //0.1
   private static PIDConfig driftCorrectionPID = new PIDConfig(5, 0,0).setContinuous(-Math.PI, Math.PI);
   private static Pose2d visionPose;
@@ -71,7 +77,7 @@ public class Drivetrain6390 extends SubsystemBase{
     getModulePostions(), 
     new Pose2d(), 
     VecBuilder.fill(0.1,0.1,Units.degreesToRadians(3)), 
-    VecBuilder.fill(.475,.475,99999));
+    VecBuilder.fill(0.5,0.5,99999));
 
   public Drivetrain6390(LimeLight limelight)
   {
@@ -92,7 +98,7 @@ public class Drivetrain6390 extends SubsystemBase{
   }
 
   static {
-  
+    button = new Button(new DigitalInput(9));  
     gameField = new Field2d();
     gameFieldVision = new Field2d();
     gameFieldVision2 = new Field2d();
@@ -132,7 +138,13 @@ public class Drivetrain6390 extends SubsystemBase{
     pdh.clearStickyFaults();
     zeroHeading();
     resetOdometry(new Pose2d(0,0,getRotation2d()));
+    isRed = DriverStation.getAlliance().get().equals(Alliance.Red);
+
     //shuffleboard();
+  }
+
+  public static void updateSide(){
+    isRed = DriverStation.getAlliance().get().equals(Alliance.Red);
   }
 
   public void zeroHeading(){
@@ -245,45 +257,32 @@ SwerveModulePosition[swerveModules.length];
       odometry.update(getRotation2d(), getModulePostions());
       pose = odometry.getPoseMeters();
 
-      boolean doRejectUpdate = false;
       estimator.update(getRotation2d(), getModulePostions());
+      LimelightHelpers.SetRobotOrientation("limelight", estimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      if(mt2 != null){
+      if(Math.abs(gyro.getRate()) < 720 && mt2.tagCount > 0) 
+      {
+        // System.out.println("UPDATE");
+        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        estimator.addVisionMeasurement(mt2.pose,mt2.timestampSeconds);
+        // estimator.setVisionMeasurementStdDevs(VecBuilder.fill
+        // (
+        // 0.1 * limeLight.getDistanceFromTarget(0,0,0),
+        // 0.1 * limeLight.getDistanceFromTarget(0,0,0),
+        // 999999999
+        // ));
+      }
+      visionPose = estimator.getEstimatedPosition();
       
-      //MY VERSION
-      Pose2d roboPos = LimelightHelpers.getBotPose2d_wpiBlue("limelight");
-      int tagCount = LimelightHelpers.getTargetCount("limelight");
-
-      Pose2d roboPos2 = limeLight.getBot2DPositionM2();
-
-      // System.out.println(roboPos);
-      // System.out.println(roboPos2);
-      if(Math.abs(gyro.getRate()) > 720) 
-      {
-        doRejectUpdate = true;
-      }
-      if(tagCount == 0)
-      {
-        doRejectUpdate = true;
-      }
-      if(!doRejectUpdate)
-      {
-      if(DriverStation.isTeleop())
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.1,.1,9999999));
-      }
-      else
-      {
-        estimator.setVisionMeasurementStdDevs(VecBuilder.fill(.475,.475,9999999));
-      }
-        estimator.addVisionMeasurement(
-            roboPos,  edu.wpi.first.wpilibj.Timer.getFPGATimestamp());
-      }
-      //
-    gameField.setRobotPose(pose);
-    gameFieldVision2.setRobotPose(roboPos);
-    visionPose = estimator.getEstimatedPosition();
-    gameFieldVision.setRobotPose(visionPose);
-
+      gameField.setRobotPose(pose);
+      gameFieldVision2.setRobotPose(mt2.pose);
+      gameFieldVision.setRobotPose(visionPose);
+    }
   }
+ 
+
+    
 
   public ChassisSpeeds getSpeeds()
   {
@@ -294,6 +293,16 @@ SwerveModulePosition[swerveModules.length];
   
   @Override
   public void periodic() {
+    if(DriverStation.isDisabled()){
+      if (button.isPressed()){
+        unlockWheels();
+      }
+    else {
+      lockWheels();
+    }
+    }
+
+   
     double xSpeed = chassisSpeeds.vxMetersPerSecond +
 feedbackSpeeds.vxMetersPerSecond;
     double ySpeed = chassisSpeeds.vyMetersPerSecond +
@@ -301,7 +310,6 @@ feedbackSpeeds.vyMetersPerSecond;
     double thetaSpeed = chassisSpeeds.omegaRadiansPerSecond +
 feedbackSpeeds.omegaRadiansPerSecond;
     ChassisSpeeds speed = new ChassisSpeeds(xSpeed, ySpeed, thetaSpeed);
-    
 
     SwerveModuleState[] states = kinematics.toSwerveModuleStates(speed);
 
@@ -313,24 +321,13 @@ feedbackSpeeds.omegaRadiansPerSecond;
     {
     driftCorrection(speed);
     }
+    SmartDashboard.putData("Vision Pose", gameFieldVision);
+    SmartDashboard.putData("Vision Pose Raw", gameFieldVision2);
 
-    // SmartDashboard.putNumber("Odometry Headin", visionPose.getRotation().getDegrees());
-    // SmartDashboard.putNumber("Odometry X", visionPose.getX());
-    // SmartDashboard.putNumber("Odometry Y", visionPose.getY());
-    // SmartDashboard.putNumber("Odometry Heading REALL", getHeading());
-    
-
-   SmartDashboard.putData("Vision Pose", gameFieldVision);
-  //  SmartDashboard.putData("Vision Pose Raw", gameFieldVision2);
-
-  //  SmartDashboard.putData("Pose", gameField);
-    
     if(gyro.getAccelerationX().getValueAsDouble() > maxAccel)
     {
       maxAccel = gyro.getAccelerationX().getValueAsDouble();
     }
-    
-    // tele.updateShuffleboard();
   }
 
   @Override

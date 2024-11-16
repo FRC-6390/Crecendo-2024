@@ -14,42 +14,54 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "PivotMoveHigh"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoFeed"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveLow"
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "StageSideExtra1"
+            "pathName": "StageSideExtra3Red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra4Red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "FastIntake"
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra1Red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "StageSideExtra2Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "Extras",
   "choreoAuto": false
 }

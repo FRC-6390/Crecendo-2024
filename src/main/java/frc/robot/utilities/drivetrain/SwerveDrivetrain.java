@@ -19,14 +19,16 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.proto.Kinematics;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.utilities.controlloop.PID;
 import frc.robot.utilities.controlloop.PIDConfig;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.swerve.SwerveModule;
 
 /** Add your docs here. */
-public class SwerveDrivetrain {
+public class SwerveDrivetrain extends SubsystemBase{
 
-    private static SwerveModule[] swerveModules;
+    public static SwerveModule[] swerveModules;
     private static Pigeon2 gyro;
     private static SwerveDriveKinematics kinematics;
     private static PIDConfig driftCorrectionConfig;
@@ -61,6 +63,13 @@ public class SwerveDrivetrain {
     return gyro.getRate();
   }
 
+  public void initModules(SwerveModule[] modules)
+  {
+     for (int i = 0; i < modules.length; i++) {
+      swerveModules[i] = modules[i];
+     }
+  }
+
   public void resetHeading(){
     gyro.setYaw(0);
   }
@@ -75,6 +84,18 @@ public class SwerveDrivetrain {
 
   public double getHeading(){
     return Math.IEEEremainder(gyro.getYaw().refresh().getValueAsDouble(), 360);
+  }
+  public ChassisSpeeds getSpeeds()
+  {
+    return speeds;
+  }
+  public void zeroHeading()
+  {
+    gyro.setYaw(0);
+  }
+  public void setHeading(double heading)
+  {
+    gyro.setYaw(heading);
   }
 
   public Rotation2d getRotation2d(){

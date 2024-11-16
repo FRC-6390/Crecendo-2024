@@ -14,37 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "PivotMoveHigh"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoFeed"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveLow"
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "New New Path"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "IntakeDrive"
           }
         },
         {
@@ -56,31 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "PivotMoveHigh"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoFeed"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "PivotMoveLow"
+            "name": "Shoot"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "StageSideExtra1"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "FastIntake"
           }
         },
         {
@@ -92,13 +56,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PivotMoveHalf"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AutoFeed"
+            "name": "Shoot"
           }
         },
         {

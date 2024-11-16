@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NonStageSide1"
+            "pathName": "RedNonStageSide1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "NonStageSide2"
+            "pathName": "RedNonStageSide2"
           }
         },
         {

@@ -7,6 +7,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Drivetrain6390;
 import frc.robot.utilities.vission.LimeLight;
 
@@ -16,7 +17,7 @@ public class TurnAlign extends Command {
   //PID controllers
   public PIDController thetaController;
   //Declare the drivetrain object
-  public Drivetrain6390 drivetrain;
+  public DriveTrain drivetrain;
   
 
   double kP3 = 0.04;
@@ -31,7 +32,7 @@ public class TurnAlign extends Command {
   public static boolean isDone;
   public double offset;
 
-  public TurnAlign(Drivetrain6390 drivetrain, LimeLight limelight, double offset)
+  public TurnAlign(DriveTrain drivetrain, LimeLight limelight, double offset)
   {
     this.drivetrain = drivetrain;
     this.offset = offset;

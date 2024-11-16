@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
  
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.utilities.controller.DebouncedJoystick;
+import frc.robot.utilities.sensors.DistanceSensor;
 import frc.robot.utilities.sensors.IRBBSensor;
  
 public class Intake extends SubsystemBase {
@@ -17,11 +20,37 @@ public class Intake extends SubsystemBase {
   public static TalonFX centerIntakeRoller;
   public static TalonFX fullWidthIntakeRoller;
   public static TalonFX feedingRollers;
+  public static double feedingRollersSpeed, fullWidthIntakeRollerSpeed, centerIntakeRollerSpeed;
+
   // public static IRBBSensor lowerIntakeBeamBreak;
   public static IRBBSensor upperIntakeBeamBreak;
+  public static boolean rollersEnabled, override, reversed;
+ 
+ 
+  public static boolean isReversed() {
+    return reversed;
+  }
 
- 
- 
+  public static void setReversed(boolean reversed) {
+    Intake.reversed = reversed;
+  }
+
+  public boolean isOverride() {
+    return override;
+  }
+
+  public void setOverride(boolean override) {
+    this.override = override;
+  }
+
+  public boolean isRollersEnabled() {
+    return rollersEnabled;
+  }
+
+  public void setRollersEnabled(boolean rollersEnabled) {
+    this.rollersEnabled = rollersEnabled;
+  }
+
   public Intake()
   {
 
@@ -35,17 +64,17 @@ public class Intake extends SubsystemBase {
   // lowerIntakeBeamBreak = new IRBBSensor(Constants.INTAKE.BEAM_BREAK);
   upperIntakeBeamBreak = new IRBBSensor(4);
   feedingRollers = new TalonFX(Constants.INTAKE.FEEDNG_ROLLER_MOTOR, Constants.DRIVETRAIN.CANBUS);
-  
+ 
   TalonFXConfiguration con2 =  new TalonFXConfiguration();
   CurrentLimitsConfigs curr = new CurrentLimitsConfigs();
   curr.SupplyCurrentLimitEnable = true;
   curr.SupplyCurrentLimit = 40;
   con2.withCurrentLimits(curr);
+  override = false;
 
   feedingRollers.getConfigurator().apply(con2);
   fullWidthIntakeRoller.getConfigurator().apply(con2);
   centerIntakeRoller.getConfigurator().apply(con2);
-
 }
  
   // //Get value of the intake lift limit switch
@@ -55,68 +84,99 @@ public class Intake extends SubsystemBase {
   // return lowerIntakeBeamBreak.isBroken();
   // }
  
-   public static boolean getUpperBeamBreak(){
+   public boolean hasNote(){
  
     return upperIntakeBeamBreak.isBroken();
    }
 
+  public void setHome()
+  {
+    centerIntakeRoller.setPosition(0);
+  }
+  public double getRotations()
+  {
+    return Math.abs(centerIntakeRoller.getRotorPosition().refresh().getValueAsDouble());
+  }
   public void feed(double speed)
   {
-    feedingRollers.set(speed);
+    // feedingRollers.set(speed);
+    feedingRollersSpeed = speed;
   }
   public void centerIntake(double speed)
   {
-    centerIntakeRoller.set(speed);
+    // centerIntakeRoller.set(speed);
+    centerIntakeRollerSpeed = speed;
   }
  
   public void fullWidth(double speed)
   {
-    fullWidthIntakeRoller.set(0);
-  }
-  public void fullWidthMove(double speed)
-  {
-    fullWidthIntakeRoller.set(speed);
+    // fullWidthIntakeRoller.set(0);
+    fullWidthIntakeRollerSpeed = speed;
   }
   //Sets the intake rollers
-  public void setRollers(double speed, int num)
-  {
-    if(num == 1)
-    {
-    centerIntakeRoller.set(0);
-    fullWidthIntakeRoller.set(0);
-    feedingRollers.set(0);
-   //Beam is BROKEN
-    }
-    else if(num == 2)
-    {
-    centerIntakeRoller.set(speed - 0.2);
-    fullWidthIntakeRoller.set(speed);
-    feedingRollers.set(speed + 0.4);
-   // System.out.println("_____________________________-Beam is INTACT -___________________________________");
-    }
+  // public void setRollers(double speed)
+  // {
+  //   if(num == 1)
+  //   {
+  //   centerIntakeRoller.set(0);
+  //   fullWidthIntakeRoller.set(0);
+  //   feedingRollers.set(0);
+  //  //Beam is BROKEN
+  //   }
+  //   else if(num == 2)
+  //   {
+  //   centerIntakeRoller.set(speed - 0.2);
+  //   fullWidthIntakeRoller.set(speed);
+  //   feedingRollers.set(speed + 0.4);
+  //  // System.out.println("_____________________________-Beam is INTACT -___________________________________");
+  //   }
  
-  }
- 
-
-  public void setRollersRPS(double speed)
-  {
-    VelocityDutyCycle vel = new VelocityDutyCycle(speed);
-    centerIntakeRoller.setControl(vel);
-  }
-
+  // }
  
   public static StatusSignal<Double> getRollerCurrent()
   {
     return centerIntakeRoller.getSupplyCurrent();
+  }
+
+  public void stopAll()
+  {
+    fullWidthIntakeRollerSpeed = 0;
+    centerIntakeRollerSpeed = 0;
+    feedingRollersSpeed = 0;
+  }
+  public void update()
+  {
+    if(isRollersEnabled() || isOverride())
+    {
+  
+      if(reversed)
+      {
+        feedingRollers.set(-feedingRollersSpeed);
+        centerIntakeRoller.set(-centerIntakeRollerSpeed);
+        fullWidthIntakeRoller.set(-fullWidthIntakeRollerSpeed);
+      } 
+      else
+      {
+        feedingRollers.set(feedingRollersSpeed);
+        centerIntakeRoller.set(centerIntakeRollerSpeed);
+        fullWidthIntakeRoller.set(fullWidthIntakeRollerSpeed);
+        // System.out.println("INTAKING");
+      }
+    }
+    else
+    {
+      feedingRollers.set(0);
+      centerIntakeRoller.set(0);
+      fullWidthIntakeRoller.set(0); 
+    }
   }
  
 
   @Override
   public void periodic()
   {
-   SmartDashboard.putBoolean("Game Piece", getUpperBeamBreak());
-  //  SmartDashboard.putNumber("Full Width", fullWidthIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
-  //  SmartDashboard.putNumber("Center", centerIntakeRoller.getSupplyCurrent().refresh().getValueAsDouble());
-  //  SmartDashboard.putNumber("Feeder", feedingRollers.getSupplyCurrent().refresh().getValueAsDouble());
-  }
+   update();
+   SmartDashboard.putBoolean("Game Piece", hasNote());
+
+   }
 }

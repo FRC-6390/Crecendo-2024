@@ -56,9 +56,7 @@ isDone = false;
   //       intake.centerIntake(-0.6);
   //       //shooter.stopShooter();
   //     }
-    System.out.println("SetpointAt: " + shooter.atSetpoint());
-    System.out.println("Velocity: " + shooter.getRotorVelocity());
-  System.out.println("Beam" + Intake.getUpperBeamBreak());
+
   }
 
   @Override
