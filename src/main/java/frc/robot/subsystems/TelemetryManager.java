@@ -39,27 +39,27 @@ public class TelemetryManager extends SubsystemBase {
   public void periodic() 
   {
     //DRIVETRAIN
-    swerve.add("Vision Pose", drivetrain.getVisionPose());
-    swerve.add("Drivetrain", drivetrain);
+    // swerve.add("Vision Pose", drivetrain.getVisionPose());
+    // swerve.add("Drivetrain", drivetrain);
     
-    //LIMELIGHTS
-    limelights.add("LimelightDriver Sees Note?", limelightDriver.hasValidTarget());
-    limelights.add("LimelightTag Sees Tag?", limelightTag.hasValidTarget());
+    // //LIMELIGHTS
+    // limelights.add("LimelightDriver Sees Note?", limelightDriver.hasValidTarget());
+    // limelights.add("LimelightTag Sees Tag?", limelightTag.hasValidTarget());
 
-    //ARM
-    armTab.add("Arm Position", arm.getPostionAsPercent());
-    armTab.add("Arm PID", arm.PID);
-    armTab.add("Arm", arm);
+    // //ARM
+    // armTab.add("Arm Position", arm.getPostionAsPercent());
+    // armTab.add("Arm PID", arm.PID);
+    // armTab.add("Arm", arm);
 
-    //INTAKE
-    intakeTab.add("Game Piece", intake.hasNote());
-    intakeTab.add("Intake",intake);
+    // //INTAKE
+    // intakeTab.add("Game Piece", intake.hasNote());
+    // intakeTab.add("Intake",intake);
 
-    //SHOOTER
-    shooterTab.add("Shooter Speed", shooter.getRotorVelocity());
-    shooterTab.add("Shooter", shooter);
+    // //SHOOTER
+    // shooterTab.add("Shooter Speed", shooter.getRotorVelocity());
+    // shooterTab.add("Shooter", shooter);
 
-    //COMMAND SCHEDULER
-    sequencing.add("Command Scheduler",CommandScheduler.getInstance());
+    // //COMMAND SCHEDULER
+    // sequencing.add("Command Scheduler",CommandScheduler.getInstance());
   }
 }
